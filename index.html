@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Метод на интервалите — тренажор </title>
+	<meta property="og:title" content="Метод на интервалите - тренажор">
+    <meta property="og:description" content="Интерактивен тренажор за метода на интервалите">
+    <meta property="og:image" content="https://valyavitkovska.github.io/ИМЕ-НА-ПАПКАТА/MIT.png">
+    <meta property="og:url" content="https://valyavitkovska.github.io/ИМЕ-НА-ПАПКАТА/">
+    <meta property="og:type" content="website">
+    <style>
+        /* ===== LIGHT THEME (default) ===== */
+        :root {
+            --primary: #1a2a3a;
+            --secondary: #2c4a6e;
+            --accent: #3b82f6;
+            --accent2: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #e2e8f0;
+            --border: #cbd5e1;
+            --bg: #f0f4f8;
+            --bg2: #e8eef5;
+            --card: rgba(255,255,255,0.96);
+            --card-border: rgba(255,255,255,0.8);
+            --text: #1e293b;
+            --text2: #475569;
+            --math-bg: linear-gradient(135deg,#f8faff,#eef2ff);
+            --header-bg: linear-gradient(135deg, #1a2a3a 0%, #0f1f30 100%);
+            --grid-color: rgba(59,130,246,0.06);
+            --orb1: rgba(59,130,246,0.08);
+            --orb2: rgba(139,92,246,0.07);
+            --orb3: rgba(16,185,129,0.05);
+            --symbol-color: rgba(59,130,246,0.12);
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            color-scheme: light;
+        }
+
+        /* ===== DARK THEME ===== */
+        [data-theme="dark"] {
+            --primary: #e2e8f0;
+            --secondary: #93c5fd;
+            --accent: #60a5fa;
+            --accent2: #a78bfa;
+            --success: #34d399;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --light: #1e293b;
+            --border: #334155;
+            --bg: #0f172a;
+            --bg2: #1e293b;
+            --card: rgba(30,41,59,0.95);
+            --card-border: rgba(255,255,255,0.08);
+            --text: #f1f5f9;
+            --text2: #94a3b8;
+            --math-bg: linear-gradient(135deg,#1e293b,#0f172a);
+            --header-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --grid-color: rgba(99,102,241,0.07);
+            --orb1: rgba(99,102,241,0.12);
+            --orb2: rgba(139,92,246,0.10);
+            --orb3: rgba(16,185,129,0.07);
+            --symbol-color: rgba(148,163,184,0.10);
+            --shadow: 0 10px 30px rgba(0,0,0,0.4);
+            color-scheme: dark;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            margin: 0; padding: 0; 
+            color: var(--text); 
+            line-height: 1.6;
+            background: var(--bg);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        #bg-canvas {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bg-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(var(--grid-color) 2px, transparent 2px), linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 40px 40px;
+            z-index: 1;
+        }
+        
+        /* Анимирани светещи сфери */
+        .bg-orb {
+            position: absolute; border-radius: 50%; filter: blur(70px);
+            animation: orbFloat linear infinite; opacity: 0.8; z-index: 0;
+        }
+        @keyframes orbFloat {
+            0%   { transform: translate(0,0) scale(1) rotate(0deg); }
+            33%  { transform: translate(4%,-4%) scale(1.1) rotate(5deg); }
+            66%  { transform: translate(-3%,5%) scale(0.9) rotate(-5deg); }
+            100% { transform: translate(0,0) scale(1) rotate(0deg); }
+        }
+
+        .bg-symbols { position: absolute; inset: 0; overflow: hidden; z-index: 2; }
+        .bg-sym {
+            position: absolute; font-family: 'Times New Roman', serif; font-style: italic;
+            color: var(--symbol-color); user-select: none; pointer-events: none;
+            animation: symDrift linear infinite;
+        }
+        @keyframes symDrift {
+            0%   { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50%  { opacity: 0.7; }
+            100% { transform: translateY(-40px) rotate(10deg); opacity: 0.3; }
+        }
+
+        /* Емоджита */
+        .bg-emoji {
+            position: absolute; font-size: 2.5rem; opacity: 0.15; user-select: none; pointer-events: none;
+            animation: floatEmoji linear infinite; filter: grayscale(30%);
+        }
+        @keyframes floatEmoji {
+            0% { transform: translateY(110vh) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.2; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) rotate(20deg) scale(1.2); opacity: 0; }
+        }
+
+        #start-screen, #app-container, #progress-bar-wrapper, #final-screen, #tutorial-screen, .container {
+            position: relative; z-index: 5;
+        }
+
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { 0% { transform: scale(0.3) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.2) rotate(3deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        @keyframes shakeError { 
+            0%, 100% { transform: translate3d(0, 0, 0); } 
+            10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, 0, 0) rotate(-1deg); } 
+            20%, 40%, 60%, 80% { transform: translate3d(6px, 0, 0) rotate(1deg); } 
+        }
+        .shake-panel { animation: shakeError 0.6s cubic-bezier(.36,.07,.19,.97) both; border-color: var(--danger) !important; }
+        @keyframes pulseSuccess { 
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); transform: scale(1); } 
+            50% { transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 25px rgba(16, 185, 129, 0); transform: scale(1); } 
+        }
+        .pulse-success { animation: pulseSuccess 0.8s ease-out; border-color: var(--success) !important; }
+
+        /* HEADER & STATS */
+        header {
+            background: var(--header-bg); color: white; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 100; transition: background 0.3s;
+            flex-wrap: wrap; gap: 10px;
+        }
+        header h1 {
+            margin: 0; font-size: 1.4rem; letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        
+        .header-stats {
+            display: flex; gap: 15px; align-items: center; background: rgba(255,255,255,0.1);
+            padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.15);
+            flex-wrap: wrap; justify-content: center;
+        }
+        .header-stats.hidden { display: none; }
+        .stat-highlight { color: #93c5fd; font-weight: bold; }
+
+        #theme-toggle {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: 0.2s;
+        }
+        #theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+
+        .panel {
+            background: var(--card); border-radius: 16px; padding: 30px;
+            box-shadow: var(--shadow), 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border: 2px solid var(--card-border); animation: slideUpFade 0.4s ease-out;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+        }
+        .hidden { display: none !important; }
+
+        .user-input-group { text-align: center; margin-bottom: 25px; }
+        .user-input-group input {
+            padding: 12px 20px; font-size: 1.1rem; border-radius: 10px;
+            border: 2px solid var(--border); width: 100%; max-width: 350px;
+            outline: none; transition: 0.3s; text-align: center; background: var(--bg); color: var(--text);
+        }
+        .user-input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+        .progress-bar {
+            display: flex; justify-content: space-between; margin-bottom: 22px;
+            background: var(--card); border-radius: 12px; padding: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid var(--border); gap: 4px;
+        }
+        .stage-indicator {
+            flex: 1; text-align: center; padding: 10px 4px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #94a3b8; transition: all 0.25s ease; position: relative;
+        }
+        .stage-indicator.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; box-shadow: 0 4px 12px rgba(59,130,246,0.35); transform: scale(1.05); z-index: 2;}
+        .stage-indicator.completed { color: var(--success); }
+        .stage-indicator.completed::after { content: '✓'; position: absolute; top: 3px; right: 6px; font-size: 0.65rem; }
+
+        /* MATH DISPLAY */
+        .math-expr {
+            font-size: 2rem; text-align: center; margin: 15px 0; font-family: 'Times New Roman', Times, serif; font-style: italic;
+            color: var(--primary); background: var(--math-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border);
+            transition: background 0.3s, border-color 0.3s; display: flex; align-items: center; justify-content: center; gap: 15px; overflow-x: auto;
+        }
+        .math-expr sup { 
+            font-size: 0.65em; 
+            vertical-align: baseline; 
+            position: relative; 
+            top: -0.5em; 
+            margin-left: 2px; 
+            font-style: normal; 
+            font-weight: 600; 
+            color: var(--primary); 
+            font-family: 'Times New Roman', serif;
+        }
+        .fraction { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; }
+        .fraction .num { border-bottom: 2px solid var(--primary); padding: 0 10px 4px; }
+        .fraction .den { padding: 4px 10px 0; }
+        .operator { font-weight: bold; font-style: normal; font-family: 'Segoe UI', sans-serif; font-size: 2.2rem;}
+
+        /* NUMBER LINE & ARCS */
+        .number-line-container {
+            position: relative; height: 160px; margin: 30px 0 20px 0; width: 100%;
+        }
+        .number-line { position: absolute; left: 5%; right: 5%; height: 3px; background: var(--primary); border-radius: 2px; top: 50%; transform: translateY(-50%); z-index: 2; }
+        .arrow.right { position: absolute; top: 50%; right: calc(5% - 10px); transform: translateY(-50%); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 12px solid var(--primary); width: 0; height: 0; z-index: 2;}
+
+        .interval-arc {
+            position: absolute;
+            border: 2.5px solid var(--accent);
+            border-bottom: none;
+            border-top-left-radius: 50% 100%;
+            border-top-right-radius: 50% 100%;
+            top: calc(50% - 60px);
+            height: 60px;
+            z-index: 1;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: bottom center;
+            transition: opacity 0.4s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .interval-arc.show { opacity: 0.85; transform: scaleY(1); }
+
+        .root-marker {
+            position: absolute; top: 50%; width: 24px; height: 24px; transform: translate(-50%, -50%); z-index: 5; cursor: pointer; transition: transform 0.2s, background 0.2s, border 0.2s; border-radius: 50%;
+        }
+        .root-marker:hover { transform: translate(-50%, -50%) scale(1.2); }
+        .root-marker.unknown { background: #cbd5e1; border: 2px dashed #64748b; }
+        .root-marker.strict { background: var(--card); border: 3px solid var(--danger); }
+        .root-marker.non-strict { background: var(--danger); border: 2px solid var(--card); box-shadow: 0 0 0 2px var(--danger); }
+
+        .parity-badge { position: absolute; top: calc(50% - 40px); transform: translate(-50%, -100%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity 0.3s ease; }
+        .parity-select { font-size: 0.7rem; padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--accent); background: var(--card); color: var(--accent); font-weight: 700; cursor: pointer; outline: none; transition: 0.2s; width: max-content; }
+        .parity-select.correct { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.08); pointer-events: none; }
+        .parity-select.wrong { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.08); }
+
+        .root-label {
+            position: absolute; top: calc(50% + 20px); transform: translate(-50%, 0); font-weight: bold; font-family: 'Times New Roman', serif; z-index: 5;
+            background: var(--card); padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 1rem; color: var(--primary); border: 1px solid var(--border);
+        }
+
+        .sign-btn-large {
+            position: absolute; top: calc(50% - 30px); transform: translate(-50%, -50%); font-size: 1.6rem; width: 44px; height: 44px; border-radius: 50%;
+            border: 2px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .sign-btn-large:hover { transform: translate(-50%, -50%) scale(1.1); border-color: var(--accent); }
+        .sign-btn-large.plus { background: var(--success); color: white; border-color: var(--success); box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
+        .sign-btn-large.minus { background: var(--danger); color: white; border-color: var(--danger); box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
+
+        /* INTERVAL SELECTOR */
+        .interval-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 20px 0; }
+        
+        .interval-box {
+            padding: 12px 20px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s;
+            background: var(--card); font-weight: bold; font-family: 'Times New Roman', serif; font-size: 1.2rem; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            user-select: none;
+        }
+        .interval-box:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(59,130,246,0.15); }
+        .interval-box.selected { background: var(--accent); color: white; border-color: var(--accent); }
+        
+        .no-sol-box { background: rgba(239,68,68,0.05); color: var(--danger); border-color: rgba(239,68,68,0.3); font-family: 'Segoe UI', sans-serif; }
+        .no-sol-box.selected { background: var(--danger); color: white; border-color: var(--danger); }
+        .all-sol-box { background: rgba(59,130,246,0.05); }
+
+        /* CONTROLS */
+        .controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 25px; }
+        .btn {
+            padding: 12px 26px; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: 700;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease; color: white; letter-spacing: 0.3px; position: relative; overflow: hidden; box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 14px rgba(0,0,0,0.15);
+        }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0); transition: 0.2s; border-radius: inherit; }
+        .btn:hover:not(:disabled)::after { background: rgba(255,255,255,0.15); }
+        .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.28), 0 2px 6px rgba(0,0,0,0.12) !important; filter: brightness(0.95); transition-duration:0.05s; }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .btn-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); box-shadow: none; }
+        .btn-outline:hover:not(:disabled) { background: rgba(59,130,246,0.1); transform: translateY(-2px); }
+
+        .practice-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 24px; }
+        @media (min-width: 600px) { .practice-type-grid { grid-template-columns: repeat(4, 1fr); } }
+        .type-btn {
+            background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 16px 10px; cursor: pointer;
+            transition: all 0.25s; text-align: center; font-weight: 600; color: var(--text); box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .type-btn:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+        .type-btn.active-type { border-width: 3px; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .type-btn .type-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        .type-btn .type-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; line-height: 1.2;}
+        .type-btn.t-linear { border-color: #3b82f6; }
+        .type-btn.t-linear.active-type { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; }
+        .type-btn.t-quad { border-color: #8b5cf6; }
+        .type-btn.t-quad.active-type { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #5b21b6; }
+        .type-btn.t-frac { border-color: #10b981; }
+        .type-btn.t-frac.active-type { background: linear-gradient(135deg, #f0fdf4, #dcfce7); color: #065f46; }
+        .type-btn.t-mixed { border-color: #e11d48; }
+        .type-btn.t-mixed.active-type { background: linear-gradient(135deg, #fff1f2, #ffe4e6); color: #9f1239; }
+
+        .feedback-msg { margin-top: 15px; padding: 15px 20px; border-radius: 10px; font-weight: bold; text-align: center; display: none; font-size: 1.1rem; }
+        .feedback-msg.error { display: block; background: rgba(239,68,68,0.1); color: var(--danger); border: 2px solid var(--danger); }
+        .feedback-msg.success { display: block; background: rgba(16,185,129,0.1); color: var(--success); border: 2px solid var(--success); }
+
+        .toast-msg {
+            position: fixed; top: 20px; right: 20px; z-index: 10000; background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-weight: bold; font-size: 1.1rem;
+            animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-in 4.5s forwards; display: flex; align-items: center; gap: 10px; max-width: 90vw;
+        }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+        .celebration-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+        .confetti-piece { position: absolute; top: -20px; width: 12px; height: 12px; border-radius: 3px; animation: confettiFall linear forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+        
+        .instruction-box {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.05)); border-left: 4px solid var(--accent);
+            padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 20px; font-size: 1.05rem;
+        }
+
+        .final-summary { text-align: center; font-size: 1.2rem; margin-top: 10px; }
+        .final-answer-display { font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1.8rem; color: var(--success); background: rgba(16,185,129,0.1); padding: 10px 20px; border-radius: 10px; display: inline-block; margin-top: 15px;}
+
+        .app-footer {
+            text-align: center; margin-top: 20px; padding-bottom: 25px;
+            color: var(--text2); font-size: 0.9rem; font-weight: 500; opacity: 0.8; transition: opacity 0.3s;
+        }
+        .app-footer:hover { opacity: 1; }
+        .app-footer span { color: var(--primary); font-weight: 700; }
+
+        /* TUTORIAL SCREEN STYLES */
+        #teacher-canvas {
+            min-height: 350px; background: var(--bg2); border-radius: 12px; padding: 20px;
+            border: 1px solid var(--border); position: relative; overflow: hidden;
+            font-size: 1.15rem; color: var(--primary);
+        }
+        .tut-line { margin-bottom: 15px; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+        .tut-line.visible { opacity: 1; transform: translateY(0); }
+        .tut-number-line-wrap { position: relative; height: 100px; margin: 30px 0; opacity: 0; transition: opacity 0.5s; }
+        .tut-line-draw { position: absolute; left: 10%; top: 50%; transform: translateY(-50%); height: 3px; background: var(--primary); width: 0; transition: width 1.5s ease-in-out; z-index: 2;}
+        .tut-arrow { position: absolute; left: 90%; top: 50%; transform: translateY(-50%); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 12px solid var(--primary); opacity: 0; transition: 0.3s; z-index: 2;}
+        .tut-point { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; opacity: 0; transition: 0.5s; z-index: 5;}
+        .tut-point.solid { background: var(--danger); border: 2px solid var(--danger); }
+        .tut-point.empty { background: var(--bg2); border: 3px solid var(--danger); }
+        .tut-plabel { position: absolute; top: calc(50% + 15px); transform: translateX(-50%); font-weight: bold; font-family: 'Times New Roman', serif; opacity: 0; transition: 0.5s; }
+        .tut-sign { position: absolute; top: calc(50% - 35px); transform: translate(-50%, -20px); font-size: 1.8rem; font-weight: bold; opacity: 0; transition: 0.5s all; z-index: 10; }
+        .tut-sign.show-sign { transform: translate(-50%, -50%); opacity: 1; }
+
+        .hero-image-box { max-width: 760px; margin: 0 auto 28px; text-align: center; }
+        .hero-main-image { width: 100%; max-width: 760px; height: auto; display: block; margin: 0 auto; border-radius: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.16); border: 2px solid var(--card-border); }
+        
+        .credits-text { font-size: 0.85rem; color: var(--text2); margin-top: 8px; font-style: italic; }
+        
+        .start-instructions {
+            background: var(--bg2);
+            border-left: 4px solid var(--accent);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .start-instructions ul { margin: 10px 0 0 0; padding-left: 20px; }
+        .start-instructions li { margin-bottom: 5px; }
+
+        @media (max-width: 600px) {
+            .panel { padding: 20px 15px; }
+            .math-expr { font-size: 1.6rem; padding: 15px 10px; gap: 8px; }
+            .operator { font-size: 1.8rem; }
+            .sign-btn-large { width: 38px; height: 38px; font-size: 1.4rem; top: calc(50% - 28px); }
+            .interval-arc { top: calc(50% - 50px); height: 50px; }
+            .root-label { font-size: 0.9rem; padding: 1px 4px; top: calc(50% + 18px); }
+            .parity-badge { top: calc(50% - 35px); }
+            header h1 { font-size: 1.2rem; }
+            .btn { padding: 10px 20px; font-size: 0.95rem; width: 100%; max-width: 300px; margin: 0 auto; }
+            #teacher-canvas { font-size: 1rem; padding: 15px; }
+        }
+        @media (max-width: 400px) {
+            .math-expr { font-size: 1.4rem; }
+            .operator { font-size: 1.5rem; }
+            .type-btn .type-name { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-canvas">
+        <!-- Светещи сфери за ефектен фон -->
+        <div class="bg-orb" style="width: 50vw; height: 50vw; background: var(--orb1); top: -10%; left: -10%; animation-duration: 25s;"></div>
+        <div class="bg-orb" style="width: 60vw; height: 60vw; background: var(--orb2); bottom: -20%; right: -10%; animation-duration: 30s;"></div>
+        <div class="bg-orb" style="width: 40vw; height: 40vw; background: var(--orb3); top: 30%; left: 30%; animation-duration: 20s;"></div>
+        
+        <div class="bg-grid"></div>
+        <div class="bg-symbols" id="bg-symbols-container"></div>
+    </div>
+
+    <header>
+        <div>
+            <h1>Метод на интервалите</h1>
+        </div>
+        <div class="header-stats hidden" id="header-stats">
+            <span>👤 <span id="display-name" class="stat-highlight">Ученик</span></span>
+            <span>🏆 Решени: <span id="display-total-solved" class="stat-highlight" style="color:var(--success);">0</span></span>
+            <span>⏱️ <span id="timer-display">00:00</span></span>
+        </div>
+        <div>
+            <button id="theme-toggle" onclick="toggleTheme()">☀️ Светла</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="panel">
+            <h2 style="text-align: center; color: var(--primary); margin-top: 0; margin-bottom: 20px;">Тренирай метода на интервалите стъпка по стъпка.</h2>
+            
+            <div style="text-align: center; margin-bottom: 35px;">
+                <button class="btn btn-outline" style="width: auto; max-width: 100%;" onclick="startTutorialAnimation()">📖 Виж кратки указания и пример</button>
+            </div>
+
+            <div class="hero-image-box">
+                <img src="MIT.png" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgNzYwIDIwMCI+PHJlY3Qgd2lkdGg9Ijc2MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlMmU4ZjAiIC8+PHRleHQgeD0iMzgwIiB5PSIxMDUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRhM2I4Ij5NZXRob2Qgb2YgSW50ZXJ2YWxzIElsbHVzdHJhdGlvbjwvdGV4dD48L3N2Zz4='" alt="Метод на интервалите" class="hero-main-image">
+                <div class="credits-text">Идея и педагогически решения: Валя Витковска, Реализация: Gemini</div>
+            </div>
+
+            <div class="user-input-group">
+                <input type="text" id="student-name-input" placeholder="Въведи своето име (по желание)..." />
+            </div>
+
+            <div class="start-instructions">
+                <strong>💡 Как се работи с тренажора:</strong>
+                <ul>
+                    <li><strong>Стъпка 1:</strong> Кликай върху корените на оста, за да ги направиш плътни (включени) или празни (изключени).</li>
+                    <li><strong>Стъпка 2:</strong> Определи кратността (четна/нечетна) от падащите менюта.</li>
+                    <li><strong>Стъпка 3:</strong> Кликай над интервалите, за да определиш знаците (+ или -).</li>
+                    <li><strong>Стъпка 4:</strong> Избери решенията. Кликай многократно върху интервалите, за да сменяш скобите (кръгли/квадратни).</li>
+                </ul>
+            </div>
+
+            <p style="text-align: center; font-size: 1.2rem; font-weight: bold; color: var(--primary); margin-bottom: 20px;">Избери вид неравенства:</p>
+            
+            <div class="practice-type-grid">
+                <div class="type-btn t-linear active-type" onclick="selectType('t-linear')">
+                    <span class="type-icon">📈</span>
+                    <div class="type-name">Произведение от линейни множители</div>
+                </div>
+                <div class="type-btn t-quad" onclick="selectType('t-quad')">
+                    <span class="type-icon">🔁</span>
+                    <div class="type-name">Произведение от степени</div>
+                </div>
+                <div class="type-btn t-frac" onclick="selectType('t-frac')">
+                    <span class="type-icon">➗</span>
+                    <div class="type-name">Дробни неравенства</div>
+                </div>
+                <div class="type-btn t-mixed" onclick="selectType('t-mixed')">
+                    <span class="type-icon">🔥</span>
+                    <div class="type-name">Смесени</div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn btn-purple" style="font-size: 1.2rem; padding: 15px 40px; width: auto;" onclick="startPractice()">🚀 Започни тренировка</button>
+            </div>
+        </div>
+
+        <!-- TUTORIAL SCREEN -->
+        <div id="tutorial-screen" class="panel hidden">
+            <h2 style="color: var(--primary); margin-top: 0;">Указания и Пример 👨‍🏫</h2>
+            <div id="teacher-canvas"></div>
+            <div class="controls" id="tut-controls" style="display: none; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="returnToMenu()">🏠 Обратно в менюто</button>
+                <button class="btn btn-purple" onclick="startPractice()">🚀 Разбрах! Нека решаваме</button>
+            </div>
+        </div>
+
+        <!-- APP CONTAINER -->
+        <div id="app-container" class="panel hidden">
+            <div class="progress-bar">
+                <div class="stage-indicator active" id="ind-1">1. Корени</div>
+                <div class="stage-indicator" id="ind-2">2. Кратност</div>
+                <div class="stage-indicator" id="ind-3">3. Знаци</div>
+                <div class="stage-indicator" id="ind-4">4. Решение</div>
+            </div>
+
+            <div class="math-expr" id="current-expr"></div>
+
+            <div class="instruction-box" id="instruction-text"></div>
+
+            <div id="stage-area-1-3">
+                <div class="number-line-container" id="nl-container">
+                    <div class="number-line"></div>
+                    <div class="arrow right"></div>
+                </div>
+            </div>
+
+            <div id="stage-area-4" class="hidden">
+                <div id="interval-container"></div>
+            </div>
+
+            <div id="feedback" class="feedback-msg"></div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="btn-check" onclick="checkCurrentStage()">Провери</button>
+            </div>
+        </div>
+
+        <!-- FINAL SCREEN -->
+        <div id="final-screen" class="panel hidden" style="text-align: center;">
+            <div style="font-size: 4.5rem; margin-bottom: 10px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">🏆</div>
+            <h2 style="color: var(--success);">Поздравления!</h2>
+            <p>Ти реши неравенството напълно вярно.</p>
+            
+            <div class="math-expr" id="final-expr-disp" style="font-size: 1.5rem; padding: 10px;"></div>
+            
+            <div id="final-number-line-container" style="pointer-events: none;"></div>
+            
+            <div class="final-summary">
+                Решение: <br>
+                <div class="final-answer-display" id="final-answer-string"></div>
+            </div>
+
+            <div class="controls" style="margin-top: 30px;">
+                <button class="btn btn-outline" onclick="returnToMenu()">🏠 Меню</button>
+                <button class="btn btn-purple" onclick="nextProblem()">🚀 Следваща задача</button>
+            </div>
+        </div>
+
+        <div class="app-footer">
+            Създадено с ❤️ за обучение по математика | <span>Метод на интервалите</span>
+        </div>
+    </div>
+
+    <script>
+        /* --- STATE VARIABLES --- */
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        let selectedPracticeType = 't-linear';
+        let studentName = "";
+        let problemsSolved = 0;
+        let timerInterval;
+        let secondsElapsed = 0;
+
+        let currentProblem = null;
+        let currentStage = 1; 
+        
+        const operators = ['<', '\\le', '>', '\\ge'];
+        
+        /* --- INIT --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            if(currentTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-toggle').innerText = '🌙 Тъмна';
+            }
+            createBackgroundSymbols();
+        });
+
+        /* --- THEME & BACKGROUND --- */
+        function toggleTheme() {
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('theme-toggle').innerText = '☀️ Светла';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('theme-toggle').innerText = '🌙 Тъмна';
+            }
+        }
+
+        function createBackgroundSymbols() {
+            const container = document.getElementById('bg-symbols-container');
+            const symbols = ['∞', '∪', '∩', '∈', '>', '<', '≠', '±'];
+            for(let i=0; i<15; i++) {
+                let el = document.createElement('div');
+                el.className = 'bg-sym';
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.top = Math.random() * 100 + 'vh';
+                el.style.fontSize = (Math.random() * 3 + 1) + 'rem';
+                el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(el);
+            }
+            
+            // Добавяне на образователни емоджита
+            const emojis = ['🤓', '📐', '✏️', '🚀', '🌟', '💡', '📊'];
+            for(let i=0; i<8; i++) {
+                let el = document.createElement('div');
+                el.className = 'bg-emoji';
+                el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 15 + 20) + 's';
+                el.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(el);
+            }
+        }
+
+        /* --- NAVIGATION --- */
+        function selectType(type) {
+            document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active-type'));
+            document.querySelector('.' + type).classList.add('active-type');
+            selectedPracticeType = type;
+        }
+
+        function returnToMenu() {
+            document.getElementById('tutorial-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('header-stats').classList.add('hidden');
+            clearInterval(timerInterval);
+        }
+
+        function startPractice() {
+            let nameInput = document.getElementById('student-name-input').value.trim();
+            studentName = nameInput !== "" ? nameInput : "Ученик";
+            document.getElementById('display-name').innerText = studentName;
+            
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('tutorial-screen').classList.add('hidden');
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('header-stats').classList.remove('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+
+            secondsElapsed = 0;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                updateTimerDisplay();
+            }, 1000);
+
+            nextProblem();
+        }
+
+        function updateTimerDisplay() {
+            let m = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            let s = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${m}:${s}`;
+        }
+
+        function triggerConfetti() {
+            let overlay = document.createElement('div');
+            overlay.className = 'celebration-overlay';
+            const colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
+            for(let i=0; i<60; i++) {
+                let piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = (Math.random() * 0.5) + 's';
+                overlay.appendChild(piece);
+            }
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 4000);
+        }
+
+        /* --- PROBLEM GENERATION --- */
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateProblem() {
+            let numFactors = [], denFactors = [];
+            let rootsPool = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+            for(let i = rootsPool.length - 1; i > 0; i--){
+                const j = Math.floor(Math.random() * (i + 1));
+                [rootsPool[i], rootsPool[j]] = [rootsPool[j], rootsPool[i]];
+            }
+
+            let opIdx = getRandomInt(0, 3);
+            let isStrict = (opIdx === 0 || opIdx === 2);
+
+            let countNum = 2, countDen = 0;
+            let multOptions = [1, 1, 1];
+
+            if(selectedPracticeType === 't-linear') {
+                countNum = getRandomInt(2, 3);
+            } else if (selectedPracticeType === 't-quad') {
+                countNum = getRandomInt(2, 3);
+                multOptions = [1, 2, 3];
+            } else if (selectedPracticeType === 't-frac') {
+                countNum = getRandomInt(1, 2);
+                countDen = getRandomInt(1, 2);
+            } else {
+                countNum = getRandomInt(1, 3);
+                countDen = getRandomInt(0, 2);
+                multOptions = [1, 2, 3];
+            }
+
+            if (countNum + countDen < 2) countNum = 2;
+
+            let rootsUsed = [];
+            for(let i=0; i<countNum; i++) {
+                let r = rootsPool.pop();
+                let m = multOptions[Math.floor(Math.random()*multOptions.length)];
+                let isNeg = Math.random() < 0.25; 
+                numFactors.push({ root: r, mult: m, pos: 'num', isNeg: isNeg });
+                rootsUsed.push(r);
+            }
+            for(let i=0; i<countDen; i++) {
+                let r = rootsPool.pop();
+                let m = multOptions[Math.floor(Math.random()*multOptions.length)];
+                let isNeg = Math.random() < 0.25; 
+                denFactors.push({ root: r, mult: m, pos: 'den', isNeg: isNeg });
+                rootsUsed.push(r);
+            }
+
+            rootsUsed.sort((a, b) => a - b);
+
+            return {
+                num: numFactors,
+                den: denFactors,
+                allFactors: [...numFactors, ...denFactors],
+                roots: rootsUsed,
+                opStr: operators[opIdx],
+                opIdx: opIdx,
+                isStrict: isStrict
+            };
+        }
+
+        function formatFactor(f) {
+            let r = f.root;
+            let m = f.mult;
+            let base = "";
+            if (f.isNeg) {
+                if (r === 0) base = "(-x)";
+                else base = `(${r} - x)`;
+            } else {
+                if (r === 0) base = "x";
+                else if (r > 0) base = `(x - ${r})`;
+                else base = `(x + ${Math.abs(r)})`;
+            }
+            
+            if (m > 1) return `${base}<sup>${m}</sup>`;
+            return base;
+        }
+
+        function renderExpression(p) {
+            let html = "";
+            let numHtml = p.num.map(formatFactor).join("");
+            if (numHtml === "") numHtml = "1";
+            let denHtml = p.den.map(formatFactor).join("");
+
+            if (p.den.length > 0) {
+                html += `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div>`;
+            } else {
+                html += numHtml;
+            }
+
+            let opDisplay = "";
+            if (p.opIdx === 0) opDisplay = "&lt;";
+            else if (p.opIdx === 1) opDisplay = "&le;";
+            else if (p.opIdx === 2) opDisplay = "&gt;";
+            else if (p.opIdx === 3) opDisplay = "&ge;";
+
+            html += ` <div class="operator">${opDisplay} 0</div>`;
+            return html;
+        }
+
+        /* --- STAGE MANAGEMENT --- */
+        function nextProblem() {
+            document.getElementById('final-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('btn-check').disabled = false;
+            
+            currentProblem = generateProblem();
+            document.getElementById('current-expr').innerHTML = renderExpression(currentProblem);
+            
+            currentStage = 1;
+            updateStageUI();
+            setupStage1();
+        }
+
+        function updateStageUI() {
+            for(let i=1; i<=4; i++) {
+                let ind = document.getElementById(`ind-${i}`);
+                ind.classList.remove('active', 'completed');
+                if (i < currentStage) ind.classList.add('completed');
+                if (i === currentStage) ind.classList.add('active');
+            }
+            document.getElementById('feedback').className = 'feedback-msg hidden';
+            
+            if (currentStage <= 3) {
+                document.getElementById('stage-area-4').classList.add('hidden');
+            } else {
+                document.getElementById('stage-area-4').classList.remove('hidden');
+            }
+        }
+
+        function showError(msg) {
+            let fb = document.getElementById('feedback');
+            fb.innerText = msg;
+            fb.className = 'feedback-msg error';
+            let panel = document.getElementById('app-container');
+            panel.classList.remove('shake-panel');
+            void panel.offsetWidth;
+            panel.classList.add('shake-panel');
+        }
+
+        function showSuccess(msg) {
+            let fb = document.getElementById('feedback');
+            fb.innerText = msg;
+            fb.className = 'feedback-msg success';
+            let panel = document.getElementById('app-container');
+            panel.classList.remove('pulse-success');
+            void panel.offsetWidth; 
+            panel.classList.add('pulse-success');
+        }
+
+        function checkCurrentStage() {
+            if (currentStage === 1) checkStage1();
+            else if (currentStage === 2) checkStage2();
+            else if (currentStage === 3) checkStage3();
+            else if (currentStage === 4) checkStage4();
+        }
+
+        /* --- STAGE 1 --- */
+        function getLeftPercent(val, minRoot, maxRoot) {
+            let span = Math.max(maxRoot - minRoot, 4); 
+            let pMin = minRoot - span*0.2;
+            let pMax = maxRoot + span*0.2;
+            return ((val - pMin) / (pMax - pMin)) * 80 + 10;
+        }
+
+        function setupStage1() {
+            document.getElementById('instruction-text').innerHTML = "<b>Стъпка 1:</b> Нанеси корените на числовата ос. Кликни върху всяко кръгче, за да го направиш плътно (ако коренът е включен) или празно (ако е изключен).";
+            
+            let nl = document.getElementById('nl-container');
+            // Изчистваме старите елементи от предни задачи САМО в активния контейнер!
+            nl.querySelectorAll('.root-marker, .root-label, .parity-badge, .sign-btn-large, .interval-arc').forEach(e => e.remove());
+
+            let minR = currentProblem.roots[0];
+            let maxR = currentProblem.roots[currentProblem.roots.length-1];
+
+            currentProblem.roots.forEach((r, idx) => {
+                let f = currentProblem.allFactors.find(x => x.root === r);
+                let leftP = getLeftPercent(r, minR, maxR);
+                
+                let mk = document.createElement('div');
+                mk.className = 'root-marker unknown';
+                mk.style.left = `${leftP}%`;
+                mk.dataset.root = r;
+                mk.dataset.pos = f.pos;
+                mk.onclick = function() {
+                    if (this.classList.contains('unknown')) {
+                        this.className = 'root-marker strict';
+                    } else if (this.classList.contains('strict')) {
+                        this.className = 'root-marker non-strict';
+                    } else {
+                        this.className = 'root-marker unknown';
+                    }
+                };
+                nl.appendChild(mk);
+
+                let lb = document.createElement('div');
+                lb.className = 'root-label';
+                lb.style.left = `${leftP}%`;
+                lb.innerText = r;
+                nl.appendChild(lb);
+            });
+        }
+
+        function checkStage1() {
+            let markers = document.getElementById('nl-container').querySelectorAll('.root-marker');
+            let allCorrect = true;
+
+            markers.forEach(mk => {
+                let pos = mk.dataset.pos;
+                let isSolid = mk.classList.contains('non-strict');
+                let isEmpty = mk.classList.contains('strict');
+                let expectedSolid = (!currentProblem.isStrict && pos === 'num');
+                
+                if (mk.classList.contains('unknown')) allCorrect = false;
+                else if (expectedSolid && !isSolid) allCorrect = false;
+                else if (!expectedSolid && !isEmpty) allCorrect = false;
+            });
+
+            if (allCorrect) {
+                if (document.getElementById('btn-check').disabled) return;
+                document.getElementById('btn-check').disabled = true;
+
+                showSuccess("Браво! Всички корени са маркирани правилно.");
+                markers.forEach(mk => mk.onclick = null);
+                
+                setTimeout(() => {
+                    currentStage = 2;
+                    updateStageUI();
+                    setupStage2();
+                    document.getElementById('btn-check').disabled = false;
+                }, 1200);
+            } else {
+                showError("Има грешка. При строги неравенства (<, >) всички са празни. При нестроги (≤, ≥) числителят е плътен, а знаменателят винаги е празен!");
+            }
+        }
+
+        /* --- STAGE 2 --- */
+        function setupStage2() {
+            document.getElementById('instruction-text').innerHTML = "<b>Стъпка 2:</b> Определи кратността на всеки корен (Четна или Нечетна).";
+            
+            let nl = document.getElementById('nl-container');
+            nl.querySelectorAll('.parity-badge').forEach(e => e.remove());
+
+            let minR = currentProblem.roots[0];
+            let maxR = currentProblem.roots[currentProblem.roots.length-1];
+
+            currentProblem.roots.forEach(r => {
+                let f = currentProblem.allFactors.find(x => x.root === r);
+                let leftP = getLeftPercent(r, minR, maxR);
+                let badge = document.createElement('div');
+                badge.className = 'parity-badge';
+                badge.style.left = `${leftP}%`;
+                
+                let select = document.createElement('select');
+                select.className = 'parity-select';
+                select.dataset.root = r;
+                select.dataset.mult = f.mult;
+                select.innerHTML = `<option value="?">Избери...</option><option value="odd">Нечетна</option><option value="even">Четна</option>`;
+                badge.appendChild(select);
+                nl.appendChild(badge);
+            });
+        }
+
+        function checkStage2() {
+            let selects = document.getElementById('nl-container').querySelectorAll('.parity-select');
+            let allCorrect = true;
+
+            selects.forEach(sel => {
+                let isEven = parseInt(sel.dataset.mult) % 2 === 0;
+                let val = sel.value;
+                if (val === "?") allCorrect = false;
+                else if ((isEven && val !== "even") || (!isEven && val !== "odd")) {
+                    allCorrect = false; sel.classList.add('wrong');
+                } else {
+                    sel.classList.remove('wrong'); sel.classList.add('correct');
+                }
+            });
+
+            if (allCorrect) {
+                if (document.getElementById('btn-check').disabled) return;
+                document.getElementById('btn-check').disabled = true;
+
+                showSuccess("Точно така! Нечетните степени променят знака, а четните го запазват.");
+                setTimeout(() => {
+                    currentStage = 3; 
+                    updateStageUI(); 
+                    setupStage3();
+                    document.getElementById('btn-check').disabled = false;
+                }, 1200);
+            } else {
+                showError("Провери отново степените. Четна степен (2, 4...) -> Четна. Нечетна степен (1, 3, 5...) -> Нечетна.");
+            }
+        }
+
+        /* --- STAGE 3 --- */
+        function evalExpressionAt(x) {
+            let val = 1;
+            for(let f of currentProblem.allFactors) {
+                let term = f.isNeg ? (f.root - x) : (x - f.root);
+                let part = Math.pow(term, f.mult);
+                if (f.pos === 'den' && part === 0) return NaN;
+                if (f.pos === 'den') val /= part;
+                else val *= part;
+            }
+            return val;
+        }
+
+        function setupStage3() {
+            document.getElementById('instruction-text').innerHTML = "<b>Стъпка 3:</b> Определи знака на израза във всеки интервал. Кликни върху кръгчетата над интервалите.";
+            
+            let nl = document.getElementById('nl-container');
+            nl.querySelectorAll('.sign-btn-large').forEach(e => e.remove());
+
+            let roots = currentProblem.roots;
+            let minR = roots[0];
+            let maxR = roots[roots.length-1];
+
+            let pFirstRoot = getLeftPercent(roots[0], minR, maxR);
+            let pLastRoot = getLeftPercent(roots[roots.length-1], minR, maxR);
+
+            let intervals = [];
+            intervals.push({ testX: roots[0] - 1, leftP: (5 + pFirstRoot) / 2 }); 
+            
+            for(let i=0; i<roots.length-1; i++) {
+                let midX = (roots[i] + roots[i+1]) / 2;
+                intervals.push({ testX: midX, leftP: getLeftPercent(midX, minR, maxR) });
+            }
+            
+            intervals.push({ testX: roots[roots.length-1] + 1, leftP: (pLastRoot + 95) / 2 });
+
+            intervals.forEach((inv, idx) => {
+                let btn = document.createElement('button');
+                btn.className = 'sign-btn-large';
+                btn.style.left = `${inv.leftP}%`;
+                btn.innerText = "?";
+                let actualVal = evalExpressionAt(inv.testX);
+                btn.dataset.actualSign = actualVal > 0 ? '+' : '-';
+
+                btn.onclick = function() {
+                    if (this.innerText === "?") { this.innerText = "+"; this.classList.add('plus'); }
+                    else if (this.innerText === "+") { this.innerText = "−"; this.classList.remove('plus'); this.classList.add('minus'); }
+                    else { this.innerText = "?"; this.classList.remove('minus'); }
+                };
+                nl.appendChild(btn);
+            });
+        }
+
+        function drawArcs() {
+            let nl = document.getElementById('nl-container');
+            let roots = currentProblem.roots;
+            let minR = roots[0];
+            let maxR = roots[roots.length-1];
+
+            let points = [];
+            points.push(5); 
+            roots.forEach(r => points.push(getLeftPercent(r, minR, maxR)));
+            points.push(95); 
+
+            for(let i=0; i<points.length-1; i++) {
+                let arc = document.createElement('div');
+                arc.className = 'interval-arc';
+                let left = points[i];
+                let width = points[i+1] - points[i];
+
+                arc.style.left = left + '%';
+                arc.style.width = width + '%';
+
+                nl.appendChild(arc);
+
+                setTimeout(() => {
+                    arc.classList.add('show');
+                }, 100 + i * 150);
+            }
+        }
+
+        function checkStage3() {
+            let btns = document.getElementById('nl-container').querySelectorAll('.sign-btn-large');
+            let allCorrect = true;
+
+            btns.forEach(btn => {
+                let eqSign = btn.dataset.actualSign === '+' ? '+' : '−';
+                if (btn.innerText !== eqSign) {
+                    allCorrect = false; btn.style.borderColor = 'var(--warning)';
+                } else { btn.style.borderColor = ''; }
+            });
+
+            if (allCorrect) {
+                if (document.getElementById('btn-check').disabled) return;
+                document.getElementById('btn-check').disabled = true;
+
+                showSuccess("Отлично! Всички знаци са определени правилно.");
+                btns.forEach(btn => btn.disabled = true);
+                
+                document.getElementById('nl-container').querySelectorAll('.parity-badge').forEach(badge => {
+                    badge.style.opacity = '0';
+                    setTimeout(() => badge.remove(), 300);
+                });
+
+                drawArcs();
+
+                setTimeout(() => {
+                    currentStage = 4; 
+                    updateStageUI(); 
+                    setupStage4();
+                    document.getElementById('btn-check').disabled = false;
+                }, 1800);
+            } else {
+                showError("Има грешно определен знак. Внимавай със знака в най-десния интервал (провери знаците пред x) и правилото за редуване спрямо кратността.");
+            }
+        }
+
+        /* --- STAGE 4 --- */
+        function formatIntervalStr(start, end, startInc, endInc) {
+            let s1 = startInc ? "[" : "("; let s2 = endInc ? "]" : ")";
+            let v1 = start === -Infinity ? "-∞" : start; let v2 = end === Infinity ? "+∞" : end;
+            return `${s1}${v1}; ${v2}${s2}`;
+        }
+
+        function checkPointSol(val) {
+            let f = currentProblem.allFactors.find(x => x.root === val);
+            if (f.pos === 'den') return false;
+            if (currentProblem.isStrict) return false;
+            return true;
+        }
+
+        function checkIntervalSol(start, end) {
+            let testX = start === -Infinity ? end - 1 : (end === Infinity ? start + 1 : (start + end)/2);
+            let val = evalExpressionAt(testX);
+            if (currentProblem.opIdx === 0) return val < 0;
+            if (currentProblem.opIdx === 1) return val <= 0;
+            if (currentProblem.opIdx === 2) return val > 0;
+            if (currentProblem.opIdx === 3) return val >= 0;
+            return false;
+        }
+
+        function setupStage4() {
+            let opMap = ["< 0 (минусите)", "≤ 0 (минусите и плътните точки)", "> 0 (плюсовете)", "≥ 0 (плюсовете и плътните точки)"];
+            document.getElementById('instruction-text').innerHTML = `<b>Стъпка 4:</b> Неравенството е <b>${opMap[currentProblem.opIdx]}</b>. <br><small style="color:var(--accent); font-weight:bold;">💡 Подсказка: Кликай многократно върху интервалите, за да ги избереш и да смениш вида на скобите (отворени/затворени)!</small>`;
+            
+            let container = document.getElementById('interval-container');
+            container.innerHTML = "";
+
+            let roots = currentProblem.roots;
+
+            // 1. CYCLE INTERVAL BOXES
+            let intervalsDiv = document.createElement('div');
+            intervalsDiv.style.display = 'flex';
+            intervalsDiv.style.flexWrap = 'wrap';
+            intervalsDiv.style.gap = '10px';
+            intervalsDiv.style.justifyContent = 'center';
+            intervalsDiv.style.marginBottom = '15px';
+            intervalsDiv.style.width = '100%';
+
+            let intervalsData = [];
+            intervalsData.push({ start: -Infinity, end: roots[0] });
+            for(let i=0; i<roots.length-1; i++) {
+                intervalsData.push({ start: roots[i], end: roots[i+1] });
+            }
+            intervalsData.push({ start: roots[roots.length-1], end: Infinity });
+
+            intervalsData.forEach(inv => {
+                let box = document.createElement('div');
+                box.className = 'interval-cycle-box interval-box';
+                
+                box.dataset.stateIdx = 0;
+                box.dataset.start = inv.start;
+                box.dataset.end = inv.end;
+                box.dataset.selected = "false";
+                box.dataset.lInc = "false";
+                box.dataset.rInc = "false";
+                
+                let sStr = inv.start === -Infinity ? '-∞' : inv.start;
+                let eStr = inv.end === Infinity ? '+∞' : inv.end;
+                box.innerText = `(${sStr} ; ${eStr})`;
+                
+                box.onclick = function() {
+                    clearSpecials();
+                    let s = parseFloat(this.dataset.start);
+                    if (this.dataset.start === '-Infinity') s = -Infinity;
+                    let e = parseFloat(this.dataset.end);
+                    if (this.dataset.end === 'Infinity') e = Infinity;
+                    
+                    let ssStr = s === -Infinity ? '-∞' : s;
+                    let eeStr = e === Infinity ? '+∞' : e;
+
+                    // Generate possible states based on boundaries
+                    let states = [
+                        { sel: false, txt: `(${ssStr} ; ${eeStr})`, l: false, r: false },
+                        { sel: true,  txt: `(${ssStr} ; ${eeStr})`, l: false, r: false }
+                    ];
+                    if (s !== -Infinity) states.push({ sel: true, txt: `[${ssStr} ; ${eeStr})`, l: true, r: false });
+                    if (e !== Infinity) states.push({ sel: true, txt: `(${ssStr} ; ${eeStr}]`, l: false, r: true });
+                    if (s !== -Infinity && e !== Infinity) states.push({ sel: true, txt: `[${ssStr} ; ${eeStr}]`, l: true, r: true });
+
+                    let curr = parseInt(this.dataset.stateIdx) || 0;
+                    curr = (curr + 1) % states.length;
+                    
+                    this.dataset.stateIdx = curr;
+                    this.innerText = states[curr].txt;
+                    this.dataset.selected = states[curr].sel;
+                    this.dataset.lInc = states[curr].l;
+                    this.dataset.rInc = states[curr].r;
+
+                    if (states[curr].sel) this.classList.add('selected');
+                    else this.classList.remove('selected');
+                };
+
+                intervalsDiv.appendChild(box);
+            });
+            container.appendChild(intervalsDiv);
+
+            // 2. ISOLATED POINTS
+            if (roots.length > 0) {
+                let pointsDiv = document.createElement('div');
+                pointsDiv.style.display = 'flex';
+                pointsDiv.style.flexWrap = 'wrap';
+                pointsDiv.style.gap = '10px';
+                pointsDiv.style.justifyContent = 'center';
+                pointsDiv.style.marginBottom = '20px';
+                pointsDiv.style.width = '100%';
+
+                let pTitle = document.createElement('div');
+                pTitle.style.width = '100%'; pTitle.style.textAlign = 'center'; pTitle.style.fontSize = '0.9rem'; pTitle.style.color = 'var(--text2)';
+                pTitle.innerText = "Изолирани точки (решения само в една точка, ако има):";
+                pointsDiv.appendChild(pTitle);
+
+                roots.forEach(r => {
+                    let ptBtn = document.createElement('div');
+                    ptBtn.className = 'interval-box pt-box';
+                    ptBtn.dataset.val = r;
+                    ptBtn.innerText = `{ ${r} }`;
+                    ptBtn.style.padding = '8px 16px';
+                    ptBtn.onclick = function() { this.classList.toggle('selected'); clearSpecials(); };
+                    pointsDiv.appendChild(ptBtn);
+                });
+                container.appendChild(pointsDiv);
+            }
+
+            // 3. SPECIALS
+            let specDiv = document.createElement('div');
+            specDiv.style.display = 'flex'; specDiv.style.flexWrap = 'wrap'; specDiv.style.gap = '10px'; specDiv.style.justifyContent = 'center';
+
+            let allSolBox = document.createElement('div');
+            allSolBox.className = 'interval-box all-sol-box';
+            allSolBox.innerText = "Всяко x ∈ (-∞; +∞)";
+            allSolBox.onclick = function() {
+                clearAllNormal();
+                let noBtn = container.querySelector('.no-sol-box');
+                if(noBtn) noBtn.classList.remove('selected');
+                this.classList.toggle('selected');
+            };
+            specDiv.appendChild(allSolBox);
+
+            let noSolBox = document.createElement('div');
+            noSolBox.className = 'interval-box no-sol-box';
+            noSolBox.innerText = "Няма решение (∅)";
+            noSolBox.onclick = function() {
+                clearAllNormal();
+                let allBtn = container.querySelector('.all-sol-box');
+                if(allBtn) allBtn.classList.remove('selected');
+                this.classList.toggle('selected');
+            };
+            specDiv.appendChild(noSolBox);
+
+            container.appendChild(specDiv);
+
+            // Helpers
+            function clearSpecials() {
+                let a = container.querySelector('.all-sol-box'); if(a) a.classList.remove('selected');
+                let n = container.querySelector('.no-sol-box'); if(n) n.classList.remove('selected');
+            }
+            function clearAllNormal() {
+                container.querySelectorAll('.interval-cycle-box').forEach(b => {
+                    b.dataset.stateIdx = 0;
+                    b.dataset.selected = "false";
+                    b.dataset.lInc = "false";
+                    b.dataset.rInc = "false";
+                    b.classList.remove('selected');
+                    let sStr = b.dataset.start === '-Infinity' ? '-∞' : b.dataset.start;
+                    let eStr = b.dataset.end === 'Infinity' ? '+∞' : b.dataset.end;
+                    b.innerText = `(${sStr} ; ${eStr})`;
+                });
+                container.querySelectorAll('.pt-box.selected').forEach(b => b.classList.remove('selected'));
+            }
+        }
+
+        function checkUserIncludedRoot(r) {
+            let container = document.getElementById('interval-container');
+            
+            let ptBox = container.querySelector(`.pt-box[data-val="${r}"]`);
+            if (ptBox && ptBox.classList.contains('selected')) return true;
+
+            let included = false;
+            container.querySelectorAll('.interval-cycle-box').forEach(box => {
+                if (box.dataset.selected === "true") {
+                    if (parseFloat(box.dataset.start) === parseFloat(r) && box.dataset.lInc === "true") included = true;
+                    if (parseFloat(box.dataset.end) === parseFloat(r) && box.dataset.rInc === "true") included = true;
+                }
+            });
+            return included;
+        }
+
+        function buildIntervalsList() {
+            let roots = currentProblem.roots;
+            let intervals = [];
+            intervals.push({ type: 'inv', start: -Infinity, end: roots[0], startInc: false, endInc: false });
+            for(let i=0; i<roots.length; i++) {
+                intervals.push({ type: 'point', val: roots[i] });
+                if (i < roots.length - 1) intervals.push({ type: 'inv', start: roots[i], end: roots[i+1], startInc: false, endInc: false });
+            }
+            intervals.push({ type: 'inv', start: roots[roots.length-1], end: Infinity, startInc: false, endInc: false });
+            return intervals;
+        }
+
+        function buildFinalAnswerString() {
+            let intervals = buildIntervalsList();
+            let solParts = [];
+            let activeInv = null;
+
+            for(let i=0; i<intervals.length; i++) {
+                let item = intervals[i];
+                let isValid = (item.type === 'inv') ? checkIntervalSol(item.start, item.end) : checkPointSol(item.val);
+
+                if (isValid) {
+                    if (activeInv === null) {
+                        if (item.type === 'inv') activeInv = {start: item.start, end: item.end, startInc: false, endInc: false};
+                        else activeInv = {start: item.val, end: item.val, startInc: true, endInc: true};
+                    } else {
+                        if (item.type === 'inv') { activeInv.end = item.end; activeInv.endInc = false; }
+                        else { activeInv.end = item.val; activeInv.endInc = true; }
+                    }
+                } else {
+                    if (activeInv !== null) { solParts.push(activeInv); activeInv = null; }
+                }
+            }
+            if (activeInv !== null) solParts.push(activeInv);
+
+            if (solParts.length === 0) return "x ∈ ∅ (Няма решение)";
+            if (solParts.length === 1 && solParts[0].start === -Infinity && solParts[0].end === Infinity) return "Всяко x ∈ (-∞; +∞)";
+            
+            return "x ∈ " + solParts.map(p => {
+                if (p.start === p.end && p.startInc && p.endInc) return `{${p.start}}`;
+                return formatIntervalStr(p.start, p.end, p.startInc, p.endInc);
+            }).join(" ∪ ");
+        }
+
+        function checkStage4() {
+            let container = document.getElementById('interval-container');
+            let noSolBox = container.querySelector('.no-sol-box');
+            let allSolBox = container.querySelector('.all-sol-box');
+            
+            let hasAnySolMath = false; 
+            let isAllSolMath = true;
+            let allCorrect = true;
+            let errorMessage = "";
+
+            let roots = currentProblem.roots;
+            let intervalsData = [];
+            intervalsData.push({ start: -Infinity, end: roots[0] });
+            for(let i=0; i<roots.length-1; i++) intervalsData.push({ start: roots[i], end: roots[i+1] });
+            intervalsData.push({ start: roots[roots.length-1], end: Infinity });
+
+            intervalsData.forEach(inv => {
+                let isSol = checkIntervalSol(inv.start, inv.end);
+                if(isSol) hasAnySolMath = true;
+                if(!isSol) isAllSolMath = false;
+            });
+            roots.forEach(r => {
+                let isSol = checkPointSol(r);
+                if(isSol) hasAnySolMath = true;
+                if(!isSol) isAllSolMath = false;
+            });
+
+            let userSelectedAllBtn = allSolBox && allSolBox.classList.contains('selected');
+            let userSelectedNoBtn = noSolBox && noSolBox.classList.contains('selected');
+
+            if (isAllSolMath) {
+                let allBoxesSelected = Array.from(container.querySelectorAll('.interval-cycle-box')).every(b => b.dataset.selected === "true");
+                let allInternalRootsIncluded = true;
+                roots.forEach(r => { if(!checkUserIncludedRoot(r)) allInternalRootsIncluded = false; });
+                
+                if (!userSelectedAllBtn && !(allBoxesSelected && allInternalRootsIncluded)) {
+                    allCorrect = false; errorMessage = "Решението е всяко число! Избери опцията (-∞; +∞) или сглоби целия интервал правилно.";
+                }
+            } else if (!hasAnySolMath) {
+                if (!userSelectedNoBtn) {
+                    allCorrect = false; errorMessage = "Неравенството няма решение. Избери ∅.";
+                }
+            } else {
+                if (userSelectedAllBtn) {
+                    allCorrect = false; errorMessage = "Решението не е всяко число. Избери конкретните интервали.";
+                } else if (userSelectedNoBtn) {
+                    allCorrect = false; errorMessage = "Има решения! Избери правилните интервали и скоби.";
+                } else {
+                    container.querySelectorAll('.interval-cycle-box').forEach(box => {
+                        let start = box.dataset.start === '-Infinity' ? -Infinity : parseFloat(box.dataset.start);
+                        let end = box.dataset.end === 'Infinity' ? Infinity : parseFloat(box.dataset.end);
+                        
+                        let mathSol = checkIntervalSol(start, end);
+                        let userSol = box.dataset.selected === "true";
+                        
+                        if (mathSol && !userSol) {
+                            allCorrect = false; if(!errorMessage) errorMessage = "Пропуснал си верен интервал.";
+                        }
+                        if (!mathSol && userSol) {
+                            allCorrect = false; if(!errorMessage) errorMessage = "Избрал си интервал, в който неравенството не е изпълнено.";
+                        }
+                    });
+
+                    roots.forEach(r => {
+                        let mathSol = checkPointSol(r);
+                        let userSol = checkUserIncludedRoot(r);
+                        
+                        if (mathSol && !userSol) {
+                            allCorrect = false; if(!errorMessage) errorMessage = `Пропуснал си да включиш корена ${r}. Кликай върху интервала, за да смениш кръглата скоба на квадратна, или избери изолираната точка.`;
+                        }
+                        if (!mathSol && userSol) {
+                            allCorrect = false; 
+                            let f = currentProblem.allFactors.find(x => x.root === r);
+                            if(f && f.pos === 'den') {
+                                if(!errorMessage) errorMessage = `Коренът ${r} е от знаменателя и НИКОГА не се включва! Кликай върху бутона, за да смениш скобата на кръгла.`;
+                            } else {
+                                if(!errorMessage) errorMessage = `Коренът ${r} не трябва да е включен (строго неравенство). Кликай върху бутона, за да смениш скобата на кръгла.`;
+                            }
+                        }
+                    });
+                }
+            }
+
+            if (allCorrect) {
+                problemsSolved++;
+                document.getElementById('display-total-solved').innerText = problemsSolved;
+                triggerConfetti();
+                
+                document.getElementById('final-answer-string').innerText = buildFinalAnswerString();
+                document.getElementById('final-expr-disp').innerHTML = renderExpression(currentProblem);
+
+                let finalNlContainer = document.getElementById('final-number-line-container');
+                finalNlContainer.innerHTML = "";
+                let clone = document.getElementById('nl-container').cloneNode(true);
+                clone.removeAttribute('id');
+                clone.querySelectorAll('button').forEach(b => { b.disabled = true; });
+                finalNlContainer.appendChild(clone);
+
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('final-screen').classList.remove('hidden');
+            } else {
+                showError(errorMessage);
+            }
+        }
+
+        /* --- TUTORIAL ANIMATION --- */
+        async function startTutorialAnimation() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('tutorial-screen').classList.remove('hidden');
+            document.getElementById('tut-controls').style.display = 'none';
+            
+            let cvs = document.getElementById('teacher-canvas');
+            cvs.innerHTML = "";
+            
+            let lines = [
+                "Здравей! Нека решим: <b>(x - 2)(x + 3) > 0</b>",
+                "<b>1. Намираме корените:</b> Кога всяка скоба е 0?",
+                "x - 2 = 0 ➔ x = 2",
+                "x + 3 = 0 ➔ x = -3",
+                "<b>2. Нанасяме ги на оста:</b> (празни кръгчета, защото знакът е >)",
+                "<div class='tut-number-line-wrap' id='tut-nl'><div class='tut-line-draw' id='t-line'></div><div class='tut-arrow' id='t-arr'></div><div class='tut-point empty' id='tp1' style='left:30%;'></div><div class='tut-plabel' id='tl1' style='left:30%;'>-3</div><div class='tut-point empty' id='tp2' style='left:70%;'></div><div class='tut-plabel' id='tl2' style='left:70%;'>2</div><div class='tut-sign' id='ts1' style='left:15%;'>+</div><div class='tut-sign' id='ts2' style='left:50%;'>-</div><div class='tut-sign' id='ts3' style='left:85%;'>+</div></div>",
+                "<b>3. Определяме знаците:</b> Започваме от най-дясно с '+' (тъй като x са с положителен знак) и редуваме: +, -, +",
+                "<b>4. Избираме интервалите:</b> Търсим > 0, следователно взимаме плюсовете.",
+                "Решение: <b>x ∈ (-∞; -3) ∪ (2; +∞)</b>"
+            ];
+
+            for(let i=0; i<lines.length; i++) {
+                let lineEl = document.createElement('div');
+                lineEl.className = 'tut-line';
+                lineEl.innerHTML = lines[i];
+                cvs.appendChild(lineEl);
+                
+                await new Promise(r => requestAnimationFrame(r));
+                lineEl.classList.add('visible');
+
+                if (i === 5) {
+                    let nl = document.getElementById('tut-nl');
+                    nl.style.opacity = 1;
+                    await sleep(500);
+                    document.getElementById('t-line').style.width = '80%';
+                    setTimeout(() => { document.getElementById('t-arr').style.opacity = 1; }, 1200);
+                    await sleep(1500);
+                    
+                    document.getElementById('tp1').style.opacity = 1; document.getElementById('tp1').style.transform = 'translate(-50%, -50%) scale(1)'; document.getElementById('tl1').style.opacity = 1;
+                    await sleep(800);
+                    
+                    document.getElementById('tp2').style.opacity = 1; document.getElementById('tp2').style.transform = 'translate(-50%, -50%) scale(1)'; document.getElementById('tl2').style.opacity = 1;
+                    await sleep(800);
+                }
+                
+                if (i === 6) {
+                    document.getElementById('ts3').classList.add('show-sign'); await sleep(600);
+                    document.getElementById('ts2').classList.add('show-sign'); await sleep(600);
+                    document.getElementById('ts1').classList.add('show-sign'); await sleep(600);
+
+                    let tNl = document.getElementById('tut-nl');
+                    let pts = [10, 30, 70, 90]; 
+                    for(let j=0; j<3; j++) {
+                        let arc = document.createElement('div');
+                        arc.className = 'interval-arc';
+                        arc.style.left = pts[j] + '%'; arc.style.width = (pts[j+1] - pts[j]) + '%';
+                        arc.style.top = 'calc(50% - 40px)'; arc.style.height = '40px';
+                        tNl.appendChild(arc);
+                        setTimeout(() => arc.classList.add('show'), j * 150);
+                    }
+                }
+                await sleep(1800);
+            }
+            document.getElementById('tut-controls').style.display = 'flex';
+        }
+
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+    </script>
+</body>
+</html>
