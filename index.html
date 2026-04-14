@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Метод на интервалите — тренажор</title>
 
-    <meta property="og:title" content="Метод на интервалите - тренажор">
-    <meta property="og:description" content="Интерактивен тренажор за метода на интервалите">
-    <meta property="og:image" content="https://valyavitkovska.github.io/ИМЕ-НА-ПАПКАТА/MIT.png">
-    <meta property="og:url" content="https://valyavitkovska.github.io/ИМЕ-НА-ПАПКАТА/">
-    <meta property="og:type" content="website">
-
     <style>
         :root {
             --primary: #1a2a3a;
@@ -31,10 +25,6 @@
             --math-bg: linear-gradient(135deg,#f8faff,#eef2ff);
             --header-bg: linear-gradient(135deg, #1a2a3a 0%, #0f1f30 100%);
             --grid-color: rgba(59,130,246,0.06);
-            --orb1: rgba(59,130,246,0.08);
-            --orb2: rgba(139,92,246,0.07);
-            --orb3: rgba(16,185,129,0.05);
-            --symbol-color: rgba(59,130,246,0.12);
             --shadow: 0 10px 30px rgba(0,0,0,0.08);
             color-scheme: light;
         }
@@ -58,10 +48,6 @@
             --math-bg: linear-gradient(135deg,#1e293b,#0f172a);
             --header-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --grid-color: rgba(99,102,241,0.07);
-            --orb1: rgba(99,102,241,0.12);
-            --orb2: rgba(139,92,246,0.10);
-            --orb3: rgba(16,185,129,0.07);
-            --symbol-color: rgba(148,163,184,0.10);
             --shadow: 0 10px 30px rgba(0,0,0,0.4);
             color-scheme: dark;
         }
@@ -69,85 +55,31 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
         body {
-            margin: 0;
-            padding: 0;
-            color: var(--text);
-            line-height: 1.6;
-            background: var(--bg);
-            min-height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0; padding: 0; color: var(--text); line-height: 1.6;
+            background: var(--bg); min-height: 100vh; transition: background 0.3s ease, color 0.3s ease;
+            position: relative; overflow-x: hidden; -webkit-tap-highlight-color: transparent;
         }
 
-        #bg-canvas {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
+        #bg-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .bg-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--grid-color) 2px, transparent 2px),
-                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
-            background-size: 40px 40px;
-            z-index: 1;
+            position: absolute; inset: 0;
+            background-image: linear-gradient(var(--grid-color) 2px, transparent 2px), linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 40px 40px; z-index: 1;
         }
-
-        .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(70px);
-            animation: orbFloat linear infinite;
-            opacity: 0.8;
-            z-index: 0;
-        }
-
-        @keyframes orbFloat {
-            0%   { transform: translate(0,0) scale(1) rotate(0deg); }
-            33%  { transform: translate(4%,-4%) scale(1.1) rotate(5deg); }
-            66%  { transform: translate(-3%,5%) scale(0.9) rotate(-5deg); }
-            100% { transform: translate(0,0) scale(1) rotate(0deg); }
-        }
-
-        .bg-symbols {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            z-index: 2;
-        }
-
+        .bg-symbols { position: absolute; inset: 0; overflow: hidden; z-index: 2; }
         .bg-sym {
-            position: absolute;
-            font-family: 'Times New Roman', serif;
-            font-style: italic;
-            color: var(--symbol-color);
-            user-select: none;
-            pointer-events: none;
-            animation: symDrift linear infinite;
+            position: absolute; font-family: 'Times New Roman', serif; font-style: italic;
+            color: var(--symbol-color); user-select: none; pointer-events: none; animation: symDrift linear infinite;
         }
-
         @keyframes symDrift {
-            0%   { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-            50%  { opacity: 0.7; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { opacity: 0.7; }
             100% { transform: translateY(-40px) rotate(10deg); opacity: 0.3; }
         }
-
         .bg-emoji {
-            position: absolute;
-            font-size: 2.5rem;
-            opacity: 0.15;
-            user-select: none;
-            pointer-events: none;
-            animation: floatEmoji linear infinite;
-            filter: grayscale(30%);
+            position: absolute; font-size: 2.5rem; opacity: 0.15; user-select: none;
+            pointer-events: none; animation: floatEmoji linear infinite; filter: grayscale(30%);
         }
-
         @keyframes floatEmoji {
             0% { transform: translateY(110vh) rotate(-15deg) scale(0.8); opacity: 0; }
             10% { opacity: 0.2; }
@@ -155,615 +87,117 @@
             100% { transform: translateY(-10vh) rotate(20deg) scale(1.2); opacity: 0; }
         }
 
-        #start-screen, #app-container, #progress-bar-wrapper, #final-screen, #tutorial-screen, .container {
-            position: relative;
-            z-index: 5;
+        #start-screen, #app-container, #final-screen, #tutorial-screen, .container { position: relative; z-index: 5; }
+
+        header {
+            background: var(--header-bg); color: white; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 100;
+        }
+        header h1 {
+            margin: 0; font-size: 1.4rem; letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .header-stats {
+            display: flex; gap: 15px; align-items: center; background: rgba(255,255,255,0.1);
+            padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.95rem; border: 1px solid rgba(255,255,255,0.15);
+        }
+        .header-stats.hidden { display: none; }
+        .stat-highlight { color: #93c5fd; font-weight: bold; }
+        #menu-btn,
+        #theme-toggle {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: 0.2s;
+        }
+        #menu-btn:hover,
+        #theme-toggle:hover { background: rgba(255,255,255,0.2); }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+
+        .panel {
+            background: var(--card); border-radius: 16px; padding: 30px;
+            box-shadow: var(--shadow), 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border: 2px solid var(--card-border); animation: slideUpFade 0.4s ease-out;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
         }
 
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(15px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes popIn {
-            0%   { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-            60%  { transform: scale(1.2) rotate(3deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        @keyframes shakeError {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, 0, 0) rotate(-1deg); }
-            20%, 40%, 60%, 80% { transform: translate3d(6px, 0, 0) rotate(1deg); }
-        }
-
-        .shake-panel {
-            animation: shakeError 0.6s cubic-bezier(.36,.07,.19,.97) both;
-            border-color: var(--danger) !important;
-        }
-
-        @keyframes pulseSuccess {
-            0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); transform: scale(1); }
-            50%  { transform: scale(1.02); }
-            100% { box-shadow: 0 0 0 25px rgba(16, 185, 129, 0); transform: scale(1); }
-        }
-
-        .pulse-success {
-            animation: pulseSuccess 0.8s ease-out;
-            border-color: var(--success) !important;
-        }
-
-        header {
-            background: var(--header-bg);
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 100;
-            transition: background 0.3s;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            background: rgba(255,255,255,0.1);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: 1px solid rgba(255,255,255,0.15);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .header-stats.hidden { display: none; }
-        .stat-highlight { color: #93c5fd; font-weight: bold; }
-
-        #theme-toggle {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        #theme-toggle:hover { background: rgba(255,255,255,0.2); }
-
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        .panel {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: var(--shadow), 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            border: 2px solid var(--card-border);
-            animation: slideUpFade 0.4s ease-out;
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
-        }
-
         .hidden { display: none !important; }
 
-        .user-input-group {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .user-input-group input {
-            padding: 12px 20px;
-            font-size: 1.1rem;
-            border-radius: 10px;
-            border: 2px solid var(--border);
-            width: 100%;
-            max-width: 350px;
-            outline: none;
-            transition: 0.3s;
-            text-align: center;
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .user-input-group input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-
+        /* Progress Bar */
         .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 22px;
-            background: var(--card);
-            border-radius: 12px;
-            padding: 6px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border: 1px solid var(--border);
-            gap: 4px;
+            display: flex; justify-content: space-between; margin-bottom: 22px;
+            background: var(--card); border-radius: 12px; padding: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid var(--border); gap: 4px;
         }
-
         .stage-indicator {
-            flex: 1;
-            text-align: center;
-            padding: 10px 4px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #94a3b8;
-            transition: all 0.25s ease;
-            position: relative;
+            flex: 1; text-align: center; padding: 8px 4px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600; color: #94a3b8; transition: all 0.25s ease; position: relative;
         }
-
         .stage-indicator.active {
             background: linear-gradient(135deg, var(--accent), var(--accent2));
-            color: white;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.35);
-            transform: scale(1.05);
-            z-index: 2;
+            color: white; box-shadow: 0 4px 12px rgba(59,130,246,0.35); transform: scale(1.05); z-index: 2;
         }
-
         .stage-indicator.completed { color: var(--success); }
+        .stage-indicator.completed::after { content: '✓'; position: absolute; top: 2px; right: 4px; font-size: 0.65rem; }
 
-        .stage-indicator.completed::after {
-            content: '✓';
-            position: absolute;
-            top: 3px;
-            right: 6px;
-            font-size: 0.65rem;
+        /* General UI Elements */
+        .instruction-box {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.05));
+            border-left: 4px solid var(--accent); padding: 15px; border-radius: 0 8px 8px 0;
+            margin-bottom: 20px; font-size: 1.05rem;
         }
-
         .math-expr {
-            font-size: 2rem;
-            text-align: center;
-            margin: 15px 0;
-            font-family: 'Times New Roman', Times, serif;
-            font-style: italic;
-            color: var(--primary);
-            background: var(--math-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: background 0.3s, border-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            overflow-x: auto;
+            font-size: 2rem; text-align: center; margin: 15px 0;
+            font-family: 'Times New Roman', Times, serif; font-style: italic;
+            color: var(--primary); background: var(--math-bg); padding: 20px;
+            border-radius: 12px; border: 1px solid var(--border); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 15px; overflow-x: auto;
         }
-
-        .math-expr sup {
-            font-size: 0.65em;
-            vertical-align: baseline;
-            position: relative;
-            top: -0.5em;
-            margin-left: 2px;
-            font-style: normal;
-            font-weight: 600;
-            color: var(--primary);
-            font-family: 'Times New Roman', serif;
+        .math-expr sup { font-size: 0.65em; vertical-align: baseline; position: relative; top: -0.5em; font-style: normal; font-weight: 600; color: var(--primary); }
+        .fraction { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; }
+        .fraction .num { border-bottom: 2px solid var(--primary); padding: 0 10px 4px; }
+        .fraction .den { padding: 4px 10px 0; }
+        .operator { font-weight: bold; font-style: normal; font-family: 'Segoe UI', sans-serif; font-size: 2.2rem; }
+        
+        .user-input-group { text-align: center; margin-bottom: 20px; }
+        .user-input-group input {
+            padding: 12px 20px; font-size: 1.1rem; border-radius: 10px; border: 2px solid var(--border);
+            width: 100%; max-width: 400px; outline: none; transition: 0.3s; text-align: center;
+            background: var(--bg); color: var(--text);
         }
+        .user-input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
 
-        .fraction {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            vertical-align: middle;
-        }
-
-        .fraction .num {
-            border-bottom: 2px solid var(--primary);
-            padding: 0 10px 4px;
-        }
-
-        .fraction .den {
-            padding: 4px 10px 0;
-        }
-
-        .operator {
-            font-weight: bold;
-            font-style: normal;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 2.2rem;
-        }
-
-        .number-line-container {
-            position: relative;
-            height: 160px;
-            margin: 30px 0 20px 0;
-            width: 100%;
-        }
-
-        .number-line {
-            position: absolute;
-            left: 5%;
-            right: 5%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 2px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2;
-        }
-
-        .arrow.right {
-            position: absolute;
-            top: 50%;
-            right: calc(5% - 10px);
-            transform: translateY(-50%);
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-            border-left: 12px solid var(--primary);
-            width: 0;
-            height: 0;
-            z-index: 2;
-        }
-
-        .interval-arc {
-            position: absolute;
-            border: 2.5px solid var(--accent);
-            border-bottom: none;
-            border-top-left-radius: 50% 100%;
-            border-top-right-radius: 50% 100%;
-            top: calc(50% - 60px);
-            height: 60px;
-            z-index: 1;
-            opacity: 0;
-            transform: scaleY(0);
-            transform-origin: bottom center;
-            transition: opacity 0.4s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
-
-        .interval-arc.show {
-            opacity: 0.85;
-            transform: scaleY(1);
-        }
-
-        .root-marker {
-            position: absolute;
-            top: 50%;
-            width: 24px;
-            height: 24px;
-            transform: translate(-50%, -50%);
-            z-index: 5;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s, border 0.2s;
-            border-radius: 50%;
-        }
-
-        .root-marker:hover {
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-
-        .root-marker.unknown {
-            background: #cbd5e1;
-            border: 2px dashed #64748b;
-        }
-
-        .root-marker.strict {
-            background: var(--card);
-            border: 3px solid var(--danger);
-        }
-
-        .root-marker.non-strict {
-            background: var(--danger);
-            border: 2px solid var(--card);
-            box-shadow: 0 0 0 2px var(--danger);
-        }
-
-        .parity-badge {
-            position: absolute;
-            top: calc(50% - 40px);
-            transform: translate(-50%, -100%);
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            transition: opacity 0.3s ease;
-        }
-
-        .parity-select {
-            font-size: 0.7rem;
-            padding: 4px 6px;
-            border-radius: 6px;
-            border: 1.5px solid var(--accent);
-            background: var(--card);
-            color: var(--accent);
-            font-weight: 700;
-            cursor: pointer;
-            outline: none;
-            transition: 0.2s;
-            width: max-content;
-        }
-
-        .parity-select.correct {
-            border-color: var(--success);
-            color: var(--success);
-            background: rgba(16,185,129,0.08);
-            pointer-events: none;
-        }
-
-        .parity-select.wrong {
-            border-color: var(--danger);
-            color: var(--danger);
-            background: rgba(239,68,68,0.08);
-        }
-
-        .root-label {
-            position: absolute;
-            top: calc(50% + 20px);
-            transform: translate(-50%, 0);
-            font-weight: bold;
-            font-family: 'Times New Roman', serif;
-            z-index: 5;
-            background: var(--card);
-            padding: 2px 6px;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            font-size: 1rem;
-            color: var(--primary);
-            border: 1px solid var(--border);
-        }
-
-        .sign-btn-large {
-            position: absolute;
-            top: calc(50% - 30px);
-            transform: translate(-50%, -50%);
-            font-size: 1.6rem;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            background: var(--card);
-            color: var(--text2);
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: all 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .sign-btn-large:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-            border-color: var(--accent);
-        }
-
-        .sign-btn-large.plus {
-            background: var(--success);
-            color: white;
-            border-color: var(--success);
-            box-shadow: 0 4px 10px rgba(16,185,129,0.3);
-        }
-
-        .sign-btn-large.minus {
-            background: var(--danger);
-            color: white;
-            border-color: var(--danger);
-            box-shadow: 0 4px 10px rgba(239,68,68,0.3);
-        }
-
-        .interval-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .interval-box {
-            padding: 12px 20px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--card);
-            font-weight: bold;
-            font-family: 'Times New Roman', serif;
-            font-size: 1.2rem;
-            color: var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            user-select: none;
-        }
-
-        .interval-box:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(59,130,246,0.15);
-        }
-
-        .interval-box.selected {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .interval-segment {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .interval-middle {
-            padding: 0 2px;
-        }
-
-        .interval-bracket {
-            min-width: 14px;
-            text-align: center;
-            border-radius: 4px;
-            padding: 0 1px;
-            user-select: none;
-        }
-
-        .interval-bracket.can-close {
-            cursor: pointer;
-            border-bottom: 1px dotted currentColor;
-        }
-
-        .interval-bracket.locked {
-            opacity: 0.55;
-            cursor: default;
-        }
-
-        .no-sol-box {
-            background: rgba(239,68,68,0.05);
-            color: var(--danger);
-            border-color: rgba(239,68,68,0.3);
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .no-sol-box.selected {
-            background: var(--danger);
-            color: white;
-            border-color: var(--danger);
-        }
-
-        .all-sol-box { background: rgba(59,130,246,0.05); }
-
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 25px;
-        }
-
+        .controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 25px; }
         .btn {
-            padding: 12px 26px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: 700;
-            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-            color: white;
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
+            padding: 12px 26px; border: none; border-radius: 10px; font-size: 1rem;
+            cursor: pointer; font-weight: 700; transition: transform 0.12s, box-shadow 0.12s; color: white;
             box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 14px rgba(0,0,0,0.15);
         }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0);
-            transition: 0.2s;
-            border-radius: inherit;
-        }
-
-        .btn:hover:not(:disabled)::after {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn:active:not(:disabled) {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.28), 0 2px 6px rgba(0,0,0,0.12) !important;
-            filter: brightness(0.95);
-            transition-duration: 0.05s;
-        }
-
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.28); }
         .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .btn-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); box-shadow: none; }
+        .btn-outline:hover:not(:disabled) { background: rgba(59,130,246,0.1); transform: translateY(-2px); }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            box-shadow: none;
-        }
-
-        .btn-outline:hover:not(:disabled) {
-            background: rgba(59,130,246,0.1);
-            transform: translateY(-2px);
-        }
-
-        .practice-type-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
+        /* Start Menu Grid */
+        .practice-type-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px; }
         .type-btn {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 14px;
-            padding: 12px 8px;
-            cursor: pointer;
-            transition: all 0.25s;
-            text-align: center;
-            font-weight: 600;
-            color: var(--text);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1 1 calc(50% - 12px);
-            min-width: 130px;
-            max-width: 180px;
+            background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 12px 8px;
+            cursor: pointer; transition: all 0.25s; text-align: center; font-weight: 600; color: var(--text);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center;
+            justify-content: center; flex: 1 1 calc(50% - 12px); min-width: 130px; max-width: 180px;
         }
-
-        .type-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-        }
-
-        .type-btn.active-type {
-            border-width: 3px;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .type-btn .type-icon {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .type-btn .type-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-            line-height: 1.2;
-        }
-
+        .type-btn:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+        .type-btn.active-type { border-width: 3px; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .type-btn .type-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        .type-btn .type-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
         .type-btn.t-linear { border-color: #3b82f6; }
         .type-btn.t-linear.active-type { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; }
         .type-btn.t-quad { border-color: #8b5cf6; }
@@ -775,302 +209,94 @@
         .type-btn.t-biquad { border-color: #f59e0b; }
         .type-btn.t-biquad.active-type { background: linear-gradient(135deg, #fffbeb, #fde68a); color: #b45309; }
 
-        .feedback-msg {
-            margin-top: 15px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-            font-size: 1.1rem;
-        }
+        .factor-settings { margin: 18px auto 24px; max-width: 620px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .factor-settings h3 { margin: 0 0 12px 0; text-align: center; color: var(--primary); font-size: 1rem; }
+        .factor-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(140px, 1fr)); gap: 12px; }
+        .setting-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+        .setting-card label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--primary); font-size: 0.95rem; }
+        .setting-card select { width: 100%; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--border); background: var(--bg); color: var(--text); font-size: 1rem; outline: none; }
+        .setting-note { margin: 12px 0 0 0; font-size: 0.9rem; color: var(--text2); text-align: center; }
 
-        .feedback-msg.error {
-            display: block;
-            background: rgba(239,68,68,0.1);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-        }
+        /* Number Line & Interactions */
+        .number-line-container { position: relative; height: 160px; margin: 40px 0 20px 0; width: 100%; }
+        .number-line { position: absolute; left: 5%; right: 5%; height: 3px; background: var(--primary); border-radius: 2px; top: 50%; transform: translateY(-50%); z-index: 2; }
+        .arrow.right { position: absolute; top: 50%; right: calc(5% - 10px); transform: translateY(-50%); border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 12px solid var(--primary); width: 0; height: 0; z-index: 2; }
+        
+        .root-marker { position: absolute; top: 50%; width: 24px; height: 24px; transform: translate(-50%, -50%); z-index: 5; cursor: pointer; transition: 0.2s; border-radius: 50%; }
+        .root-marker:hover { transform: translate(-50%, -50%) scale(1.2); }
+        .root-marker.unknown { background: #cbd5e1; border: 2px dashed #64748b; }
+        .root-marker.strict { background: var(--card); border: 3px solid var(--danger); }
+        .root-marker.non-strict { background: var(--danger); border: 2px solid var(--card); box-shadow: 0 0 0 2px var(--danger); }
+        .root-label { position: absolute; top: calc(50% + 20px); transform: translate(-50%, 0); font-weight: bold; font-family: 'Times New Roman', serif; z-index: 5; background: var(--card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+        
+        .parity-badge { position: absolute; top: calc(50% - 30px); transform: translate(-50%, -100%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .parity-select { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; border: 1.5px solid var(--accent); background: var(--card); color: var(--accent); font-weight: 700; cursor: pointer; outline: none; transition: 0.2s; width: max-content; }
+        .parity-select.correct { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.08); pointer-events: none; }
+        
+        .sign-btn-large { position: absolute; top: calc(50% - 30px); transform: translate(-50%, -50%); font-size: 1.6rem; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; }
+        .sign-btn-large:hover { transform: translate(-50%, -50%) scale(1.1); border-color: var(--accent); }
+        .sign-btn-large.plus { background: var(--success); color: white; border-color: var(--success); }
+        .sign-btn-large.minus { background: var(--danger); color: white; border-color: var(--danger); }
 
-        .feedback-msg.success {
-            display: block;
-            background: rgba(16,185,129,0.1);
-            color: var(--success);
-            border: 2px solid var(--success);
-        }
+        .interval-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 20px 0; }
+        .interval-box { padding: 12px 20px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; background: var(--card); font-weight: bold; font-family: 'Times New Roman', serif; font-size: 1.2rem; color: var(--primary); user-select: none; }
+        .interval-box:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .interval-box.selected { background: var(--accent); color: white; border-color: var(--accent); }
+        .interval-bracket { min-width: 14px; text-align: center; border-radius: 4px; padding: 0 1px; user-select: none; }
+        .interval-bracket.can-close { cursor: pointer; border-bottom: 2px dotted currentColor; }
+        .interval-bracket.locked { opacity: 0.55; cursor: default; }
 
-        .celebration-overlay {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
+        .feedback-msg { margin-top: 15px; padding: 15px 20px; border-radius: 10px; font-weight: bold; text-align: center; display: none; font-size: 1.1rem; }
+        .feedback-msg.error { display: block; background: rgba(239,68,68,0.1); color: var(--danger); border: 2px solid var(--danger); }
+        .feedback-msg.success { display: block; background: rgba(16,185,129,0.1); color: var(--success); border: 2px solid var(--success); }
 
-        .confetti-piece {
-            position: absolute;
-            top: -20px;
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            animation: confettiFall linear forwards;
-        }
+        @keyframes shakeError { 0%, 100% { transform: translate3d(0, 0, 0); } 20%, 60% { transform: translate3d(-6px, 0, 0); } 40%, 80% { transform: translate3d(6px, 0, 0); } }
+        .shake-panel { animation: shakeError 0.4s both; border-color: var(--danger) !important; }
+        @keyframes pulseSuccess { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 100% { box-shadow: 0 0 0 25px rgba(16, 185, 129, 0); } }
+        .pulse-success { animation: pulseSuccess 0.8s ease-out; border-color: var(--success) !important; }
 
-        @keyframes confettiFall {
-            0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
+        .celebration-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+        .confetti-piece { position: absolute; top: -20px; width: 12px; height: 12px; border-radius: 3px; animation: confettiFall linear forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 
-        .instruction-box {
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.05));
-            border-left: 4px solid var(--accent);
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 20px;
-            font-size: 1.05rem;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(3px); }
+        .modal-box { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 25px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 15px 40px rgba(0,0,0,0.2); color: var(--text); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
 
-        .final-summary {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
+        .app-footer { text-align: center; margin-top: 20px; padding-bottom: 25px; color: var(--text2); font-size: 0.9rem; font-weight: 500; opacity: 0.8; }
+        .final-answer-display { font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1.8rem; color: var(--success); background: rgba(16,185,129,0.1); padding: 10px 20px; border-radius: 10px; display: inline-block; margin-top: 15px; }
 
-        .final-answer-display {
-            font-family: 'Times New Roman', serif;
-            font-weight: bold;
-            font-size: 1.8rem;
-            color: var(--success);
-            background: rgba(16,185,129,0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 15px;
-        }
+        .hero-image-box { max-width: 760px; margin: 0 auto 25px; text-align: center; }
+        .hero-main-image { width: 100%; max-width: 760px; height: auto; display: block; margin: 0 auto; border-radius: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.16); border: 2px solid var(--card-border); }
+        .credits-text { font-size: 0.85rem; color: var(--text2); margin-top: 8px; font-style: italic; font-weight: 600; }
 
-        .app-footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-bottom: 25px;
-            color: var(--text2);
-            font-size: 0.9rem;
-            font-weight: 500;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-
-        .app-footer:hover { opacity: 1; }
-        .app-footer span { color: var(--primary); font-weight: 700; }
-
-        #teacher-canvas {
-            min-height: 350px;
-            background: var(--bg2);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            font-size: 1.15rem;
-            color: var(--primary);
-        }
-
-        .tut-line {
-            margin-bottom: 15px;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.5s ease;
-        }
-
-        .tut-line.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .tut-number-line-wrap {
-            position: relative;
-            height: 100px;
-            margin: 30px 0;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .tut-line-draw {
-            position: absolute;
-            left: 10%;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 3px;
-            background: var(--primary);
-            width: 0;
-            transition: width 1.5s ease-in-out;
-            z-index: 2;
-        }
-
-        .tut-arrow {
-            position: absolute;
-            left: 90%;
-            top: 50%;
-            transform: translateY(-50%);
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-            border-left: 12px solid var(--primary);
-            opacity: 0;
-            transition: 0.3s;
-            z-index: 2;
-        }
-
-        .tut-point {
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            opacity: 0;
-            transition: 0.5s;
-            z-index: 5;
-        }
-
-        .tut-point.solid {
-            background: var(--danger);
-            border: 2px solid var(--danger);
-        }
-
-        .tut-point.empty {
-            background: var(--bg2);
-            border: 3px solid var(--danger);
-        }
-
-        .tut-plabel {
-            position: absolute;
-            top: calc(50% + 15px);
-            transform: translateX(-50%);
-            font-weight: bold;
-            font-family: 'Times New Roman', serif;
-            opacity: 0;
-            transition: 0.5s;
-        }
-
-        .tut-sign {
-            position: absolute;
-            top: calc(50% - 35px);
-            transform: translate(-50%, -20px);
-            font-size: 1.8rem;
-            font-weight: bold;
-            opacity: 0;
-            transition: 0.5s all;
-            z-index: 10;
-        }
-
-        .tut-sign.show-sign {
-            transform: translate(-50%, -50%);
-            opacity: 1;
-        }
-
-        .hero-image-box {
-            max-width: 760px;
-            margin: 0 auto 28px;
-            text-align: center;
-        }
-
-        .hero-main-image {
-            width: 100%;
-            max-width: 760px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            border-radius: 18px;
-            box-shadow: 0 10px 24px rgba(0,0,0,0.16);
-            border: 2px solid var(--card-border);
-        }
-
-        .credits-text {
-            font-size: 0.85rem;
-            color: var(--text2);
-            margin-top: 8px;
-            font-style: italic;
-        }
-
-        .start-instructions {
-            background: var(--bg2);
-            border-left: 4px solid var(--accent);
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        .start-instructions ul {
-            margin: 10px 0 0 0;
-            padding-left: 20px;
-        }
-
-        .start-instructions li {
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 600px) {
-            .panel { padding: 20px 15px; }
-            .math-expr { font-size: 1.6rem; padding: 15px 10px; gap: 8px; }
-            .operator { font-size: 1.8rem; }
-            .sign-btn-large { width: 38px; height: 38px; font-size: 1.4rem; top: calc(50% - 28px); }
-            .interval-arc { top: calc(50% - 50px); height: 50px; }
-            .root-label { font-size: 0.9rem; padding: 1px 4px; top: calc(50% + 18px); }
-            .parity-badge { top: calc(50% - 35px); }
-            header h1 { font-size: 1.2rem; }
-            .btn { padding: 10px 20px; font-size: 0.95rem; width: 100%; max-width: 300px; margin: 0 auto; }
-            #teacher-canvas { font-size: 1rem; padding: 15px; }
-        }
-
-        @media (max-width: 400px) {
-            .math-expr { font-size: 1.4rem; }
-            .operator { font-size: 1.5rem; }
-            .type-btn .type-name { font-size: 0.75rem; }
-        }
     </style>
 </head>
 <body>
-
     <div id="bg-canvas">
-        <div class="bg-orb" style="width: 50vw; height: 50vw; background: var(--orb1); top: -10%; left: -10%; animation-duration: 25s;"></div>
-        <div class="bg-orb" style="width: 60vw; height: 60vw; background: var(--orb2); bottom: -20%; right: -10%; animation-duration: 30s;"></div>
-        <div class="bg-orb" style="width: 40vw; height: 40vw; background: var(--orb3); top: 30%; left: 30%; animation-duration: 20s;"></div>
         <div class="bg-grid"></div>
-        <div class="bg-symbols" id="bg-symbols-container"></div>
+        <div id="bg-symbols-container" class="bg-symbols"></div>
     </div>
 
     <header>
-        <div>
-            <h1>Метод на интервалите</h1>
-        </div>
+        <h1>Метод на интервалите</h1>
         <div class="header-stats hidden" id="header-stats">
-            <span>👤 <span id="display-name" class="stat-highlight">Ученик</span></span>
-            <span>🏆 Решени: <span id="display-total-solved" class="stat-highlight" style="color:var(--success);">0</span></span>
-            <span>⏱️ <span id="timer-display">00:00</span></span>
+            <div id="display-name" style="color: #cbd5e1;"></div>
+            <div>⏱️ <span id="timer-display" class="stat-highlight">00:00</span></div>
+            <div>✅ <span id="solved-display" class="stat-highlight">0</span></div>
         </div>
-        <div>
-            <button id="theme-toggle" onclick="toggleTheme()">☀️ Светла</button>
+        <div class="header-actions">
+            <button id="menu-btn" class="hidden" onclick="requestReturnToMenu()">🏠 Меню</button>
+            <button id="theme-toggle" onclick="toggleTheme()">🌓 Тема</button>
         </div>
     </header>
 
     <div class="container">
+        <!-- START SCREEN -->
         <div id="start-screen" class="panel">
-            <h2 style="text-align: center; color: var(--primary); margin-top: 0; margin-bottom: 20px;">
-                Тренирай метода на интервалите стъпка по стъпка.
-            </h2>
-
-            <div style="text-align: center; margin-bottom: 35px;">
-                <button class="btn btn-outline" style="width: auto; max-width: 100%;" onclick="startTutorialAnimation()">
-                    📖 Виж кратки указания и пример
-                </button>
-            </div>
-
             <div class="hero-image-box">
-                <img src="MIT.png"
-                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NjAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgNzYwIDIwMCI+PHJlY3Qgd2lkdGg9Ijc2MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlMmU4ZjAiIC8+PHRleHQgeD0iMzgwIiB5PSIxMDUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRhM2I4Ij5NZXRob2Qgb2YgSW50ZXJ2YWxzIElsbHVzdHJhdGlvbjwvdGV4dD48L3N2Zz4='"
-                     alt="Метод на интервалите" class="hero-main-image">
-                <div class="credits-text">Идея и педагогически решения: Валя Витковска, Реализация: Gemini</div>
+                <img src="MIT.png" alt="Метод на интервалите" class="hero-main-image" onerror="this.style.display='none'">
+                <div class="credits-text">Идея и педагогически решения: Валя Витковска , Реализация: Gemini</div>
             </div>
 
             <div class="user-input-group">
@@ -1080,10 +306,11 @@
             <div class="start-instructions">
                 <strong>💡 Как се работи с тренажора:</strong>
                 <ul>
-                    <li><strong>Стъпка 1:</strong> Кликай върху корените на оста, за да ги направиш плътни (включени) или празни (изключени).</li>
-                    <li><strong>Стъпка 2:</strong> Определи кратността (четна/нечетна) от падащите менюта.</li>
-                    <li><strong>Стъпка 3:</strong> Кликай над интервалите, за да определиш знаците (+ или -).</li>
-                    <li><strong>Стъпка 4:</strong> Избери решенията. Клик върху интервал → избира/маха. Клик върху скоба → сменя я, когато това е допустимо.</li>
+                    <li><strong>Стъпка 1:</strong> Запиши неравенството като произведение от множители.</li>
+                    <li><strong>Стъпка 2:</strong> Кликай върху корените на оста, за да ги направиш плътни или празни.</li>
+                    <li><strong>Стъпка 3:</strong> Определи кратността (четна/нечетна) от падащите менюта.</li>
+                    <li><strong>Стъпка 4:</strong> Кликай над интервалите, за да определиш знаците (+ или -).</li>
+                    <li><strong>Стъпка 5:</strong> Избери решенията и нагласи скобите на интервалите.</li>
                 </ul>
             </div>
 
@@ -1093,68 +320,100 @@
 
             <div class="practice-type-grid">
                 <div class="type-btn t-linear active-type" onclick="selectType('t-linear')">
-                    <span class="type-icon">📈</span>
-                    <div class="type-name">Произведение от линейни множители</div>
+                    <span class="type-icon">📈</span><div class="type-name">Произведение от линейни множители</div>
                 </div>
-
                 <div class="type-btn t-quad" onclick="selectType('t-quad')">
-                    <span class="type-icon">🔁</span>
-                    <div class="type-name">Произведение от степени</div>
+                    <span class="type-icon">🔁</span><div class="type-name">Произведение от степени</div>
                 </div>
-
                 <div class="type-btn t-frac" onclick="selectType('t-frac')">
-                    <span class="type-icon">➗</span>
-                    <div class="type-name">Дробни неравенства</div>
+                    <span class="type-icon">➗</span><div class="type-name">Дробни с линейни и квадратни множители</div>
                 </div>
-
                 <div class="type-btn t-biquad" onclick="selectType('t-biquad')">
-                    <span class="type-icon">🧮</span>
-                    <div class="type-name">Биквадратни неравенства</div>
+                    <span class="type-icon">🧮</span><div class="type-name">Биквадратни неравенства</div>
                 </div>
-
                 <div class="type-btn t-mixed" onclick="selectType('t-mixed')">
-                    <span class="type-icon">🔥</span>
-                    <div class="type-name">Смесени</div>
+                    <span class="type-icon">🔥</span><div class="type-name">Линейни и квадратни множители</div>
                 </div>
+            </div>
+
+            <div id="factor-settings" class="factor-settings hidden">
+                <h3>Настройки за смесени и дробни неравенства</h3>
+                <div class="factor-settings-grid">
+                    <div class="setting-card">
+                        <label for="linear-count-select">Брой линейни множители</label>
+                        <select id="linear-count-select">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="setting-card">
+                        <label for="quadratic-count-select">Брой квадратни множители</label>
+                        <select id="quadratic-count-select">
+                            <option value="0">0</option>
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="setting-note">Знакът на дискриминантата, старшият коефициент и повтарящите се множители се избират на случаен принцип.</p>
             </div>
 
             <div style="text-align: center;">
-                <button class="btn btn-purple" style="font-size: 1.2rem; padding: 15px 40px; width: auto;" onclick="startPractice()">
-                    🚀 Започни тренировка
-                </button>
+                <button class="btn btn-outline" style="margin-right: 10px;" onclick="showTutorial()">👨‍🏫 Урок</button>
+                <button class="btn btn-purple" style="font-size: 1.2rem; padding: 15px 40px; width: auto;" onclick="startPractice()">🚀 Започни тренировка</button>
             </div>
         </div>
 
+        <!-- TUTORIAL SCREEN -->
         <div id="tutorial-screen" class="panel hidden">
-            <h2 style="color: var(--primary); margin-top: 0;">Указания и пример 👨‍🏫</h2>
-            <div id="teacher-canvas"></div>
-            <div class="controls" id="tut-controls" style="display: none; margin-top: 20px;">
-                <button class="btn btn-outline" onclick="returnToMenu()">🏠 Обратно в менюто</button>
+            <h2 style="color: var(--primary); margin-top: 0; text-align: center;">Указания и пример 👨‍🏫</h2>
+            <div style="background: var(--bg2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <p><strong>Стъпка 1: Разлагане.</strong> Преобразувайте даденото неравенство докато всяка част се превърне в произведение (или частно) от линейни или неразложими квадратни множители.</p>
+                <p><strong>Стъпка 2: Корени.</strong> Нанесете корените на числовата ос. Ако знакът е строг (>, <) или коренът е в знаменател, кръгчето е <strong>празно</strong>. Иначе е <strong>плътно</strong>.</p>
+                <p><strong>Стъпка 3: Кратност.</strong> Ако даден множител е на четна степен, коренът има "четна кратност" (знакът около него не се променя).</p>
+                <p><strong>Стъпка 4: Знаци.</strong> Изчислете знака в най-десния интервал и редувайте знаците, съобразявайки се с кратността на корените.</p>
+            </div>
+            <div class="controls" style="margin-top: 20px;">
+                <button class="btn btn-outline" onclick="returnToMenu()">🏠 Меню</button>
                 <button class="btn btn-purple" onclick="startPractice()">🚀 Разбрах! Нека решаваме</button>
             </div>
         </div>
 
+        <!-- APP CONTAINER -->
         <div id="app-container" class="panel hidden">
             <div class="progress-bar">
-                <div class="stage-indicator active" id="ind-1">1. Корени</div>
-                <div class="stage-indicator" id="ind-2">2. Кратност</div>
-                <div class="stage-indicator" id="ind-3">3. Знаци</div>
-                <div class="stage-indicator" id="ind-4">4. Решение</div>
+                <div class="stage-indicator active" id="ind-1">1. Разлагане</div>
+                <div class="stage-indicator" id="ind-2">2. Корени</div>
+                <div class="stage-indicator" id="ind-3">3. Кратност</div>
+                <div class="stage-indicator" id="ind-4">4. Знаци</div>
+                <div class="stage-indicator" id="ind-5">5. Решение</div>
             </div>
-
-            <div class="math-expr" id="current-expr"></div>
 
             <div class="instruction-box" id="instruction-text"></div>
 
-            <div id="stage-area-1-3">
+            <div class="math-expr" id="current-expr"></div>
+
+            <!-- Stage 1 Input -->
+            <div class="user-input-group" id="step-factor">
+                <input type="text" id="factored-input" placeholder="Напр. (x-1)(x-3)/x > 0" autocomplete="off">
+            </div>
+
+            <!-- Stage 2-4 Number Line -->
+            <div id="stage-area-1-3" class="hidden">
                 <div class="number-line-container" id="nl-container">
                     <div class="number-line"></div>
                     <div class="arrow right"></div>
                 </div>
             </div>
 
+            <!-- Stage 5 Intervals -->
             <div id="stage-area-4" class="hidden">
-                <div id="interval-container"></div>
+                <div class="interval-grid" id="interval-container"></div>
             </div>
 
             <div id="feedback" class="feedback-msg"></div>
@@ -1164,14 +423,13 @@
             </div>
         </div>
 
+        <!-- FINAL SCREEN -->
         <div id="final-screen" class="panel hidden" style="text-align: center;">
             <div style="font-size: 4.5rem; margin-bottom: 10px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">🏆</div>
             <h2 style="color: var(--success);">Поздравления!</h2>
             <p>Ти реши неравенството напълно вярно.</p>
 
             <div class="math-expr" id="final-expr-disp" style="font-size: 1.5rem; padding: 10px;"></div>
-
-            <div id="final-number-line-container" style="pointer-events: none;"></div>
 
             <div class="final-summary">
                 Решение: <br>
@@ -1189,7 +447,20 @@
         </div>
     </div>
 
+    <!-- Модален прозорец за потвърждение -->
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="margin-top: 0; color: var(--primary);">Връщане в менюто</h3>
+            <p>Сигурни ли сте, че искате да се върнете в менюто? Текущата задача ще бъде прекъсната.</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Отказ</button>
+                <button class="btn" style="background: var(--danger); box-shadow: none;" onclick="confirmMenuReturn()">Да, прекъсни</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // === THEME & GLOBALS ===
         let currentTheme = localStorage.getItem('theme') || 'light';
         let selectedPracticeType = 't-linear';
         let studentName = "";
@@ -1199,7 +470,13 @@
 
         let currentProblem = null;
         let currentStage = 1;
+        
+        let userRootsState = {}; // { 'rootVal': 'strict'/'non-strict' }
+        let userParityState = {}; // { 'rootVal': 'even'/'odd' }
+        let userSignsState = []; // array of 1 / -1
+        let intervalData = []; // array of interval objects
 
+        let factorConfig = { linearCount: 2, quadraticCount: 1 };
         const operators = ['<', '\\le', '>', '\\ge'];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1208,41 +485,37 @@
                 document.getElementById('theme-toggle').innerText = '🌙 Тъмна';
             }
             createBackgroundSymbols();
+            updateFactorSettingsVisibility();
         });
 
         function toggleTheme() {
             if (document.body.getAttribute('data-theme') === 'dark') {
                 document.body.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
-                document.getElementById('theme-toggle').innerText = '☀️ Светла';
+                document.getElementById('theme-toggle').innerText = '🌓 Тема';
             } else {
                 document.body.setAttribute('data-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
-                document.getElementById('theme-toggle').innerText = '🌙 Тъмна';
+                document.getElementById('theme-toggle').innerText = '☀️ Светла';
             }
         }
 
         function createBackgroundSymbols() {
             const container = document.getElementById('bg-symbols-container');
-            const symbols = ['∞', '∪', '∩', '∈', '>', '<', '≠', '±'];
-
+            const symbols = ['∞', '∪', '∈', '>', '<', '≠'];
             for (let i = 0; i < 15; i++) {
                 let el = document.createElement('div');
-                el.className = 'bg-sym';
-                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                el.style.left = Math.random() * 100 + 'vw';
-                el.style.top = Math.random() * 100 + 'vh';
+                el.className = 'bg-sym'; el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw'; el.style.top = Math.random() * 100 + 'vh';
                 el.style.fontSize = (Math.random() * 3 + 1) + 'rem';
                 el.style.animationDuration = (Math.random() * 10 + 10) + 's';
                 el.style.animationDelay = (Math.random() * 5) + 's';
                 container.appendChild(el);
             }
-
-            const emojis = ['🤓', '📐', '✏️', '🚀', '🌟', '💡', '📊'];
-            for (let i = 0; i < 8; i++) {
+            const emojis = ['🤓', '📐', '✏️'];
+            for (let i = 0; i < 6; i++) {
                 let el = document.createElement('div');
-                el.className = 'bg-emoji';
-                el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                el.className = 'bg-emoji'; el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.animationDuration = (Math.random() * 15 + 20) + 's';
                 el.style.animationDelay = (Math.random() * 10) + 's';
@@ -1250,10 +523,50 @@
             }
         }
 
+        // === UI NAVIGATION ===
         function selectType(type) {
             document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active-type'));
             document.querySelector('.' + type).classList.add('active-type');
             selectedPracticeType = type;
+            updateFactorSettingsVisibility();
+        }
+
+        function updateFactorSettingsVisibility() {
+            const box = document.getElementById('factor-settings');
+            if (!box) return;
+            if (selectedPracticeType === 't-mixed' || selectedPracticeType === 't-frac') box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function readFactorSettings() {
+            const linearSel = document.getElementById('linear-count-select');
+            const quadSel = document.getElementById('quadratic-count-select');
+            factorConfig.linearCount = parseInt(linearSel.value, 10);
+            factorConfig.quadraticCount = parseInt(quadSel.value, 10);
+            if (factorConfig.linearCount + factorConfig.quadraticCount === 0) {
+                factorConfig.linearCount = 1; linearSel.value = '1';
+            }
+            if (selectedPracticeType === 't-frac' && factorConfig.linearCount + factorConfig.quadraticCount < 2) {
+                factorConfig.linearCount = 2; factorConfig.quadraticCount = 0;
+                linearSel.value = '2'; quadSel.value = '0';
+            }
+        }
+
+        function requestReturnToMenu() {
+            if (!document.getElementById('app-container').classList.contains('hidden')) {
+                document.getElementById('confirm-modal').classList.remove('hidden');
+            } else {
+                returnToMenu();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function confirmMenuReturn() {
+            closeModal();
+            returnToMenu();
         }
 
         function returnToMenu() {
@@ -1262,10 +575,23 @@
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('start-screen').classList.remove('hidden');
             document.getElementById('header-stats').classList.add('hidden');
+            
+            let menuBtn = document.getElementById('menu-btn');
+            if (menuBtn) menuBtn.classList.add('hidden');
+            
             clearInterval(timerInterval);
         }
 
+        function showTutorial() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('tutorial-screen').classList.remove('hidden');
+            
+            let menuBtn = document.getElementById('menu-btn');
+            if (menuBtn) menuBtn.classList.remove('hidden');
+        }
+
         function startPractice() {
+            readFactorSettings();
             let nameInput = document.getElementById('student-name-input').value.trim();
             studentName = nameInput !== "" ? nameInput : "Ученик";
             document.getElementById('display-name').innerText = studentName;
@@ -1275,14 +601,15 @@
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('header-stats').classList.remove('hidden');
             document.getElementById('app-container').classList.remove('hidden');
+            
+            let menuBtn = document.getElementById('menu-btn');
+            if (menuBtn) menuBtn.classList.remove('hidden');
 
-            secondsElapsed = 0;
+            secondsElapsed = 0; problemsSolved = 0;
+            document.getElementById('solved-display').innerText = problemsSolved;
             updateTimerDisplay();
             clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                secondsElapsed++;
-                updateTimerDisplay();
-            }, 1000);
+            timerInterval = setInterval(() => { secondsElapsed++; updateTimerDisplay(); }, 1000);
 
             nextProblem();
         }
@@ -1293,195 +620,243 @@
             document.getElementById('timer-display').innerText = `${m}:${s}`;
         }
 
-        function triggerConfetti() {
-            let overlay = document.createElement('div');
-            overlay.className = 'celebration-overlay';
-            const colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
-
-            for (let i = 0; i < 60; i++) {
-                let piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                piece.style.left = Math.random() * 100 + 'vw';
-                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                piece.style.animationDelay = (Math.random() * 0.5) + 's';
-                overlay.appendChild(piece);
+        // === GENERATOR LOGIC (Original Code Restored) ===
+        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function shuffleArray(arr) {
+            let a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
             }
-
-            document.body.appendChild(overlay);
-            setTimeout(() => overlay.remove(), 4000);
+            return a;
         }
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+        function chooseRootForSide(side, usedBySide, usedByOpposite) {
+            const pool = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+            let candidates = pool.filter(r => !usedByOpposite.has(r) && !usedBySide.has(r));
+            if (candidates.length === 0) candidates = pool.filter(r => !usedByOpposite.has(r));
+            if (candidates.length === 0) candidates = pool;
+            const root = randomChoice(candidates);
+            usedBySide.add(root);
+            return root;
+        }
+
+        function chooseTwoRootsForSide(side, usedBySide, usedByOpposite) {
+            const pool = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+            let candidates = pool.filter(r => !usedByOpposite.has(r) && !usedBySide.has(r));
+            if (candidates.length < 2) candidates = pool.filter(r => !usedByOpposite.has(r));
+            if (candidates.length < 2) candidates = pool;
+            candidates = shuffleArray(candidates);
+            const r1 = candidates[0]; const r2 = candidates.find(x => x !== r1) ?? (r1 + 1);
+            usedBySide.add(r1); usedBySide.add(r2);
+            return [Math.min(r1, r2), Math.max(r1, r2)];
+        }
+
+        function buildQuadraticFactor(side, discMode, power, usedBySide, usedByOpposite) {
+            const aSign = Math.random() < 0.5 ? -1 : 1;
+            if (discMode === 'negative') {
+                const templates = [{ a: 1, b: 0, c: 1 }, { a: 1, b: 0, c: 4 }, { a: 1, b: 2, c: 5 }, { a: 1, b: -2, c: 5 }, { a: 2, b: 0, c: 3 }];
+                const t = randomChoice(templates);
+                return { kind: 'quadratic', pos: side, power, discMode: 'negative', a: aSign * t.a, b: aSign * t.b, c: aSign * t.c };
+            }
+            if (discMode === 'zero') {
+                const r = chooseRootForSide(side, usedBySide, usedByOpposite);
+                const a = aSign; const b = -2 * a * r; const c = a * r * r;
+                return { kind: 'quadratic', pos: side, power, discMode: 'zero', a, b, c, root: r };
+            }
+            const [r1, r2] = chooseTwoRootsForSide(side, usedBySide, usedByOpposite);
+            const a = aSign; const b = -a * (r1 + r2); const c = a * r1 * r2;
+            return { kind: 'quadratic', pos: side, power, discMode: 'positive', a, b, c, r1, r2 };
+        }
+
+        function addRootToMap(map, root, mult, pos) {
+            const key = String(root);
+            if (!map[key]) map[key] = { root, mult, pos };
+            else {
+                map[key].mult += mult;
+                if (map[key].pos !== pos) map[key].pos = 'den';
+            }
+        }
+
+        function aggregateRootData(evalFactors) {
+            const map = {};
+            evalFactors.forEach(f => {
+                if (f.kind === 'linear') addRootToMap(map, f.root, f.power, f.pos);
+                else if (f.kind === 'quadratic') {
+                    if (f.discMode === 'zero') addRootToMap(map, f.root, 2 * f.power, f.pos);
+                    else if (f.discMode === 'positive') {
+                        addRootToMap(map, f.r1, f.power, f.pos);
+                        addRootToMap(map, f.r2, f.power, f.pos);
+                    }
+                }
+            });
+            return Object.values(map).sort((a, b) => a.root - b.root);
+        }
+
+        function generateLegacyProblem(type) {
+            let numFactors = [], denFactors = [];
+            let rootsPool = shuffleArray([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
+            let opIdx = getRandomInt(0, 3);
+            let isStrict = (opIdx === 0 || opIdx === 2);
+            let countNum = 2, countDen = 0, multOptions = [1, 1, 1];
+
+            if (type === 't-linear') countNum = getRandomInt(2, 3);
+            else if (type === 't-quad') { countNum = getRandomInt(2, 3); multOptions = [1, 2, 3]; }
+
+            for (let i = 0; i < countNum; i++) {
+                let r = rootsPool.pop(); let p = randomChoice(multOptions); let isNeg = Math.random() < 0.25;
+                numFactors.push({ kind: 'linear', root: r, power: p, pos: 'num', isNeg });
+            }
+            const evalFactors = [...numFactors, ...denFactors];
+            const rootData = aggregateRootData(evalFactors);
+            return { numDisplay: numFactors, denDisplay: denFactors, evalFactors, rootData, roots: rootData.map(x => x.root), opStr: operators[opIdx], opIdx, isStrict, isBiquad: false, biquadCoeffs: null };
+        }
+
+        function generateBiquadProblem() {
+            let opIdx = getRandomInt(0, 3); let isStrict = (opIdx === 0 || opIdx === 2);
+            let y1 = randomChoice([1, 4, 9]); let y2 = randomChoice([-4, -1, 0, 1, 4, 9]);
+            let A = Math.random() < 0.25 ? -1 : 1; let B = -A * (y1 + y2); let C = A * (y1 * y2);
+            let counts = {};
+            function addR(r, m) { counts[r] = (counts[r] || 0) + m; }
+            addR(Math.sqrt(y1), 1); addR(-Math.sqrt(y1), 1);
+            if (y2 > 0) { addR(Math.sqrt(y2), 1); addR(-Math.sqrt(y2), 1); } else if (y2 === 0) addR(0, 2);
+            let rootData = Object.keys(counts).map(k => ({ root: parseFloat(k), mult: counts[k], pos: 'num' })).sort((a, b) => a.root - b.root);
+            return { numDisplay: [], denDisplay: [], evalFactors: [], rootData, roots: rootData.map(x => x.root), opStr: operators[opIdx], opIdx, isStrict, isBiquad: true, biquadCoeffs: { A, B, C } };
+        }
+
+        function generateLinearQuadraticProblem(fractionMode) {
+            let opIdx = getRandomInt(0, 3); let isStrict = (opIdx === 0 || opIdx === 2);
+            const total = factorConfig.linearCount + factorConfig.quadraticCount;
+            let positions = fractionMode ? new Array(total).fill('').map(() => Math.random() < 0.5 ? 'num' : 'den') : new Array(total).fill('num');
+            if (fractionMode) {
+                if (positions.every(p => p === 'num')) positions[positions.length - 1] = 'den';
+                if (positions.every(p => p === 'den')) positions[0] = 'num';
+            }
+            positions = shuffleArray(positions);
+            let kinds = shuffleArray([...new Array(factorConfig.linearCount).fill('linear'), ...new Array(factorConfig.quadraticCount).fill('quadratic')]);
+            let numDisplay = [], denDisplay = [], evalFactors = [];
+            let usedRoots = { num: new Set(), den: new Set() };
+
+            for (let i = 0; i < kinds.length; i++) {
+                const kind = kinds[i]; const pos = positions[i];
+                if (kind === 'linear') {
+                    const factor = { kind: 'linear', pos, power: (Math.random() < 0.28 ? 2 : 1), root: chooseRootForSide(pos, usedRoots[pos], usedRoots[pos === 'num' ? 'den' : 'num']), isNeg: Math.random() < 0.25 };
+                    evalFactors.push(factor); if (pos === 'num') numDisplay.push(factor); else denDisplay.push(factor);
+                } else {
+                    const factor = buildQuadraticFactor(pos, randomChoice(['negative', 'zero', 'positive']), (Math.random() < 0.22 ? 2 : 1), usedRoots[pos], usedRoots[pos === 'num' ? 'den' : 'num']);
+                    evalFactors.push(factor); if (pos === 'num') numDisplay.push(factor); else denDisplay.push(factor);
+                }
+            }
+            const rootData = aggregateRootData(evalFactors);
+            return { numDisplay, denDisplay, evalFactors, rootData, roots: rootData.map(x => x.root), opStr: operators[opIdx], opIdx, isStrict, isBiquad: false, biquadCoeffs: null };
         }
 
         function generateProblem() {
-            let numFactors = [], denFactors = [];
-            let rootsPool = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
-
-            for (let i = rootsPool.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [rootsPool[i], rootsPool[j]] = [rootsPool[j], rootsPool[i]];
-            }
-
-            let opIdx = getRandomInt(0, 3);
-            let isStrict = (opIdx === 0 || opIdx === 2);
-
-            let isBiquad = (selectedPracticeType === 't-biquad');
-            let biquadCoeffs = null;
-            let globalSign = 1;
-
-            if (isBiquad) {
-                let y1Pool = [1, 4, 9];
-                let y1 = y1Pool[Math.floor(Math.random() * y1Pool.length)];
-
-                let y2Pool = [-4, -1, 1, 4, 9];
-                let y2 = y2Pool[Math.floor(Math.random() * y2Pool.length)];
-
-                let A = Math.random() < 0.25 ? -1 : 1;
-                let B = -A * (y1 + y2);
-                let C = A * (y1 * y2);
-
-                biquadCoeffs = { A, B, C };
-                globalSign = A;
-
-                let rawRoots = [];
-                rawRoots.push(Math.sqrt(y1), -Math.sqrt(y1));
-
-                if (y2 > 0) {
-                    rawRoots.push(Math.sqrt(y2), -Math.sqrt(y2));
-                } else if (y2 === 0) {
-                    rawRoots.push(0, 0);
-                }
-
-                let counts = {};
-                rawRoots.forEach(r => counts[r] = (counts[r] || 0) + 1);
-
-                for (let rStr in counts) {
-                    numFactors.push({ root: parseFloat(rStr), mult: counts[rStr], pos: 'num', isNeg: false });
-                }
-            } else {
-                let countNum = 2, countDen = 0;
-                let multOptions = [1, 1, 1];
-
-                if (selectedPracticeType === 't-linear') {
-                    countNum = getRandomInt(2, 3);
-                } else if (selectedPracticeType === 't-quad') {
-                    countNum = getRandomInt(2, 3);
-                    multOptions = [1, 2, 3];
-                } else if (selectedPracticeType === 't-frac') {
-                    countNum = getRandomInt(1, 2);
-                    countDen = getRandomInt(1, 2);
-                } else {
-                    countNum = getRandomInt(1, 3);
-                    countDen = getRandomInt(0, 2);
-                    multOptions = [1, 2, 3];
-                }
-
-                if (countNum + countDen < 2) countNum = 2;
-
-                for (let i = 0; i < countNum; i++) {
-                    let r = rootsPool.pop();
-                    let m = multOptions[Math.floor(Math.random() * multOptions.length)];
-                    let isNeg = Math.random() < 0.25;
-                    numFactors.push({ root: r, mult: m, pos: 'num', isNeg: isNeg });
-                }
-
-                for (let i = 0; i < countDen; i++) {
-                    let r = rootsPool.pop();
-                    let m = multOptions[Math.floor(Math.random() * multOptions.length)];
-                    let isNeg = Math.random() < 0.25;
-                    denFactors.push({ root: r, mult: m, pos: 'den', isNeg: isNeg });
-                }
-            }
-
-            let allF = [...numFactors, ...denFactors];
-            let rootsUsed = allF.map(f => f.root).sort((a, b) => a - b);
-
-            return {
-                num: numFactors,
-                den: denFactors,
-                allFactors: allF,
-                roots: rootsUsed,
-                opStr: operators[opIdx],
-                opIdx: opIdx,
-                isStrict: isStrict,
-                isBiquad: isBiquad,
-                biquadCoeffs: biquadCoeffs,
-                globalSign: globalSign
-            };
+            if (selectedPracticeType === 't-biquad') return generateBiquadProblem();
+            if (selectedPracticeType === 't-mixed') return generateLinearQuadraticProblem(false);
+            if (selectedPracticeType === 't-frac') return generateLinearQuadraticProblem(true);
+            return generateLegacyProblem(selectedPracticeType);
         }
 
-        function formatFactor(f) {
-            let r = f.root;
-            let m = f.mult;
+        // === RENDERING THE PROBLEM ===
+        function formatLinearFactor(f) {
             let base = "";
+            if (f.isNeg) base = f.root === 0 ? "(-x)" : `(${f.root} - x)`;
+            else base = f.root === 0 ? "x" : (f.root > 0 ? `(x - ${f.root})` : `(x + ${Math.abs(f.root)})`);
+            return f.power > 1 ? `${base}<sup>${f.power}</sup>` : base;
+        }
 
-            if (f.isNeg) {
-                if (r === 0) base = "(-x)";
-                else base = `(${r} - x)`;
-            } else {
-                if (r === 0) base = "x";
-                else if (r > 0) base = `(x - ${r})`;
-                else base = `(x + ${Math.abs(r)})`;
-            }
-
-            if (m > 1) return `${base}<sup>${m}</sup>`;
-            return base;
+        function formatQuadraticFactor(f) {
+            let s = "";
+            if (f.a === 1) s += "x<sup>2</sup>"; else if (f.a === -1) s += "-x<sup>2</sup>"; else s += `${f.a}x<sup>2</sup>`;
+            if (f.b !== 0) s += f.b > 0 ? ` + ${f.b === 1 ? "x" : f.b+"x"}` : ` - ${Math.abs(f.b) === 1 ? "x" : Math.abs(f.b)+"x"}`;
+            if (f.c !== 0) s += f.c > 0 ? ` + ${f.c}` : ` - ${Math.abs(f.c)}`;
+            let base = `(${s})`; return f.power > 1 ? `${base}<sup>${f.power}</sup>` : base;
         }
 
         function renderExpression(p) {
             let html = "";
-
             if (p.isBiquad) {
-                let A = p.biquadCoeffs.A;
-                let B = p.biquadCoeffs.B;
-                let C = p.biquadCoeffs.C;
-                let str = "";
-
-                if (A === 1) str += "x^4";
-                else if (A === -1) str += "-x^4";
-                else str += A + "x^4";
-
-                if (B !== 0) {
-                    if (B > 0) str += " + " + (B === 1 ? "" : B) + "x^2";
-                    else str += " - " + (B === -1 ? "" : Math.abs(B)) + "x^2";
-                }
-
-                if (C !== 0) {
-                    if (C > 0) str += " + " + C;
-                    else str += " - " + Math.abs(C);
-                }
-
+                let A = p.biquadCoeffs.A, B = p.biquadCoeffs.B, C = p.biquadCoeffs.C, str = "";
+                if (A === 1) str += "x^4"; else if (A === -1) str += "-x^4"; else str += A + "x^4";
+                if (B !== 0) str += B > 0 ? ` + ${B === 1 ? "" : B}x^2` : ` - ${B === -1 ? "" : Math.abs(B)}x^2`;
+                if (C !== 0) str += C > 0 ? ` + ${C}` : ` - ${Math.abs(C)}`;
                 html = str.replace(/\^(\d+)/g, "<sup>$1</sup>");
             } else {
-                let numHtml = p.num.map(formatFactor).join("");
+                let numHtml = (p.numDisplay || []).map(f => f.kind === 'linear' ? formatLinearFactor(f) : formatQuadraticFactor(f)).join("");
                 if (numHtml === "") numHtml = "1";
-                let denHtml = p.den.map(formatFactor).join("");
-
-                if (p.den.length > 0) {
-                    html += `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div>`;
-                } else {
-                    html += numHtml;
-                }
+                let denHtml = (p.denDisplay || []).map(f => f.kind === 'linear' ? formatLinearFactor(f) : formatQuadraticFactor(f)).join("");
+                if (denHtml !== "") html += `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div>`;
+                else html += numHtml;
             }
-
-            let opDisplay = "";
-            if (p.opIdx === 0) opDisplay = "&lt;";
-            else if (p.opIdx === 1) opDisplay = "&le;";
-            else if (p.opIdx === 2) opDisplay = "&gt;";
-            else if (p.opIdx === 3) opDisplay = "&ge;";
-
+            let opDisplay = ['&lt;', '&le;', '&gt;', '&ge;'][p.opIdx];
             html += ` <div class="operator">${opDisplay} 0</div>`;
             return html;
         }
 
+        // Beautiful format for factored expression
+        function getPerfectFactoredHtml(p) {
+            let val100 = evaluateProblem(p, 100);
+            let sign = val100 > 0 ? 1 : -1;
+
+            let numHtml = "", denHtml = "";
+            if(p.isBiquad) {
+                p.rootData.forEach(r => {
+                    let term = r.root === 0 ? "x" : (r.root > 0 ? `(x - ${r.root})` : `(x + ${Math.abs(r.root)})`);
+                    if (r.mult > 1) term += `<sup>${r.mult}</sup>`;
+                    numHtml += term;
+                });
+            } else {
+                p.evalFactors.forEach(f => {
+                    let term = "";
+                    if (f.kind === 'linear') {
+                        term = f.root === 0 ? "x" : (f.root > 0 ? `(x - ${f.root})` : `(x + ${Math.abs(f.root)})`);
+                        if (f.power > 1) term += `<sup>${f.power}</sup>`;
+                    } else if (f.kind === 'quadratic') {
+                        if (f.discMode === 'negative') {
+                            term = `(${f.a}x<sup>2</sup> ${f.b >= 0 ? '+ '+f.b : '- '+Math.abs(f.b)}x ${f.c >= 0 ? '+ '+f.c : '- '+Math.abs(f.c)})`;
+                        } else if (f.discMode === 'zero') {
+                            term = f.root === 0 ? "x" : (f.root > 0 ? `(x - ${f.root})` : `(x + ${Math.abs(f.root)})`);
+                            term += `<sup>${f.power * 2}</sup>`;
+                        } else if (f.discMode === 'positive') {
+                            let r1T = f.r1 === 0 ? `x` : (f.r1 > 0 ? `(x - ${f.r1})` : `(x + ${Math.abs(f.r1)})`);
+                            let r2T = f.r2 === 0 ? `x` : (f.r2 > 0 ? `(x - ${f.r2})` : `(x + ${Math.abs(f.r2)})`);
+                            if(f.power > 1) term = `${r1T}<sup>${f.power}</sup>${r2T}<sup>${f.power}</sup>`;
+                            else term = `${r1T}${r2T}`;
+                        }
+                    }
+                    if (f.pos === 'num') numHtml += term; else denHtml += term;
+                });
+            }
+            if (numHtml === "") numHtml = "1";
+            if (sign === -1) numHtml = "-" + numHtml;
+            let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][p.opIdx];
+            if (denHtml !== "") return `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div> <div class="operator">${opStrHTML} 0</div>`;
+            return `${numHtml} <div class="operator">${opStrHTML} 0</div>`;
+        }
+
+        function evaluateProblem(p, x) {
+            if (p.isBiquad) {
+                let A = p.biquadCoeffs.A, B = p.biquadCoeffs.B, C = p.biquadCoeffs.C;
+                return (A*x*x*x*x + B*x*x + C);
+            }
+            let num = 1, den = 1;
+            p.evalFactors.forEach(f => {
+                let val = 1;
+                if (f.kind === 'linear') { val = Math.pow(f.isNeg ? (f.root - x) : (x - f.root), f.power); } 
+                else if (f.kind === 'quadratic') { val = Math.pow(f.a*x*x + f.b*x + f.c, f.power); }
+                if (f.pos === 'num') num *= val; else den *= val;
+            });
+            return num / den;
+        }
+
+        // === STAGES FLOW ===
         function nextProblem() {
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('btn-check').disabled = false;
-
+            
             currentProblem = generateProblem();
             document.getElementById('current-expr').innerHTML = renderExpression(currentProblem);
 
@@ -1491,44 +866,39 @@
         }
 
         function updateStageUI() {
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 5; i++) {
                 let ind = document.getElementById(`ind-${i}`);
                 ind.classList.remove('active', 'completed');
                 if (i < currentStage) ind.classList.add('completed');
                 if (i === currentStage) ind.classList.add('active');
             }
-
             document.getElementById('feedback').className = 'feedback-msg hidden';
 
-            if (currentStage <= 3) {
+            if (currentStage === 1) {
+                document.getElementById('step-factor').classList.remove('hidden');
+                document.getElementById('stage-area-1-3').classList.add('hidden');
+                document.getElementById('stage-area-4').classList.add('hidden');
+            } else if (currentStage <= 4) {
+                document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.add('hidden');
             } else {
+                document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.remove('hidden');
             }
         }
 
         function showError(msg) {
-            let fb = document.getElementById('feedback');
-            fb.innerText = msg;
-            fb.className = 'feedback-msg error';
-
+            let fb = document.getElementById('feedback'); fb.innerText = msg; fb.className = 'feedback-msg error';
             let panel = document.getElementById('app-container');
-            panel.classList.remove('shake-panel');
-            void panel.offsetWidth;
-            panel.classList.add('shake-panel');
+            panel.classList.remove('shake-panel'); void panel.offsetWidth; panel.classList.add('shake-panel');
         }
 
         function showSuccess(msg) {
-            let fb = document.getElementById('feedback');
-            fb.innerText = msg;
-            fb.className = 'feedback-msg success';
-
+            let fb = document.getElementById('feedback'); fb.innerText = msg; fb.className = 'feedback-msg success';
             let panel = document.getElementById('app-container');
-            panel.classList.remove('pulse-success');
-            void panel.offsetWidth;
-            panel.classList.add('pulse-success');
+            panel.classList.remove('pulse-success'); void panel.offsetWidth; panel.classList.add('pulse-success');
         }
 
         function checkCurrentStage() {
@@ -1536,812 +906,267 @@
             else if (currentStage === 2) checkStage2();
             else if (currentStage === 3) checkStage3();
             else if (currentStage === 4) checkStage4();
+            else if (currentStage === 5) checkStage5();
         }
 
+        // --- Stage 1: Factoring ---
+        function setupStage1() {
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 1:</strong> Запишете неравенството напълно разложено (като произведение или частно от множители).";
+            document.getElementById('factored-input').value = '';
+            document.getElementById('factored-input').disabled = false;
+            // Focus
+            setTimeout(()=>document.getElementById('factored-input').focus(), 100);
+        }
+
+        function checkStage1() {
+            let input = document.getElementById('factored-input').value;
+            if(!input) { showError("Моля, въведете разложеното неравенство."); return; }
+
+            let u = input.replace(/\s+/g, '').toLowerCase().replace('=>', '>=').replace('=<', '<=');
+            let op = currentProblem.opStr.replace('\\le', '<=').replace('\\ge', '>=');
+            
+            if(!u.includes(op)) { showError("Знакът на неравенството липсва или е грешен!"); return; }
+            let leftSide = u.substring(0, u.indexOf(op));
+            
+            if(/[^x\d\(\)\+\-\*\/\^\.]/.test(leftSide)) { showError("Въведени са невалидни символи."); return; }
+            if(!leftSide.includes('(') && currentProblem.roots.length > 1) { showError("Запишете израза чрез скоби като произведение."); return; }
+
+            let s = leftSide.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1').replace(/\^/g, '**');
+
+            let isCorrect = true;
+            let testVals = [0.123, 1.456, -2.789, 3.141, -0.555, 10.1];
+            for(let x of testVals) {
+                let expected = evaluateProblem(currentProblem, x);
+                let actual = null;
+                try { actual = Function("x", `"use strict"; return (${s});`)(x); } catch(e) { isCorrect = false; break; }
+                if(actual === null || isNaN(actual) || Math.abs(expected - actual) > 0.001) { isCorrect = false; break; }
+            }
+
+            if(isCorrect) {
+                showSuccess("Отлично! Разлагането е вярно.");
+                document.getElementById('factored-input').disabled = true;
+                document.getElementById('current-expr').innerHTML = getPerfectFactoredHtml(currentProblem);
+                
+                setTimeout(() => { currentStage = 2; updateStageUI(); setupStage2(); }, 1200);
+            } else {
+                showError("Изразът не е еквивалентен. Опитайте пак.");
+            }
+        }
+
+        // --- Helper for positions on number line ---
         function getLeftPercent(val, minRoot, maxRoot) {
             let span = Math.max(maxRoot - minRoot, 4);
             let pMin = minRoot - span * 0.2;
             let pMax = maxRoot + span * 0.2;
-            return ((val - pMin) / (pMax - pMin)) * 80 + 10;
+            return ((val - pMin) / (pMax - pMin)) * 100;
         }
 
-        function setupStage1() {
-            document.getElementById('instruction-text').innerHTML =
-                "<b>Стъпка 1:</b> Нанеси корените на числовата ос. Кликни върху всяко кръгче, за да го направиш плътно (ако коренът е включен) или празно (ако е изключен).";
-
-            let nl = document.getElementById('nl-container');
-            nl.querySelectorAll('.root-marker, .root-label, .parity-badge, .sign-btn-large, .interval-arc').forEach(e => e.remove());
-
-            let minR = currentProblem.roots[0];
-            let maxR = currentProblem.roots[currentProblem.roots.length - 1];
-
-            currentProblem.roots.forEach((r) => {
-                let f = currentProblem.allFactors.find(x => x.root === r);
-                let leftP = getLeftPercent(r, minR, maxR);
-
-                let mk = document.createElement('div');
-                mk.className = 'root-marker unknown';
-                mk.style.left = `${leftP}%`;
-                mk.dataset.root = r;
-                mk.dataset.pos = f.pos;
-                mk.onclick = function() {
-                    if (this.classList.contains('unknown')) {
-                        this.className = 'root-marker strict';
-                    } else if (this.classList.contains('strict')) {
-                        this.className = 'root-marker non-strict';
-                    } else {
-                        this.className = 'root-marker unknown';
-                    }
-                };
-                nl.appendChild(mk);
-
-                let lb = document.createElement('div');
-                lb.className = 'root-label';
-                lb.style.left = `${leftP}%`;
-                lb.innerText = r;
-                nl.appendChild(lb);
-            });
-        }
-
-        function checkStage1() {
-            let markers = document.getElementById('nl-container').querySelectorAll('.root-marker');
-            let allCorrect = true;
-
-            markers.forEach(mk => {
-                let pos = mk.dataset.pos;
-                let isSolid = mk.classList.contains('non-strict');
-                let isEmpty = mk.classList.contains('strict');
-                let expectedSolid = (!currentProblem.isStrict && pos === 'num');
-
-                if (mk.classList.contains('unknown')) allCorrect = false;
-                else if (expectedSolid && !isSolid) allCorrect = false;
-                else if (!expectedSolid && !isEmpty) allCorrect = false;
-            });
-
-            if (allCorrect) {
-                if (document.getElementById('btn-check').disabled) return;
-                document.getElementById('btn-check').disabled = true;
-
-                showSuccess("Браво! Всички корени са маркирани правилно.");
-                markers.forEach(mk => mk.onclick = null);
-
-                setTimeout(() => {
-                    currentStage = 2;
-                    updateStageUI();
-                    setupStage2();
-                    document.getElementById('btn-check').disabled = false;
-                }, 1200);
-            } else {
-                showError("Има грешка. При строги неравенства (<, >) всички са празни. При нестроги (≤, ≥) числителят е плътен, а знаменателят винаги е празен.");
-            }
-        }
-
+        // --- Stage 2: Roots on Number Line ---
         function setupStage2() {
-            document.getElementById('instruction-text').innerHTML =
-                "<b>Стъпка 2:</b> Определи кратността на всеки корен (Четна или Нечетна).";
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 2:</strong> Кликнете върху корените. Плътно = включен, Празно = изключен (напр. знаменател).";
+            let nlContainer = document.getElementById('nl-container');
+            nlContainer.querySelectorAll('.root-marker, .root-label, .parity-badge, .sign-btn-large').forEach(el => el.remove());
 
-            let nl = document.getElementById('nl-container');
-            nl.querySelectorAll('.parity-badge').forEach(e => e.remove());
-
-            let minR = currentProblem.roots[0];
-            let maxR = currentProblem.roots[currentProblem.roots.length - 1];
+            userRootsState = {};
+            let minR = Math.min(...currentProblem.roots, -2);
+            let maxR = Math.max(...currentProblem.roots, 2);
 
             currentProblem.roots.forEach(r => {
-                let f = currentProblem.allFactors.find(x => x.root === r);
-                let leftP = getLeftPercent(r, minR, maxR);
-
-                let badge = document.createElement('div');
-                badge.className = 'parity-badge';
-                badge.style.left = `${leftP}%`;
-
-                let select = document.createElement('select');
-                select.className = 'parity-select';
-                select.dataset.root = r;
-                select.dataset.mult = f.mult;
-                select.innerHTML = `
-                    <option value="?">Избери...</option>
-                    <option value="odd">Нечетна</option>
-                    <option value="even">Четна</option>
-                `;
-
-                badge.appendChild(select);
-                nl.appendChild(badge);
+                userRootsState[r] = 'unknown';
+                let pos = getLeftPercent(r, minR, maxR);
+                let marker = document.createElement('div');
+                marker.className = 'root-marker unknown';
+                marker.style.left = pos + '%';
+                marker.onclick = () => {
+                    if(userRootsState[r] === 'unknown') { userRootsState[r] = 'strict'; marker.className = 'root-marker strict'; }
+                    else if(userRootsState[r] === 'strict') { userRootsState[r] = 'non-strict'; marker.className = 'root-marker non-strict'; }
+                    else { userRootsState[r] = 'unknown'; marker.className = 'root-marker unknown'; }
+                };
+                let label = document.createElement('div'); label.className = 'root-label'; label.style.left = pos + '%'; label.innerText = r;
+                nlContainer.appendChild(marker); nlContainer.appendChild(label);
             });
         }
 
         function checkStage2() {
-            let selects = document.getElementById('nl-container').querySelectorAll('.parity-select');
-            let allCorrect = true;
-
-            selects.forEach(sel => {
-                let isEven = parseInt(sel.dataset.mult, 10) % 2 === 0;
-                let val = sel.value;
-
-                sel.classList.remove('wrong');
-
-                if (val === "?") {
-                    allCorrect = false;
-                } else if ((isEven && val !== "even") || (!isEven && val !== "odd")) {
-                    allCorrect = false;
-                    sel.classList.add('wrong');
-                } else {
-                    sel.classList.add('correct');
-                }
+            if(Object.values(userRootsState).includes('unknown')) { showError('Избери вид за всички корени (плътно/празно).'); return; }
+            let correct = true;
+            currentProblem.rootData.forEach(r => {
+                let expected = (r.pos === 'num' && !currentProblem.isStrict) ? 'non-strict' : 'strict';
+                if(userRootsState[r.root] !== expected) correct = false;
             });
 
-            if (allCorrect) {
-                if (document.getElementById('btn-check').disabled) return;
-                document.getElementById('btn-check').disabled = true;
-
-                showSuccess("Точно така! Нечетните степени променят знака, а четните го запазват.");
-                setTimeout(() => {
-                    currentStage = 3;
-                    updateStageUI();
-                    setupStage3();
-                    document.getElementById('btn-check').disabled = false;
-                }, 1200);
-            } else {
-                showError("Провери отново степените. Четна степен (2, 4...) → Четна. Нечетна степен (1, 3, 5...) → Нечетна.");
-            }
+            if(correct) {
+                document.querySelectorAll('.root-marker').forEach(el => el.style.pointerEvents = 'none');
+                showSuccess('Браво! Корените са нанесени правилно.');
+                setTimeout(() => { currentStage = 3; updateStageUI(); setupStage3(); }, 1000);
+            } else { showError('Има грешка. Знаменателят ВИНАГИ е с празни корени. Строгите неравенства (>, <) също!'); }
         }
 
-        function evalExpressionAt(x) {
-            let val = currentProblem.globalSign !== undefined ? currentProblem.globalSign : 1;
-
-            for (let f of currentProblem.allFactors) {
-                let term = f.isNeg ? (f.root - x) : (x - f.root);
-                let part = Math.pow(term, f.mult);
-
-                if (f.pos === 'den' && part === 0) return NaN;
-                if (f.pos === 'den') val /= part;
-                else val *= part;
-            }
-
-            return val;
-        }
-
-        function satisfiesCurrentInequality(val) {
-            if (Number.isNaN(val)) return false;
-            if (currentProblem.opIdx === 0) return val < 0;
-            if (currentProblem.opIdx === 1) return val <= 0;
-            if (currentProblem.opIdx === 2) return val > 0;
-            return val >= 0;
-        }
-
+        // --- Stage 3: Parity (Multiplicity) ---
         function setupStage3() {
-            document.getElementById('instruction-text').innerHTML =
-                "<b>Стъпка 3:</b> Определи знака на израза във всеки интервал. Кликни върху кръгчетата над интервалите.";
-
-            let nl = document.getElementById('nl-container');
-            nl.querySelectorAll('.sign-btn-large, .interval-arc').forEach(e => e.remove());
-
-            let roots = currentProblem.roots;
-            let minR = roots[0];
-            let maxR = roots[roots.length - 1];
-
-            let pFirstRoot = getLeftPercent(roots[0], minR, maxR);
-            let pLastRoot = getLeftPercent(roots[roots.length - 1], minR, maxR);
-
-            let intervals = [];
-            intervals.push({
-                testX: roots[0] - 1,
-                centerP: (5 + pFirstRoot) / 2,
-                leftBound: 5,
-                rightBound: pFirstRoot
-            });
-
-            for (let i = 0; i < roots.length - 1; i++) {
-                let midX = (roots[i] + roots[i + 1]) / 2;
-                intervals.push({
-                    testX: midX,
-                    centerP: getLeftPercent(midX, minR, maxR),
-                    leftBound: getLeftPercent(roots[i], minR, maxR),
-                    rightBound: getLeftPercent(roots[i + 1], minR, maxR)
-                });
-            }
-
-            intervals.push({
-                testX: roots[roots.length - 1] + 1,
-                centerP: (pLastRoot + 95) / 2,
-                leftBound: pLastRoot,
-                rightBound: 95
-            });
-
-            intervals.forEach((inv) => {
-                let btn = document.createElement('button');
-                btn.className = 'sign-btn-large';
-                btn.style.left = `${inv.centerP}%`;
-                btn.innerText = "?";
-
-                let actualVal = evalExpressionAt(inv.testX);
-                btn.dataset.actualSign = actualVal > 0 ? '+' : '-';
-
-                btn.onclick = function() {
-                    if (this.innerText === "?") {
-                        this.innerText = "+";
-                        this.classList.add('plus');
-                        this.classList.remove('minus');
-                    } else if (this.innerText === "+") {
-                        this.innerText = "−";
-                        this.classList.remove('plus');
-                        this.classList.add('minus');
-                    } else {
-                        this.innerText = "?";
-                        this.classList.remove('plus', 'minus');
-                    }
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 3:</strong> Определете кратността на всеки корен (четна или нечетна).";
+            userParityState = {};
+            let minR = Math.min(...currentProblem.roots, -2); let maxR = Math.max(...currentProblem.roots, 2);
+            
+            currentProblem.roots.forEach(r => {
+                userParityState[r] = null;
+                let pos = getLeftPercent(r, minR, maxR);
+                let badge = document.createElement('div'); badge.className = 'parity-badge'; badge.style.left = pos + '%';
+                let btn = document.createElement('button'); btn.className = 'parity-select'; btn.innerText = "Избери";
+                btn.onclick = () => {
+                    if(!userParityState[r]) { userParityState[r] = 'even'; btn.innerText = "Четна"; }
+                    else if(userParityState[r] === 'even') { userParityState[r] = 'odd'; btn.innerText = "Нечетна"; }
+                    else { userParityState[r] = null; btn.innerText = "Избери"; }
                 };
-
-                nl.appendChild(btn);
-
-                let arc = document.createElement('div');
-                arc.className = 'interval-arc';
-                arc.dataset.sign = btn.dataset.actualSign;
-                arc.style.left = `${inv.leftBound + 0.7}%`;
-                arc.style.width = `${Math.max(inv.rightBound - inv.leftBound - 1.4, 2)}%`;
-                nl.appendChild(arc);
+                badge.appendChild(btn); document.getElementById('nl-container').appendChild(badge);
             });
         }
 
         function checkStage3() {
-            let nl = document.getElementById('nl-container');
-            let signBtns = nl.querySelectorAll('.sign-btn-large');
-            let arcs = nl.querySelectorAll('.interval-arc');
-            let allCorrect = true;
-
-            signBtns.forEach(btn => {
-                let userSign = btn.innerText === "−" ? "-" : btn.innerText;
-                if (userSign !== btn.dataset.actualSign) {
-                    allCorrect = false;
-                }
+            if(Object.values(userParityState).includes(null)) { showError("Моля, изберете кратност за всички корени."); return; }
+            let correct = true;
+            currentProblem.rootData.forEach(r => {
+                let isEven = r.mult % 2 === 0;
+                let userChoice = userParityState[r.root];
+                if((isEven && userChoice !== 'even') || (!isEven && userChoice !== 'odd')) correct = false;
             });
 
-            if (allCorrect) {
-                if (document.getElementById('btn-check').disabled) return;
-                document.getElementById('btn-check').disabled = true;
-
-                showSuccess("Чудесно! Знаците по интервалите са определени вярно.");
-
-                document.querySelectorAll('#nl-container .parity-badge').forEach(el => el.classList.add('hidden'));
-
-                signBtns.forEach(btn => {
-                    btn.onclick = null;
-                    btn.style.top = 'calc(50% - 16px)';
-                });
-
-                arcs.forEach(arc => {
-                    arc.style.top = 'calc(50% - 60px)';
-                    arc.style.height = '60px';
-                    arc.style.borderBottom = 'none';
-                    arc.style.borderTopLeftRadius = '50% 100%';
-                    arc.style.borderTopRightRadius = '50% 100%';
-                    arc.style.borderBottomLeftRadius = '0';
-                    arc.style.borderBottomRightRadius = '0';
-
-                    if (arc.dataset.sign === '+') {
-                        arc.style.border = '2.5px solid var(--success)';
-                        arc.style.borderBottom = 'none';
-                    } else {
-                        arc.style.border = '2.5px solid var(--danger)';
-                        arc.style.borderBottom = 'none';
-                    }
-
-                    requestAnimationFrame(() => arc.classList.add('show'));
-                });
-
-                setTimeout(() => {
-                    currentStage = 4;
-                    updateStageUI();
-                    setupStage4();
-                    document.getElementById('btn-check').disabled = false;
-                }, 1300);
-            } else {
-                showError("Има грешка в знаците. Използвай правилото: при нечетна кратност знакът се сменя, при четна се запазва.");
-            }
+            if(correct) {
+                document.querySelectorAll('.parity-select').forEach(b => b.classList.add('correct'));
+                showSuccess("Супер! Кратността е определена точно.");
+                setTimeout(() => { currentStage = 4; updateStageUI(); setupStage4(); }, 1000);
+            } else { showError("Има грешка в кратността. (Ако степента е 2, 4 -> четна, ако е 1, 3 -> нечетна)"); }
         }
 
-        function canRootBeIncludedByValue(root) {
-            if (currentProblem.isStrict) return false;
-            let f = currentProblem.allFactors.find(x => x.root === root);
-            return !!f && f.pos === 'num';
-        }
-
-        function getSolutionData() {
-            let roots = currentProblem.roots.slice();
-            let rootIncluded = roots.map(r => canRootBeIncludedByValue(r));
-
-            let segmentIncluded = [];
-            for (let i = 0; i <= roots.length; i++) {
-                let testX;
-                if (i === 0) testX = roots[0] - 1;
-                else if (i === roots.length) testX = roots[roots.length - 1] + 1;
-                else testX = (roots[i - 1] + roots[i]) / 2;
-
-                segmentIncluded.push(satisfiesCurrentInequality(evalExpressionAt(testX)));
-            }
-
-            return { roots, rootIncluded, segmentIncluded };
-        }
-
-        function intervalText(segIdx, leftClosed, rightClosed, roots) {
-            let leftSymbol = leftClosed ? '[' : '(';
-            let rightSymbol = rightClosed ? ']' : ')';
-            let leftValue = segIdx === 0 ? '-∞' : roots[segIdx - 1];
-            let rightValue = segIdx === roots.length ? '+∞' : roots[segIdx];
-            return `${leftSymbol}${leftValue}; ${rightValue}${rightSymbol}`;
-        }
-
-        function renderSegmentBox(box, roots) {
-            const segIdx = parseInt(box.dataset.segIdx, 10);
-            const leftClosed = box.dataset.leftClosed === '1';
-            const rightClosed = box.dataset.rightClosed === '1';
-            const leftCanClose = box.dataset.leftCanClose === '1';
-            const rightCanClose = box.dataset.rightCanClose === '1';
-
-            const leftValue = segIdx === 0 ? '-∞' : roots[segIdx - 1];
-            const rightValue = segIdx === roots.length ? '+∞' : roots[segIdx];
-
-            const leftBracket = document.createElement('span');
-            leftBracket.className = 'interval-bracket left ' + (leftCanClose ? 'can-close' : 'locked');
-            leftBracket.textContent = leftClosed ? '[' : '(';
-            leftBracket.title = leftCanClose ? 'Клик за смяна на скобата' : '';
-
-            leftBracket.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (!leftCanClose) return;
-                box.dataset.leftClosed = box.dataset.leftClosed === '1' ? '0' : '1';
-                renderSegmentBox(box, roots);
-            });
-
-            const middle = document.createElement('span');
-            middle.className = 'interval-middle';
-            middle.textContent = `${leftValue}; ${rightValue}`;
-
-            const rightBracket = document.createElement('span');
-            rightBracket.className = 'interval-bracket right ' + (rightCanClose ? 'can-close' : 'locked');
-            rightBracket.textContent = rightClosed ? ']' : ')';
-            rightBracket.title = rightCanClose ? 'Клик за смяна на скобата' : '';
-
-            rightBracket.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (!rightCanClose) return;
-                box.dataset.rightClosed = box.dataset.rightClosed === '1' ? '0' : '1';
-                renderSegmentBox(box, roots);
-            });
-
-            box.innerHTML = '';
-            box.appendChild(leftBracket);
-            box.appendChild(middle);
-            box.appendChild(rightBracket);
-        }
-
-        function createSegmentBox(segIdx, roots) {
-            let box = document.createElement('div');
-            box.className = 'interval-box interval-segment';
-            box.id = `seg-box-${segIdx}`;
-
-            const leftCanClose = segIdx > 0 && canRootBeIncludedByValue(roots[segIdx - 1]);
-            const rightCanClose = segIdx < roots.length && canRootBeIncludedByValue(roots[segIdx]);
-
-            box.dataset.segIdx = segIdx;
-            box.dataset.selected = '0';
-            box.dataset.leftClosed = '0';
-            box.dataset.rightClosed = '0';
-            box.dataset.leftCanClose = leftCanClose ? '1' : '0';
-            box.dataset.rightCanClose = rightCanClose ? '1' : '0';
-
-            renderSegmentBox(box, roots);
-
-            box.addEventListener('click', function() {
-                const selected = this.dataset.selected === '1';
-                this.dataset.selected = selected ? '0' : '1';
-                this.classList.toggle('selected', !selected);
-            });
-
-            return box;
-        }
-
-        function toggleSimpleBox(box) {
-            box.classList.toggle('selected');
-        }
-
+        // --- Stage 4: Signs ---
         function setupStage4() {
-            document.getElementById('instruction-text').innerHTML =
-                "<b>Стъпка 4:</b> Избери множеството от решения. Клик върху интервал → избира/премахва. Клик върху скоба → сменя я на кръгла/квадратна, когато това е допустимо.";
-
-            let container = document.getElementById('interval-container');
-            container.innerHTML = '';
-
-            let data = getSolutionData();
-
-            let grid = document.createElement('div');
-            grid.className = 'interval-grid';
-
-            for (let i = 0; i <= data.roots.length; i++) {
-                grid.appendChild(createSegmentBox(i, data.roots));
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 4:</strong> Поставете знаците (+ или -) във всеки интервал.";
+            let roots = currentProblem.roots;
+            let minR = Math.min(...roots, -2); let maxR = Math.max(...roots, 2);
+            let centers = [];
+            if(roots.length === 0) centers.push(0);
+            else {
+                centers.push(roots[0] - 1);
+                for(let i=0; i<roots.length-1; i++) centers.push((roots[i] + roots[i+1])/2);
+                centers.push(roots[roots.length-1] + 1);
             }
 
-            container.appendChild(grid);
-
-            let canHavePointBoxes = data.roots.some(r => canRootBeIncludedByValue(r));
-            if (canHavePointBoxes) {
-                let pointTitle = document.createElement('p');
-                pointTitle.style.textAlign = 'center';
-                pointTitle.style.fontWeight = 'bold';
-                pointTitle.style.marginTop = '20px';
-                pointTitle.style.marginBottom = '10px';
-                pointTitle.style.color = 'var(--primary)';
-                pointTitle.innerText = 'Отделни точки (ако има такива):';
-                container.appendChild(pointTitle);
-
-                let pointGrid = document.createElement('div');
-                pointGrid.className = 'interval-grid';
-
-                data.roots.forEach((r, idx) => {
-                    if (canRootBeIncludedByValue(r)) {
-                        let box = document.createElement('div');
-                        box.className = 'interval-box';
-                        box.id = `point-box-${idx}`;
-                        box.innerText = `{${r}}`;
-                        box.onclick = function() { toggleSimpleBox(this); };
-                        pointGrid.appendChild(box);
-                    }
-                });
-
-                container.appendChild(pointGrid);
-            }
-
-            let specialGrid = document.createElement('div');
-            specialGrid.className = 'interval-grid';
-            specialGrid.style.marginTop = '20px';
-
-            let noSol = document.createElement('div');
-            noSol.className = 'interval-box no-sol-box';
-            noSol.id = 'no-solution-box';
-            noSol.innerText = 'Няма решение';
-            noSol.onclick = function() { toggleSimpleBox(this); };
-            specialGrid.appendChild(noSol);
-
-            let allReal = document.createElement('div');
-            allReal.className = 'interval-box all-sol-box';
-            allReal.id = 'all-real-box';
-            allReal.innerText = 'Всички реални числа';
-            allReal.onclick = function() { toggleSimpleBox(this); };
-            specialGrid.appendChild(allReal);
-
-            container.appendChild(specialGrid);
-        }
-
-        function isNoSolution(data) {
-            return !data.segmentIncluded.some(Boolean) && !data.rootIncluded.some(Boolean);
-        }
-
-        function isAllReal(data) {
-            return data.segmentIncluded.every(Boolean) && data.rootIncluded.every(Boolean);
+            userSignsState = new Array(centers.length).fill(0);
+            centers.forEach((c, idx) => {
+                let perc = getLeftPercent(c, minR, maxR);
+                perc = Math.max(5, Math.min(95, perc)); // keep inside
+                let btn = document.createElement('button'); btn.className = 'sign-btn-large'; btn.style.left = perc + '%'; btn.innerText = '?';
+                btn.onclick = () => {
+                    if(userSignsState[idx] === 0 || userSignsState[idx] === -1) { userSignsState[idx] = 1; btn.innerText = '+'; btn.className = 'sign-btn-large plus'; }
+                    else { userSignsState[idx] = -1; btn.innerText = '-'; btn.className = 'sign-btn-large minus'; }
+                };
+                document.getElementById('nl-container').appendChild(btn);
+            });
         }
 
         function checkStage4() {
-            let data = getSolutionData();
-
-            let noSolBox = document.getElementById('no-solution-box');
-            let allRealBox = document.getElementById('all-real-box');
-
-            let noSolSelected = noSolBox.classList.contains('selected');
-            let allRealSelected = allRealBox.classList.contains('selected');
-
-            let expectedNoSol = isNoSolution(data);
-            let expectedAllReal = isAllReal(data);
-
-            let allCorrect = true;
-
-            if (expectedNoSol) {
-                let anySegSelected = false;
-                for (let i = 0; i <= data.roots.length; i++) {
-                    let box = document.getElementById(`seg-box-${i}`);
-                    if (box.dataset.selected === '1') anySegSelected = true;
-                }
-
-                let anyPointSelected = false;
-                data.roots.forEach((r, idx) => {
-                    let p = document.getElementById(`point-box-${idx}`);
-                    if (p && p.classList.contains('selected')) anyPointSelected = true;
-                });
-
-                allCorrect = noSolSelected && !allRealSelected && !anySegSelected && !anyPointSelected;
-            } else if (expectedAllReal) {
-                let atomicCorrect = true;
-
-                for (let i = 0; i <= data.roots.length; i++) {
-                    let box = document.getElementById(`seg-box-${i}`);
-
-                    let actualText = null;
-                    if (box.dataset.selected === '1') {
-                        actualText = intervalText(
-                            i,
-                            box.dataset.leftClosed === '1',
-                            box.dataset.rightClosed === '1',
-                            data.roots
-                        );
-                    }
-
-                    let expectedText = intervalText(
-                        i,
-                        i > 0 ? data.rootIncluded[i - 1] : false,
-                        i < data.roots.length ? data.rootIncluded[i] : false,
-                        data.roots
-                    );
-
-                    if (actualText !== expectedText) atomicCorrect = false;
-                }
-
-                data.roots.forEach((r, idx) => {
-                    let p = document.getElementById(`point-box-${idx}`);
-                    if (p && p.classList.contains('selected')) atomicCorrect = false;
-                });
-
-                allCorrect = (allRealSelected && !noSolSelected) || (atomicCorrect && !noSolSelected && !allRealSelected);
-            } else {
-                if (noSolSelected || allRealSelected) allCorrect = false;
-
-                for (let i = 0; i <= data.roots.length; i++) {
-                    let box = document.getElementById(`seg-box-${i}`);
-
-                    let actualText = null;
-                    if (box.dataset.selected === '1') {
-                        actualText = intervalText(
-                            i,
-                            box.dataset.leftClosed === '1',
-                            box.dataset.rightClosed === '1',
-                            data.roots
-                        );
-                    }
-
-                    let expectedText = null;
-                    if (data.segmentIncluded[i]) {
-                        expectedText = intervalText(
-                            i,
-                            i > 0 ? data.rootIncluded[i - 1] : false,
-                            i < data.roots.length ? data.rootIncluded[i] : false,
-                            data.roots
-                        );
-                    }
-
-                    if (expectedText === null && actualText !== null) allCorrect = false;
-                    if (expectedText !== null && actualText !== expectedText) allCorrect = false;
-                }
-
-                data.roots.forEach((r, idx) => {
-                    let p = document.getElementById(`point-box-${idx}`);
-                    if (p) {
-                        let expectedPoint = data.rootIncluded[idx] && !data.segmentIncluded[idx] && !data.segmentIncluded[idx + 1];
-                        let selected = p.classList.contains('selected');
-                        if (expectedPoint !== selected) allCorrect = false;
-                    }
-                });
+            if(userSignsState.includes(0)) { showError("Въведете знаци за всички интервали!"); return; }
+            let roots = currentProblem.roots;
+            let testPoints = [];
+            if(roots.length === 0) testPoints.push(0);
+            else {
+                testPoints.push(roots[0] - 1);
+                for(let i=0; i<roots.length-1; i++) testPoints.push((roots[i] + roots[i+1])/2);
+                testPoints.push(roots[roots.length-1] + 1);
             }
 
-            if (allCorrect) {
-                showSuccess("Отлично! Решението е избрано правилно.");
-                setTimeout(() => {
-                    showFinalScreen();
-                }, 1100);
-            } else {
-                showError("Има неточност в избраното множество от решения. Провери отново интервалите, скобите и евентуалните отделни точки.");
-            }
-        }
-
-        function buildCanonicalAnswerString(data) {
-            if (isNoSolution(data)) return '∅';
-            if (isAllReal(data)) return 'ℝ';
-
-            let atoms = [];
-            for (let i = 0; i <= data.roots.length; i++) {
-                atoms.push({ type: 'segment', idx: i, included: data.segmentIncluded[i] });
-                if (i < data.roots.length) {
-                    atoms.push({ type: 'root', idx: i, included: data.rootIncluded[i] });
-                }
-            }
-
-            let pieces = [];
-            let i = 0;
-
-            while (i < atoms.length) {
-                if (!atoms[i].included) {
-                    i++;
-                    continue;
-                }
-
-                let start = i;
-                while (i + 1 < atoms.length && atoms[i + 1].included) i++;
-                let end = i;
-
-                let startAtom = atoms[start];
-                let endAtom = atoms[end];
-
-                let leftSymbol, leftValue, rightSymbol, rightValue;
-
-                if (startAtom.type === 'segment') {
-                    if (startAtom.idx === 0) {
-                        leftSymbol = '(';
-                        leftValue = '-∞';
-                    } else {
-                        leftSymbol = '(';
-                        leftValue = data.roots[startAtom.idx - 1];
-                    }
-                } else {
-                    leftSymbol = '[';
-                    leftValue = data.roots[startAtom.idx];
-                }
-
-                if (endAtom.type === 'segment') {
-                    if (endAtom.idx === data.roots.length) {
-                        rightSymbol = ')';
-                        rightValue = '+∞';
-                    } else {
-                        rightSymbol = ')';
-                        rightValue = data.roots[endAtom.idx];
-                    }
-                } else {
-                    rightSymbol = ']';
-                    rightValue = data.roots[endAtom.idx];
-                }
-
-                if (startAtom.type === 'root' && endAtom.type === 'root' && start === end) {
-                    pieces.push(`{${leftValue}}`);
-                } else {
-                    pieces.push(`${leftSymbol}${leftValue}; ${rightValue}${rightSymbol}`);
-                }
-
-                i++;
-            }
-
-            return pieces.join(' ∪ ');
-        }
-
-        function renderFinalNumberLine(data) {
-            let holder = document.getElementById('final-number-line-container');
-            holder.innerHTML = `
-                <div class="number-line-container" id="final-nl">
-                    <div class="number-line"></div>
-                    <div class="arrow right"></div>
-                </div>
-            `;
-
-            let nl = document.getElementById('final-nl');
-            let roots = data.roots;
-            let minR = roots[0];
-            let maxR = roots[roots.length - 1];
-
-            let pFirstRoot = getLeftPercent(roots[0], minR, maxR);
-            let pLastRoot = getLeftPercent(roots[roots.length - 1], minR, maxR);
-
-            for (let i = 0; i <= roots.length; i++) {
-                if (!data.segmentIncluded[i]) continue;
-
-                let leftBound, rightBound;
-                if (i === 0) {
-                    leftBound = 5;
-                    rightBound = pFirstRoot;
-                } else if (i === roots.length) {
-                    leftBound = pLastRoot;
-                    rightBound = 95;
-                } else {
-                    leftBound = getLeftPercent(roots[i - 1], minR, maxR);
-                    rightBound = getLeftPercent(roots[i], minR, maxR);
-                }
-
-                let arc = document.createElement('div');
-                arc.className = 'interval-arc show';
-                arc.style.left = `${leftBound + 0.7}%`;
-                arc.style.width = `${Math.max(rightBound - leftBound - 1.4, 2)}%`;
-                arc.style.border = '2.5px solid var(--success)';
-                arc.style.borderBottom = 'none';
-                arc.style.top = 'calc(50% - 60px)';
-                arc.style.height = '60px';
-                arc.style.opacity = '0.95';
-                arc.style.transform = 'scaleY(1)';
-                nl.appendChild(arc);
-            }
-
-            roots.forEach((r, idx) => {
-                let leftP = getLeftPercent(r, minR, maxR);
-
-                let mk = document.createElement('div');
-                mk.className = data.rootIncluded[idx] ? 'root-marker non-strict' : 'root-marker strict';
-                mk.style.left = `${leftP}%`;
-                nl.appendChild(mk);
-
-                let lb = document.createElement('div');
-                lb.className = 'root-label';
-                lb.style.left = `${leftP}%`;
-                lb.innerText = r;
-                nl.appendChild(lb);
+            let correct = true;
+            testPoints.forEach((x, idx) => {
+                let val = evaluateProblem(currentProblem, x);
+                let expSign = val > 0 ? 1 : -1;
+                if(userSignsState[idx] !== expSign) correct = false;
             });
+
+            if(correct) {
+                document.querySelectorAll('.sign-btn-large').forEach(b => b.style.pointerEvents = 'none');
+                showSuccess("Чудесно! Знаците са верни.");
+                setTimeout(() => { currentStage = 5; updateStageUI(); setupStage5(); }, 1000);
+            } else { showError("Грешка в знаците. Започнете от най-дясната част и редувайте спрямо кратността."); }
         }
 
-        function showFinalScreen() {
-            problemsSolved++;
-            document.getElementById('display-total-solved').innerText = problemsSolved;
+        // --- Stage 5: Intervals & Solution ---
+        function setupStage5() {
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 5:</strong> Маркирайте интервалите, които са решение, и нагласете скобите ( , ) или [ , ].";
+            let cont = document.getElementById('interval-container'); cont.innerHTML = '';
+            intervalData = [];
+            let roots = currentProblem.roots;
+            
+            for(let i=0; i<=roots.length; i++) {
+                let leftVal = i === 0 ? '-∞' : roots[i-1];
+                let rightVal = i === roots.length ? '+∞' : roots[i];
 
-            let data = getSolutionData();
+                let box = document.createElement('div'); box.className = 'interval-box';
+                let bL = document.createElement('span'); bL.className = 'interval-bracket ' + (i===0 ? 'locked':'can-close'); bL.innerText = '(';
+                let mid = document.createElement('span'); mid.className = 'interval-middle'; mid.innerText = `${leftVal}; ${rightVal}`;
+                let bR = document.createElement('span'); bR.className = 'interval-bracket ' + (i===roots.length ? 'locked':'can-close'); bR.innerText = ')';
+                box.appendChild(bL); box.appendChild(mid); box.appendChild(bR);
 
+                let isExpected = false;
+                if(currentProblem.opIdx === 0 || currentProblem.opIdx === 1) isExpected = userSignsState[i] === -1;
+                else isExpected = userSignsState[i] === 1;
+
+                let data = { selected: false, lBr: '(', rBr: ')', exp: isExpected, box, 
+                             needsCloseL: (i!==0 && userRootsState[roots[i-1]] === 'non-strict'),
+                             needsCloseR: (i!==roots.length && userRootsState[roots[i]] === 'non-strict') };
+                
+                bL.onclick = (e) => { e.stopPropagation(); if(i!==0) { data.lBr = data.lBr === '(' ? '[' : '('; bL.innerText = data.lBr; } };
+                bR.onclick = (e) => { e.stopPropagation(); if(i!==roots.length) { data.rBr = data.rBr === ')' ? ']' : ')'; bR.innerText = data.rBr; } };
+                box.onclick = () => { data.selected = !data.selected; box.classList.toggle('selected', data.selected); };
+
+                intervalData.push(data); cont.appendChild(box);
+            }
+        }
+
+        function checkStage5() {
+            let correct = true; let anySel = false;
+            intervalData.forEach(d => {
+                if(d.selected !== d.exp) correct = false;
+                if(d.selected) {
+                    anySel = true;
+                    if(d.needsCloseL && d.lBr !== '[') correct = false;
+                    if(!d.needsCloseL && d.lBr !== '(') correct = false;
+                    if(d.needsCloseR && d.rBr !== ']') correct = false;
+                    if(!d.needsCloseR && d.rBr !== ')') correct = false;
+                }
+            });
+
+            if(!anySel && intervalData.some(d=>d.exp)) { showError("Изберете поне един интервал."); return; }
+
+            if(correct) {
+                problemsSolved++;
+                document.getElementById('solved-display').innerText = problemsSolved;
+                triggerConfetti();
+                buildFinalScreen();
+            } else { showError("Грешка в избраните интервали или скобите. Проверете знака на неравенството и плътността на корените."); }
+        }
+
+        function buildFinalScreen() {
+            let parts = [];
+            intervalData.forEach((d, i) => {
+                if(d.selected) {
+                    let l = i===0 ? '-∞' : currentProblem.roots[i-1];
+                    let r = i===currentProblem.roots.length ? '+∞' : currentProblem.roots[i];
+                    parts.push(`${d.lBr}${l}; ${r}${d.rBr}`);
+                }
+            });
+            // Single point solutions
+            currentProblem.roots.forEach(r => {
+                let isSolid = userRootsState[r] === 'non-strict';
+                let isCovered = intervalData.some((d, i) => d.selected && ((i>0 && currentProblem.roots[i-1]===r && d.lBr==='[') || (i<currentProblem.roots.length && currentProblem.roots[i]===r && d.rBr===']')));
+                if(isSolid && !isCovered) parts.push(`{${r}}`);
+            });
+
+            document.getElementById('final-answer-string').innerText = parts.length > 0 ? "x ∈ " + parts.join(" ∪ ") : "Няма решение";
+            document.getElementById('final-expr-disp').innerHTML = getPerfectFactoredHtml(currentProblem);
+            
             document.getElementById('app-container').classList.add('hidden');
             document.getElementById('final-screen').classList.remove('hidden');
-
-            document.getElementById('final-expr-disp').innerHTML = renderExpression(currentProblem);
-            document.getElementById('final-answer-string').innerText = buildCanonicalAnswerString(data);
-            renderFinalNumberLine(data);
-
-            triggerConfetti();
-        }
-
-        function startTutorialAnimation() {
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('app-container').classList.add('hidden');
-            document.getElementById('final-screen').classList.add('hidden');
-            document.getElementById('tutorial-screen').classList.remove('hidden');
-
-            let canvas = document.getElementById('teacher-canvas');
-            let controls = document.getElementById('tut-controls');
-            controls.style.display = 'none';
-
-            canvas.innerHTML = `
-                <div class="tut-line" id="tl1"><strong>Идея:</strong> разделяме числовата ос на интервали според корените.</div>
-                <div class="tut-line" id="tl2">При <strong>нечетна кратност</strong> знакът се сменя. При <strong>четна</strong> се запазва.</div>
-                <div class="tut-line" id="tl3">При <strong>≤</strong> и <strong>≥</strong> нулите на числителя може да се включат, но нулите на знаменателя никога.</div>
-
-                <div class="tut-number-line-wrap" id="tut-nl-wrap">
-                    <div class="tut-line-draw" id="tut-axis"></div>
-                    <div class="tut-arrow" id="tut-arrow"></div>
-
-                    <div class="tut-point solid" id="tut-p1" style="left:30%;"></div>
-                    <div class="tut-plabel" id="tut-l1" style="left:30%;">-1</div>
-
-                    <div class="tut-point solid" id="tut-p2" style="left:70%;"></div>
-                    <div class="tut-plabel" id="tut-l2" style="left:70%;">2</div>
-
-                    <div class="tut-sign" id="tut-s1" style="left:18%; color:var(--success);">+</div>
-                    <div class="tut-sign" id="tut-s2" style="left:50%; color:var(--danger);">−</div>
-                    <div class="tut-sign" id="tut-s3" style="left:82%; color:var(--success);">+</div>
-                </div>
-
-                <div class="tut-line" id="tl4"><strong>Пример:</strong> (x + 1)(x - 2) ≥ 0</div>
-                <div class="tut-line" id="tl5">Знаците са <strong>+ | − | +</strong>, следователно решението е:</div>
-                <div class="tut-line" id="tl6" style="font-size:1.35rem; font-weight:700; color:var(--success);">(-∞; -1] ∪ [2; +∞)</div>
-            `;
-
-            let sequence = [
-                () => document.getElementById('tl1').classList.add('visible'),
-                () => document.getElementById('tl2').classList.add('visible'),
-                () => document.getElementById('tl3').classList.add('visible'),
-                () => {
-                    let wrap = document.getElementById('tut-nl-wrap');
-                    wrap.style.opacity = '1';
-                    document.getElementById('tut-axis').style.width = '80%';
-                    document.getElementById('tut-arrow').style.opacity = '1';
-                },
-                () => {
-                    document.getElementById('tut-p1').style.opacity = '1';
-                    document.getElementById('tut-l1').style.opacity = '1';
-                    document.getElementById('tut-p2').style.opacity = '1';
-                    document.getElementById('tut-l2').style.opacity = '1';
-                },
-                () => {
-                    document.getElementById('tut-s1').classList.add('show-sign');
-                    document.getElementById('tut-s2').classList.add('show-sign');
-                    document.getElementById('tut-s3').classList.add('show-sign');
-                },
-                () => document.getElementById('tl4').classList.add('visible'),
-                () => document.getElementById('tl5').classList.add('visible'),
-                () => document.getElementById('tl6').classList.add('visible'),
-                () => { controls.style.display = 'flex'; }
-            ];
-
-            sequence.forEach((fn, idx) => {
-                setTimeout(fn, idx * 700);
-            });
         }
     </script>
 </body>
 </html>
-
-
