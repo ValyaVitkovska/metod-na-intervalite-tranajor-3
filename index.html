@@ -319,6 +319,7 @@
     </header>
 
     <div class="container">
+        <!-- START SCREEN -->
         <div id="start-screen" class="panel">
             <div class="hero-image-box">
                 <img src="MIT.png" alt="Метод на интервалите" class="hero-main-image" onerror="this.style.display='none'">
@@ -396,6 +397,7 @@
             </div>
         </div>
 
+        <!-- TUTORIAL SCREEN -->
         <div id="tutorial-screen" class="panel hidden">
             <h2 style="color: var(--primary); margin-top: 0; text-align: center;">Указания и пример 👨‍🏫</h2>
             <div style="background: var(--bg2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
@@ -411,6 +413,7 @@
             </div>
         </div>
 
+        <!-- APP CONTAINER -->
         <div id="app-container" class="panel hidden">
             <div class="progress-bar">
                 <div class="stage-indicator active" id="ind-1">1. Разлагане</div>
@@ -425,12 +428,14 @@
 
             <div class="math-expr" id="current-expr"></div>
 
+            <!-- Stage 1 Input -->
             <div id="step-factor">
                 <div class="user-input-group">
                     <input type="text" id="factored-input" placeholder="Напр. (𝑥-1)(𝑥-3)/𝑥 > 0" autocomplete="off" inputmode="none">
                 </div>
             </div>
 
+            <!-- Stage 2-4 Number Line -->
             <div id="stage-area-1-3" class="hidden">
                 <div class="number-line-container" id="nl-container">
                     <div class="number-line"></div>
@@ -438,17 +443,21 @@
                 </div>
             </div>
 
+            <!-- Stage 5 Intervals -->
             <div id="stage-area-4" class="hidden">
                 <div class="interval-grid" id="interval-container"></div>
             </div>
 
+            <!-- Stage 6 Final Input -->
             <div id="step-solution" class="hidden">
                 <div class="user-input-group">
                     <input type="text" id="final-answer-input" placeholder="Напр. (-∞; -2] ∪ {3}" autocomplete="off" inputmode="none">
                 </div>
             </div>
 
+            <!-- УНИВЕРСАЛНА ВИРТУАЛНА КЛАВИАТУРА -->
             <div id="virtual-keyboard" class="virtual-keyboard hidden">
+                <!-- Row 1 -->
                 <button class="vk-btn highlight" onmousedown="event.preventDefault(); handleVirtualKey('𝑥')"><i>x</i></button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('²')">²</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('³')">³</button>
@@ -457,6 +466,7 @@
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('⁶')">⁶</button>
                 <button class="vk-btn action" onmousedown="event.preventDefault(); handleVirtualKey('backspace')">⌫</button>
 
+                <!-- Row 2 -->
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('(')">(</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey(')')">)</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('[')">[</button>
@@ -465,6 +475,7 @@
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('}')">}</button>
                 <button class="vk-btn action" onmousedown="event.preventDefault(); handleVirtualKey('clear')">C</button>
 
+                <!-- Row 3 -->
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('7')">7</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('8')">8</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('9')">9</button>
@@ -473,6 +484,7 @@
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('≤')">&le;</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('≥')">&ge;</button>
 
+                <!-- Row 4 -->
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('4')">4</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('5')">5</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('6')">6</button>
@@ -481,6 +493,7 @@
                 <button class="vk-btn highlight" onmousedown="event.preventDefault(); handleVirtualKey('∪')">∪</button>
                 <button class="vk-btn highlight" onmousedown="event.preventDefault(); handleVirtualKey('∅')">∅</button>
 
+                <!-- Row 5 -->
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('1')">1</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('2')">2</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('3')">3</button>
@@ -489,6 +502,7 @@
                 <button class="vk-btn highlight" onmousedown="event.preventDefault(); handleVirtualKey('*')">*</button>
                 <button class="vk-btn highlight" onmousedown="event.preventDefault(); handleVirtualKey('/')">/</button>
 
+                <!-- Row 6 -->
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('0')">0</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey('.')">.</button>
                 <button class="vk-btn" onmousedown="event.preventDefault(); handleVirtualKey(';')">;</button>
@@ -505,6 +519,7 @@
             </div>
         </div>
 
+        <!-- FINAL SCREEN -->
         <div id="final-screen" class="panel hidden" style="text-align: center;">
             <div style="font-size: 4.5rem; margin-bottom: 10px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">🏆</div>
             <h2 style="color: var(--success);">Поздравления!</h2>
@@ -528,6 +543,7 @@
         </div>
     </div>
 
+    <!-- Модален прозорец за потвърждение -->
     <div id="confirm-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="margin-top: 0; color: var(--primary);">Връщане в менюто</h3>
@@ -914,45 +930,47 @@
             return html;
         }
 
-        // Beautiful format for factored expression
-        function getPerfectFactoredHtml(p) {
-            let val100 = evaluateProblem(p, 100);
-            let sign = val100 > 0 ? 1 : -1;
+        // Custom formatting directly from user's input so it perfectly matches what they typed
+        function formatUserFraction(input, opStrHTML) {
+            let clean = input.replace(/\s+/g, '').replace(/=>/g, '>=').replace(/=</g, '<=').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/𝑥/g, 'x');
+            let op = currentProblem.opStr.replace('\\le', '<=').replace('\\ge', '>=');
+            let leftSide = clean.substring(0, clean.indexOf(op));
+            
+            let formatMath = (str) => {
+                return str.replace(/x/g, '<i>x</i>')
+                          .replace(/\*/g, '')
+                          .replace(/\^(\d+)/g, '<sup>$1</sup>')
+                          .replace(/⁰/g, '<sup>0</sup>')
+                          .replace(/¹/g, '<sup>1</sup>')
+                          .replace(/²/g, '<sup>2</sup>')
+                          .replace(/³/g, '<sup>3</sup>')
+                          .replace(/⁴/g, '<sup>4</sup>')
+                          .replace(/⁵/g, '<sup>5</sup>')
+                          .replace(/⁶/g, '<sup>6</sup>')
+                          .replace(/⁷/g, '<sup>7</sup>')
+                          .replace(/⁸/g, '<sup>8</sup>')
+                          .replace(/⁹/g, '<sup>9</sup>');
+            };
 
-            let numHtml = "", denHtml = "";
-            if(p.isBiquad) {
-                p.rootData.forEach(r => {
-                    let term = r.root === 0 ? "<i>x</i>" : (r.root > 0 ? `(<i>x</i> - ${r.root})` : `(<i>x</i> + ${Math.abs(r.root)})`);
-                    if (r.mult > 1) term += `<sup>${r.mult}</sup>`;
-                    numHtml += term;
-                });
+            let parts = leftSide.split('/');
+            if(parts.length === 2) {
+                let n = parts[0]; let d = parts[1];
+                if(n.startsWith('(') && n.endsWith(')') && checkParensBalance(n.slice(1,-1))) n = n.slice(1, -1);
+                if(d.startsWith('(') && d.endsWith(')') && checkParensBalance(d.slice(1,-1))) d = d.slice(1, -1);
+                return `<div class="fraction"><div class="num">${formatMath(n)}</div><div class="den">${formatMath(d)}</div></div> <div class="operator">${opStrHTML} 0</div>`;
             } else {
-                p.evalFactors.forEach(f => {
-                    let term = "";
-                    if (f.kind === 'linear') {
-                        term = f.root === 0 ? "<i>x</i>" : (f.root > 0 ? `(<i>x</i> - ${f.root})` : `(<i>x</i> + ${Math.abs(f.root)})`);
-                        if (f.power > 1) term += `<sup>${f.power}</sup>`;
-                    } else if (f.kind === 'quadratic') {
-                        if (f.discMode === 'negative') {
-                            term = `(${f.a}<i>x</i><sup>2</sup> ${f.b >= 0 ? '+ '+f.b : '- '+Math.abs(f.b)}<i>x</i> ${f.c >= 0 ? '+ '+f.c : '- '+Math.abs(f.c)})`;
-                        } else if (f.discMode === 'zero') {
-                            term = f.root === 0 ? "<i>x</i>" : (f.root > 0 ? `(<i>x</i> - ${f.root})` : `(<i>x</i> + ${Math.abs(f.root)})`);
-                            term += `<sup>${f.power * 2}</sup>`;
-                        } else if (f.discMode === 'positive') {
-                            let r1T = f.r1 === 0 ? `<i>x</i>` : (f.r1 > 0 ? `(<i>x</i> - ${f.r1})` : `(<i>x</i> + ${Math.abs(f.r1)})`);
-                            let r2T = f.r2 === 0 ? `<i>x</i>` : (f.r2 > 0 ? `(<i>x</i> - ${f.r2})` : `(<i>x</i> + ${Math.abs(f.r2)})`);
-                            if(f.power > 1) term = `${r1T}<sup>${f.power}</sup>${r2T}<sup>${f.power}</sup>`;
-                            else term = `${r1T}${r2T}`;
-                        }
-                    }
-                    if (f.pos === 'num') numHtml += term; else denHtml += term;
-                });
+                return `${formatMath(leftSide)} <div class="operator">${opStrHTML} 0</div>`;
             }
-            if (numHtml === "") numHtml = "1";
-            if (sign === -1) numHtml = "-" + numHtml;
-            let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][p.opIdx];
-            if (denHtml !== "") return `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div> <div class="operator">${opStrHTML} 0</div>`;
-            return `${numHtml} <div class="operator">${opStrHTML} 0</div>`;
+        }
+
+        function checkParensBalance(str) {
+            let count = 0;
+            for(let i=0; i<str.length; i++) {
+                if(str[i] === '(') count++;
+                if(str[i] === ')') count--;
+                if(count < 0) return false;
+            }
+            return count === 0;
         }
 
         function evaluateProblem(p, x) {
@@ -1009,14 +1027,14 @@
                 document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.remove('hidden');
-                document.getElementById('interval-container').style.pointerEvents = 'auto'; // allow visual clicks
+                document.getElementById('interval-container').style.pointerEvents = 'auto'; 
                 document.getElementById('step-solution').classList.add('hidden');
                 document.getElementById('virtual-keyboard').classList.add('hidden');
             } else if (currentStage === 6) {
                 document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.remove('hidden');
-                document.getElementById('interval-container').style.pointerEvents = 'none'; // disable clicks on intervals
+                document.getElementById('interval-container').style.pointerEvents = 'none'; 
                 document.getElementById('step-solution').classList.remove('hidden');
                 document.getElementById('virtual-keyboard').classList.remove('hidden');
             }
@@ -1061,13 +1079,21 @@
             if(!u.includes(op)) { showError("Знакът на неравенството липсва или е грешен!"); return; }
             let leftSide = u.substring(0, u.indexOf(op));
             
-            // Разрешаваме новите символи за степени в проверката
             if(/[^x\d\(\)\+\-\*\/\^\.\⁰\¹\²\³\⁴\⁵\⁶\⁷\⁸\⁹]/.test(leftSide)) { showError("Въведени са невалидни символи."); return; }
             if(!leftSide.includes('(') && currentProblem.roots.length > 1) { showError("Запишете израза чрез скоби като произведение."); return; }
 
-            let s = leftSide.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1');
-            
-            // Преобразуване на всички степени към разбираем за JavaScript формат (**)
+            // AUTO PARSE FRACTIONS WITHOUT EXTRA PARENS
+            let parts = leftSide.split('/');
+            let s = "";
+            if (parts.length > 2) {
+                showError("Моля, използвайте само една дробна черта (/)."); return;
+            } else if (parts.length === 2) {
+                s = `(${parts[0]})/(${parts[1]})`;
+            } else {
+                s = parts[0];
+            }
+
+            s = s.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1');
             s = s.replace(/⁰/g, '**0').replace(/¹/g, '**1').replace(/²/g, '**2').replace(/³/g, '**3').replace(/⁴/g, '**4').replace(/⁵/g, '**5').replace(/⁶/g, '**6').replace(/⁷/g, '**7').replace(/⁸/g, '**8').replace(/⁹/g, '**9').replace(/\^/g, '**');
 
             let isCorrect = true;
@@ -1082,7 +1108,9 @@
             if(isCorrect) {
                 showSuccess("Отлично! Разлагането е вярно.");
                 document.getElementById('factored-input').disabled = true;
-                document.getElementById('current-expr').innerHTML = getPerfectFactoredHtml(currentProblem);
+                
+                let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
+                document.getElementById('current-expr').innerHTML = formatUserFraction(input, opStrHTML);
                 
                 setTimeout(() => { currentStage = 2; updateStageUI(); setupStage2(); }, 1200);
             } else {
@@ -1275,7 +1303,7 @@
             if(!anySel && intervalData.some(d=>d.exp)) { showError("Изберете поне един интервал."); return; }
 
             if(correct) {
-                showSuccess("Браво! Сега запишете решението като интервал.");
+                showSuccess("Браво! Сега запишете решението математически.");
                 setTimeout(() => { currentStage = 6; updateStageUI(); setupStage6(); }, 1200);
             } else { showError("Грешка в избраните интервали или скобите."); }
         }
@@ -1293,7 +1321,6 @@
             s = s.replace(/x=/g, '');
             s = s.replace(/,/g, ';');
             
-            // Normalize infinity
             s = s.replace(/\+?∞/g, '∞'); // positive infinity to pure infinity
             s = s.replace(/∞/g, '+∞');   // set all to positive infinity
             s = s.replace(/-\+∞/g, '-∞');// fix the minus infinities
@@ -1330,18 +1357,20 @@
                 problemsSolved++;
                 document.getElementById('solved-display').innerText = problemsSolved;
                 triggerConfetti();
-                buildFinalScreen(expectedParts);
+                
+                // Set text for final screen
+                document.getElementById('final-answer-string').innerText = expectedParts.length > 0 ? "x ∈ " + expectedParts.join(" ∪ ") : "Няма решение (∅)";
+                
+                // Show user's input safely on the final screen
+                let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
+                let factoredInput = document.getElementById('factored-input').value;
+                document.getElementById('final-expr-disp').innerHTML = formatUserFraction(factoredInput, opStrHTML);
+                
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('final-screen').classList.remove('hidden');
             } else {
                 showError("Отговорът не е форматиран точно или е грешен. Проверете скобите и знаците за безкрайност!");
             }
-        }
-
-        function buildFinalScreen(expectedParts) {
-            document.getElementById('final-answer-string').innerText = expectedParts.length > 0 ? "x ∈ " + expectedParts.join(" ∪ ") : "Няма решение (∅)";
-            document.getElementById('final-expr-disp').innerHTML = getPerfectFactoredHtml(currentProblem);
-            
-            document.getElementById('app-container').classList.add('hidden');
-            document.getElementById('final-screen').classList.remove('hidden');
         }
     </script>
 </body>
