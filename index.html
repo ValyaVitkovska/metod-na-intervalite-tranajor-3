@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -13,7 +12,6 @@
     <meta property="og:type" content="website">
 
     <style>
-        /* ===== LIGHT THEME (default) ===== */
         :root {
             --primary: #1a2a3a;
             --secondary: #2c4a6e;
@@ -41,7 +39,6 @@
             color-scheme: light;
         }
 
-        /* ===== DARK THEME ===== */
         [data-theme="dark"] {
             --primary: #e2e8f0;
             --secondary: #93c5fd;
@@ -84,7 +81,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ===== ANIMATED BACKGROUND ===== */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -197,7 +193,6 @@
             border-color: var(--success) !important;
         }
 
-        /* HEADER & STATS */
         header {
             background: var(--header-bg);
             color: white;
@@ -337,7 +332,6 @@
             font-size: 0.65rem;
         }
 
-        /* MATH DISPLAY */
         .math-expr {
             font-size: 2rem;
             text-align: center;
@@ -392,7 +386,6 @@
             font-size: 2.2rem;
         }
 
-        /* NUMBER LINE & ARCS */
         .number-line-container {
             position: relative;
             height: 160px;
@@ -573,7 +566,6 @@
             box-shadow: 0 4px 10px rgba(239,68,68,0.3);
         }
 
-        /* INTERVAL SELECTOR */
         .interval-grid {
             display: flex;
             flex-wrap: wrap;
@@ -652,7 +644,6 @@
 
         .all-sol-box { background: rgba(59,130,246,0.05); }
 
-        /* CONTROLS */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -775,16 +766,12 @@
 
         .type-btn.t-linear { border-color: #3b82f6; }
         .type-btn.t-linear.active-type { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; }
-
         .type-btn.t-quad { border-color: #8b5cf6; }
         .type-btn.t-quad.active-type { background: linear-gradient(135deg, #f5f3ff, #ede9fe); color: #5b21b6; }
-
         .type-btn.t-frac { border-color: #10b981; }
         .type-btn.t-frac.active-type { background: linear-gradient(135deg, #f0fdf4, #dcfce7); color: #065f46; }
-
         .type-btn.t-mixed { border-color: #e11d48; }
         .type-btn.t-mixed.active-type { background: linear-gradient(135deg, #fff1f2, #ffe4e6); color: #9f1239; }
-
         .type-btn.t-biquad { border-color: #f59e0b; }
         .type-btn.t-biquad.active-type { background: linear-gradient(135deg, #fffbeb, #fde68a); color: #b45309; }
 
@@ -810,34 +797,6 @@
             background: rgba(16,185,129,0.1);
             color: var(--success);
             border: 2px solid var(--success);
-        }
-
-        .toast-msg {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-weight: bold;
-            font-size: 1.1rem;
-            animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-in 4.5s forwards;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 90vw;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to   { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; visibility: hidden; }
         }
 
         .celebration-overlay {
@@ -903,7 +862,6 @@
         .app-footer:hover { opacity: 1; }
         .app-footer span { color: var(--primary); font-weight: 700; }
 
-        /* TUTORIAL SCREEN STYLES */
         #teacher-canvas {
             min-height: 350px;
             background: var(--bg2);
@@ -1078,7 +1036,6 @@
         <div class="bg-orb" style="width: 50vw; height: 50vw; background: var(--orb1); top: -10%; left: -10%; animation-duration: 25s;"></div>
         <div class="bg-orb" style="width: 60vw; height: 60vw; background: var(--orb2); bottom: -20%; right: -10%; animation-duration: 30s;"></div>
         <div class="bg-orb" style="width: 40vw; height: 40vw; background: var(--orb3); top: 30%; left: 30%; animation-duration: 20s;"></div>
-
         <div class="bg-grid"></div>
         <div class="bg-symbols" id="bg-symbols-container"></div>
     </div>
@@ -1098,7 +1055,6 @@
     </header>
 
     <div class="container">
-        <!-- START SCREEN -->
         <div id="start-screen" class="panel">
             <h2 style="text-align: center; color: var(--primary); margin-top: 0; margin-bottom: 20px;">
                 Тренирай метода на интервалите стъпка по стъпка.
@@ -1169,7 +1125,6 @@
             </div>
         </div>
 
-        <!-- TUTORIAL SCREEN -->
         <div id="tutorial-screen" class="panel hidden">
             <h2 style="color: var(--primary); margin-top: 0;">Указания и пример 👨‍🏫</h2>
             <div id="teacher-canvas"></div>
@@ -1179,7 +1134,6 @@
             </div>
         </div>
 
-        <!-- APP CONTAINER -->
         <div id="app-container" class="panel hidden">
             <div class="progress-bar">
                 <div class="stage-indicator active" id="ind-1">1. Корени</div>
@@ -1210,7 +1164,6 @@
             </div>
         </div>
 
-        <!-- FINAL SCREEN -->
         <div id="final-screen" class="panel hidden" style="text-align: center;">
             <div style="font-size: 4.5rem; margin-bottom: 10px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">🏆</div>
             <h2 style="color: var(--success);">Поздравления!</h2>
@@ -1237,7 +1190,6 @@
     </div>
 
     <script>
-        /* --- STATE VARIABLES --- */
         let currentTheme = localStorage.getItem('theme') || 'light';
         let selectedPracticeType = 't-linear';
         let studentName = "";
@@ -1250,7 +1202,6 @@
 
         const operators = ['<', '\\le', '>', '\\ge'];
 
-        /* --- INIT --- */
         document.addEventListener('DOMContentLoaded', () => {
             if (currentTheme === 'dark') {
                 document.body.setAttribute('data-theme', 'dark');
@@ -1259,7 +1210,6 @@
             createBackgroundSymbols();
         });
 
-        /* --- THEME & BACKGROUND --- */
         function toggleTheme() {
             if (document.body.getAttribute('data-theme') === 'dark') {
                 document.body.removeAttribute('data-theme');
@@ -1300,7 +1250,6 @@
             }
         }
 
-        /* --- NAVIGATION --- */
         function selectType(type) {
             document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active-type'));
             document.querySelector('.' + type).classList.add('active-type');
@@ -1363,7 +1312,6 @@
             setTimeout(() => overlay.remove(), 4000);
         }
 
-        /* --- PROBLEM GENERATION --- */
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
@@ -1529,7 +1477,6 @@
             return html;
         }
 
-        /* --- STAGE MANAGEMENT --- */
         function nextProblem() {
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
@@ -1591,7 +1538,6 @@
             else if (currentStage === 4) checkStage4();
         }
 
-        /* --- STAGE 1 --- */
         function getLeftPercent(val, minRoot, maxRoot) {
             let span = Math.max(maxRoot - minRoot, 4);
             let pMin = minRoot - span * 0.2;
@@ -1670,7 +1616,6 @@
             }
         }
 
-        /* --- STAGE 2 --- */
         function setupStage2() {
             document.getElementById('instruction-text').innerHTML =
                 "<b>Стъпка 2:</b> Определи кратността на всеки корен (Четна или Нечетна).";
@@ -1740,7 +1685,6 @@
             }
         }
 
-        /* --- STAGE 3 --- */
         function evalExpressionAt(x) {
             let val = currentProblem.globalSign !== undefined ? currentProblem.globalSign : 1;
 
@@ -1803,7 +1747,7 @@
                 rightBound: 95
             });
 
-            intervals.forEach((inv, idx) => {
+            intervals.forEach((inv) => {
                 let btn = document.createElement('button');
                 btn.className = 'sign-btn-large';
                 btn.style.left = `${inv.centerP}%`;
@@ -1831,7 +1775,6 @@
 
                 let arc = document.createElement('div');
                 arc.className = 'interval-arc';
-                arc.dataset.arcIndex = idx;
                 arc.dataset.sign = btn.dataset.actualSign;
                 arc.style.left = `${inv.leftBound + 0.7}%`;
                 arc.style.width = `${Math.max(inv.rightBound - inv.leftBound - 1.4, 2)}%`;
@@ -1857,7 +1800,13 @@
                 document.getElementById('btn-check').disabled = true;
 
                 showSuccess("Чудесно! Знаците по интервалите са определени вярно.");
-                signBtns.forEach(btn => btn.onclick = null);
+
+                document.querySelectorAll('#nl-container .parity-badge').forEach(el => el.classList.add('hidden'));
+
+                signBtns.forEach(btn => {
+                    btn.onclick = null;
+                    btn.style.top = 'calc(50% - 16px)';
+                });
 
                 arcs.forEach(arc => {
                     arc.style.top = 'calc(50% - 60px)';
@@ -1890,7 +1839,6 @@
             }
         }
 
-        /* --- STAGE 4 --- */
         function canRootBeIncludedByValue(root) {
             if (currentProblem.isStrict) return false;
             let f = currentProblem.allFactors.find(x => x.root === root);
@@ -2181,7 +2129,6 @@
             }
         }
 
-        /* --- FINAL SCREEN --- */
         function buildCanonicalAnswerString(data) {
             if (isNoSolution(data)) return '∅';
             if (isAllReal(data)) return 'ℝ';
@@ -2327,7 +2274,6 @@
             triggerConfetti();
         }
 
-        /* --- TUTORIAL --- */
         function startTutorialAnimation() {
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('app-container').classList.add('hidden');
@@ -2397,6 +2343,5 @@
     </script>
 </body>
 </html>
-```
 
 
