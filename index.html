@@ -1100,8 +1100,11 @@
                 s = parts[0];
             }
 
-            s = s.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1');
+            // ПЪРВО преобразуваме степените
             s = s.replace(/⁰/g, '**0').replace(/¹/g, '**1').replace(/²/g, '**2').replace(/³/g, '**3').replace(/⁴/g, '**4').replace(/⁵/g, '**5').replace(/⁶/g, '**6').replace(/⁷/g, '**7').replace(/⁸/g, '**8').replace(/⁹/g, '**9').replace(/\^/g, '**');
+
+            // ПОСЛЕ слагаме липсващите знаци за умножение (за да може след степента да има умножение)
+            s = s.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1');
 
             let isCorrect = true;
             let testVals = [0.123, 1.456, -2.789, 3.141, -0.555, 10.1];
