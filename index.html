@@ -87,7 +87,7 @@
             100% { transform: translateY(-10vh) rotate(20deg) scale(1.2); opacity: 0; }
         }
 
-        #start-screen, #app-container, #final-screen, #tutorial-screen, .container { position: relative; z-index: 5; }
+        #start-screen, #app-container, #tutorial-screen, .container { position: relative; z-index: 5; }
 
         header {
             background: var(--header-bg); color: white; padding: 12px 20px;
@@ -255,16 +255,44 @@
         .root-marker.unknown { background: #cbd5e1; border: 2px dashed #64748b; }
         .root-marker.strict { background: var(--card); border: 3px solid var(--danger); }
         .root-marker.non-strict { background: var(--danger); border: 2px solid var(--card); box-shadow: 0 0 0 2px var(--danger); }
+        
+        /* Стил за ИЗРИЧНО избрани самостоятелни корени (Стъпка 5) */
+        .root-marker.explicit-selected {
+            background-color: var(--accent) !important;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent) !important;
+            transform: translate(-50%, -50%) scale(1.25) !important;
+            z-index: 20;
+        }
+
         .root-label { position: absolute; top: calc(50% + 20px); transform: translate(-50%, 0); font-weight: bold; font-family: 'Times New Roman', serif; z-index: 5; background: var(--card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
         
-        .parity-badge { position: absolute; top: calc(50% - 30px); transform: translate(-50%, -100%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .parity-badge { position: absolute; top: calc(50% - 30px); transform: translate(-50%, -100%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: opacity 0.5s ease; }
         .parity-select { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; border: 1.5px solid var(--accent); background: var(--card); color: var(--accent); font-weight: 700; cursor: pointer; outline: none; transition: 0.2s; width: max-content; }
         .parity-select.correct { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.08); pointer-events: none; }
         
-        .sign-btn-large { position: absolute; top: calc(50% - 30px); transform: translate(-50%, -50%); font-size: 1.6rem; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; }
+        .sign-btn-large { position: absolute; top: calc(50% - 25px); transform: translate(-50%, -50%); font-size: 1.6rem; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s; }
         .sign-btn-large:hover { transform: translate(-50%, -50%) scale(1.1); border-color: var(--accent); }
         .sign-btn-large.plus { background: var(--success); color: white; border-color: var(--success); }
         .sign-btn-large.minus { background: var(--danger); color: white; border-color: var(--danger); }
+
+        /* ARCS (Змия) */
+        .interval-arc {
+            position: absolute;
+            border: 3px solid var(--accent);
+            border-bottom: none;
+            border-top-left-radius: 50% 100%;
+            border-top-right-radius: 50% 100%;
+            top: calc(50% - 65px);
+            height: 65px;
+            z-index: 1;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: bottom center;
+            transition: opacity 0.4s ease-out, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .interval-arc.show { opacity: 0.7; transform: scaleY(1); }
 
         .interval-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 20px 0; }
         .interval-box { padding: 12px 20px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; background: var(--card); font-weight: bold; font-family: 'Times New Roman', serif; font-size: 1.2rem; color: var(--primary); user-select: none; }
@@ -274,7 +302,7 @@
         .interval-bracket.can-close { cursor: pointer; border-bottom: 2px dotted currentColor; }
         .interval-bracket.locked { opacity: 0.55; cursor: default; }
 
-        .feedback-msg { margin-top: 15px; padding: 15px 20px; border-radius: 10px; font-weight: bold; text-align: center; display: none; font-size: 1.1rem; }
+        .feedback-msg { margin: 15px 0; padding: 15px 20px; border-radius: 10px; font-weight: bold; text-align: center; display: none; font-size: 1.1rem; }
         .feedback-msg.error { display: block; background: rgba(239,68,68,0.1); color: var(--danger); border: 2px solid var(--danger); }
         .feedback-msg.success { display: block; background: rgba(16,185,129,0.1); color: var(--success); border: 2px solid var(--success); }
 
@@ -292,7 +320,8 @@
         .modal-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
 
         .app-footer { text-align: center; margin-top: 20px; padding-bottom: 25px; color: var(--text2); font-size: 0.9rem; font-weight: 500; opacity: 0.8; }
-        .final-answer-display { font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1.8rem; color: var(--success); background: rgba(16,185,129,0.1); padding: 10px 20px; border-radius: 10px; display: inline-block; margin-top: 15px; }
+        
+        .final-answer-display { font-family: 'Times New Roman', serif; font-weight: bold; font-size: 1.8rem; color: var(--success); background: rgba(16,185,129,0.1); padding: 10px 20px; border-radius: 10px; display: inline-block; margin-top: 5px; }
 
         .hero-image-box { max-width: 760px; margin: 0 auto 25px; text-align: center; }
         .hero-main-image { width: 100%; max-width: 760px; height: auto; display: block; margin: 0 auto; border-radius: 18px; box-shadow: 0 10px 24px rgba(0,0,0,0.16); border: 2px solid var(--card-border); }
@@ -310,16 +339,15 @@
             .operator { font-size: 1.6rem; }
             .user-input-group input { font-size: 1.2rem; padding: 10px 15px; }
             
-            /* Scale down Virtual Keyboard for mobile */
             .virtual-keyboard { gap: 4px; padding: 8px; margin: 10px auto 15px; }
             .vk-btn { font-size: 1.1rem; padding: 8px 0; }
             
-            /* Scale down Number Line elements */
-            .sign-btn-large { width: 34px; height: 34px; font-size: 1.3rem; top: calc(50% - 25px); }
+            .sign-btn-large { width: 34px; height: 34px; font-size: 1.3rem; top: calc(50% - 15px); }
             .root-marker { width: 20px; height: 20px; }
             .parity-badge { top: calc(50% - 25px); }
             .parity-select { font-size: 0.65rem; padding: 2px 6px; }
             .root-label { font-size: 0.85rem; padding: 1px 4px; top: calc(50% + 15px); }
+            .interval-arc { top: calc(50% - 50px); height: 50px; }
             
             .interval-box { font-size: 1rem; padding: 8px 12px; }
             .final-answer-display { font-size: 1.4rem; }
@@ -360,7 +388,7 @@
             <div class="start-instructions">
                 <strong>💡 Как се работи с тренажора:</strong>
                 <ul>
-                    <li><strong>Стъпка 1:</strong> Запиши неравенството като произведение от множители.</li>
+                    <li><strong>Стъпка 1:</strong> Запиши неравенството като произведение от множители (или пропусни стъпката).</li>
                     <li><strong>Стъпка 2:</strong> Кликай върху корените на оста (плътни или празни).</li>
                     <li><strong>Стъпка 3:</strong> Определи кратността (четна/нечетна).</li>
                     <li><strong>Стъпка 4:</strong> Кликай над интервалите, за да определиш знаците (+ или -).</li>
@@ -473,6 +501,12 @@
                 <div class="interval-grid" id="interval-container"></div>
             </div>
 
+            <!-- Inline Final Answer -->
+            <div id="inline-final-answer" class="hidden" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                <div style="font-size: 1.1rem; color: var(--text2); font-weight: 600;">Крайно решение:</div>
+                <div class="final-answer-display" id="inline-final-answer-string"></div>
+            </div>
+
             <!-- УНИВЕРСАЛНА ВИРТУАЛНА КЛАВИАТУРА (Само за Стъпка 1) -->
             <div id="virtual-keyboard" class="virtual-keyboard hidden">
                 <!-- Row 1 -->
@@ -533,29 +567,12 @@
             <div id="feedback" class="feedback-msg"></div>
 
             <div class="controls">
+                <button class="btn btn-outline hidden" id="btn-skip" onclick="skipStage1()">Пропусни разлагането</button>
                 <button class="btn btn-primary" id="btn-check" onclick="checkCurrentStage()">Провери</button>
+                <button class="btn btn-outline" id="btn-next-inline" onclick="nextProblem()">🚀 Нова задача</button>
             </div>
         </div>
-
-        <!-- FINAL SCREEN -->
-        <div id="final-screen" class="panel hidden" style="text-align: center;">
-            <div style="font-size: 4.5rem; margin-bottom: 10px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">🏆</div>
-            <h2 style="color: var(--success);">Поздравления!</h2>
-            <p>Ти реши неравенството напълно вярно.</p>
-
-            <div class="math-expr" id="final-expr-disp" style="font-size: 1.5rem; padding: 10px;"></div>
-
-            <div class="final-summary">
-                Решение: <br>
-                <div class="final-answer-display" id="final-answer-string"></div>
-            </div>
-
-            <div class="controls" style="margin-top: 30px;">
-                <button class="btn btn-outline" onclick="returnToMenu()">🏠 Меню</button>
-                <button class="btn btn-purple" onclick="nextProblem()">🚀 Следваща задача</button>
-            </div>
-        </div>
-
+        
         <div class="app-footer">
             Създадено с ❤️ за обучение по математика | <span>Метод на интервалите</span>
         </div>
@@ -603,6 +620,26 @@
 
             document.getElementById('factored-input').addEventListener('input', formatPhysicalInput);
         });
+
+        // === CELEBRATION EFFECTS ===
+        function triggerConfetti() {
+            let overlay = document.createElement('div');
+            overlay.className = 'celebration-overlay';
+            document.body.appendChild(overlay);
+            
+            const colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
+            for (let i = 0; i < 60; i++) {
+                let piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = Math.random() + 's';
+                overlay.appendChild(piece);
+            }
+            
+            setTimeout(() => { if (overlay) overlay.remove(); }, 4000);
+        }
 
         function formatPhysicalInput() {
             let start = this.selectionStart;
@@ -700,7 +737,6 @@
         function returnToMenu() {
             document.getElementById('tutorial-screen').classList.add('hidden');
             document.getElementById('app-container').classList.add('hidden');
-            document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('start-screen').classList.remove('hidden');
             document.getElementById('header-stats').classList.add('hidden');
             
@@ -726,7 +762,6 @@
 
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('tutorial-screen').classList.add('hidden');
-            document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('header-stats').classList.remove('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             
@@ -946,7 +981,6 @@
             return html;
         }
 
-        // Custom formatting directly from user's input so it perfectly matches what they typed
         function formatUserFraction(input, opStrHTML) {
             let clean = input.replace(/\s+/g, '').replace(/=>/g, '>=').replace(/=</g, '<=').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/𝑥/g, 'x');
             let op = currentProblem.opStr.replace('\\le', '<=').replace('\\ge', '>=');
@@ -989,6 +1023,46 @@
             return count === 0;
         }
 
+        function getPerfectFactoredHtml(p) {
+            let val100 = evaluateProblem(p, 100);
+            let sign = val100 > 0 ? 1 : -1;
+
+            let numHtml = "", denHtml = "";
+            if(p.isBiquad) {
+                p.rootData.forEach(r => {
+                    let term = r.root === 0 ? "<i>x</i>" : (r.root > 0 ? `(<i>x</i> - ${r.root})` : `(<i>x</i> + ${Math.abs(r.root)})`);
+                    if (r.mult > 1) term += `<sup>${r.mult}</sup>`;
+                    numHtml += term;
+                });
+            } else {
+                p.evalFactors.forEach(f => {
+                    let term = "";
+                    if (f.kind === 'linear') {
+                        term = f.root === 0 ? "<i>x</i>" : (f.root > 0 ? `(<i>x</i> - ${f.root})` : `(<i>x</i> + ${Math.abs(f.root)})`);
+                        if (f.power > 1) term += `<sup>${f.power}</sup>`;
+                    } else if (f.kind === 'quadratic') {
+                        if (f.discMode === 'negative') {
+                            term = `(${f.a}<i>x</i><sup>2</sup> ${f.b >= 0 ? '+ '+f.b : '- '+Math.abs(f.b)}<i>x</i> ${f.c >= 0 ? '+ '+f.c : '- '+Math.abs(f.c)})`;
+                        } else if (f.discMode === 'zero') {
+                            term = f.root === 0 ? "<i>x</i>" : (f.root > 0 ? `(<i>x</i> - ${f.root})` : `(<i>x</i> + ${Math.abs(f.root)})`);
+                            term += `<sup>${f.power * 2}</sup>`;
+                        } else if (f.discMode === 'positive') {
+                            let r1T = f.r1 === 0 ? `<i>x</i>` : (f.r1 > 0 ? `(<i>x</i> - ${f.r1})` : `(<i>x</i> + ${Math.abs(f.r1)})`);
+                            let r2T = f.r2 === 0 ? `<i>x</i>` : (f.r2 > 0 ? `(<i>x</i> - ${f.r2})` : `(<i>x</i> + ${Math.abs(f.r2)})`);
+                            if(f.power > 1) term = `${r1T}<sup>${f.power}</sup>${r2T}<sup>${f.power}</sup>`;
+                            else term = `${r1T}${r2T}`;
+                        }
+                    }
+                    if (f.pos === 'num') numHtml += term; else denHtml += term;
+                });
+            }
+            if (numHtml === "") numHtml = "1";
+            if (sign === -1) numHtml = "-" + numHtml;
+            let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][p.opIdx];
+            if (denHtml !== "") return `<div class="fraction"><div class="num">${numHtml}</div><div class="den">${denHtml}</div></div> <div class="operator">${opStrHTML} 0</div>`;
+            return `${numHtml} <div class="operator">${opStrHTML} 0</div>`;
+        }
+
         function evaluateProblem(p, x) {
             if (p.isBiquad) {
                 let A = p.biquadCoeffs.A, B = p.biquadCoeffs.B, C = p.biquadCoeffs.C;
@@ -1006,10 +1080,16 @@
 
         // === STAGES FLOW ===
         function nextProblem() {
-            document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('btn-check').disabled = false;
             document.getElementById('btn-check').style.display = 'block';
+            
+            // Бутонът за нова задача остава винаги видим, но със стил outline
+            let btnNext = document.getElementById('btn-next-inline');
+            btnNext.className = 'btn btn-outline';
+            btnNext.classList.remove('hidden');
+            
+            document.getElementById('inline-final-answer').classList.add('hidden');
             
             currentProblem = generateProblem();
             document.getElementById('current-expr').innerHTML = renderExpression(currentProblem);
@@ -1033,18 +1113,30 @@
                 document.getElementById('stage-area-1-3').classList.add('hidden');
                 document.getElementById('stage-area-4').classList.add('hidden');
                 document.getElementById('virtual-keyboard').classList.remove('hidden');
+                document.getElementById('btn-skip').classList.remove('hidden');
             } else if (currentStage <= 4) {
                 document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.add('hidden');
                 document.getElementById('virtual-keyboard').classList.add('hidden');
+                document.getElementById('btn-skip').classList.add('hidden');
             } else if (currentStage === 5) {
                 document.getElementById('step-factor').classList.add('hidden');
                 document.getElementById('stage-area-1-3').classList.remove('hidden');
                 document.getElementById('stage-area-4').classList.remove('hidden');
                 document.getElementById('interval-container').style.pointerEvents = 'auto'; 
                 document.getElementById('virtual-keyboard').classList.add('hidden');
+                document.getElementById('btn-skip').classList.add('hidden');
             }
+        }
+
+        function skipStage1() {
+            document.getElementById('factored-input').disabled = true;
+            document.getElementById('factored-input').value = '';
+            document.getElementById('current-expr').innerHTML = getPerfectFactoredHtml(currentProblem);
+            
+            showSuccess("Стъпката е пропусната. Продължете с корените.");
+            setTimeout(() => { currentStage = 2; updateStageUI(); setupStage2(); }, 1200);
         }
 
         function showError(msg) {
@@ -1069,7 +1161,7 @@
 
         // --- Stage 1: Factoring ---
         function setupStage1() {
-            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 1:</strong> Запишете неравенството напълно разложено (като произведение или частно от множители).";
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 1:</strong> Запишете неравенството напълно разложено (или пропуснете стъпката).";
             document.getElementById('factored-input').value = '';
             document.getElementById('factored-input').disabled = false;
             setTimeout(()=>document.getElementById('factored-input').focus(), 100);
@@ -1077,19 +1169,24 @@
 
         function checkStage1() {
             let input = document.getElementById('factored-input').value;
-            if(!input) { showError("Моля, въведете разложеното неравенство."); return; }
+            if(!input) { showError("Моля, въведете разложеното неравенство или натиснете 'Пропусни'."); return; }
 
             let u = input.replace(/\s+/g, '').toLowerCase().replace(/=>/g, '>=').replace(/=</g, '<=').replace(/≤/g, '<=').replace(/≥/g, '>=').replace(/𝑥/g, 'x');
-            let op = currentProblem.opStr.replace('\\le', '<=').replace('\\ge', '>=');
+            let opOriginal = currentProblem.opStr.replace('\\le', '<=').replace('\\ge', '>=');
             
-            if(!u.includes(op)) { showError("Знакът на неравенството липсва или е грешен!"); return; }
-            let leftSide = u.substring(0, u.indexOf(op));
+            let userOp = null;
+            if(u.includes('<=')) userOp = '<=';
+            else if(u.includes('>=')) userOp = '>=';
+            else if(u.includes('<')) userOp = '<';
+            else if(u.includes('>')) userOp = '>';
+
+            if(!userOp) { showError("Знакът на неравенството липсва или е грешен!"); return; }
             
-            // Разрешаваме новите символи за степени в проверката
+            let leftSide = u.substring(0, u.indexOf(userOp));
+            
             if(/[^x\d\(\)\+\-\*\/\^\.\⁰\¹\²\³\⁴\⁵\⁶\⁷\⁸\⁹]/.test(leftSide)) { showError("Въведени са невалидни символи."); return; }
             if(!leftSide.includes('(') && currentProblem.roots.length > 1) { showError("Запишете израза чрез скоби като произведение."); return; }
 
-            // AUTO PARSE FRACTIONS WITHOUT EXTRA PARENS
             let parts = leftSide.split('/');
             let s = "";
             if (parts.length > 2) {
@@ -1100,35 +1197,69 @@
                 s = parts[0];
             }
 
-            // ПЪРВО преобразуваме степените
             s = s.replace(/⁰/g, '**0').replace(/¹/g, '**1').replace(/²/g, '**2').replace(/³/g, '**3').replace(/⁴/g, '**4').replace(/⁵/g, '**5').replace(/⁶/g, '**6').replace(/⁷/g, '**7').replace(/⁸/g, '**8').replace(/⁹/g, '**9').replace(/\^/g, '**');
-
-            // ПОСЛЕ слагаме липсващите знаци за умножение (за да може след степента да има умножение)
             s = s.replace(/(\d)(x)/g, '$1*$2').replace(/(x)(\d)/g, '$1*$2').replace(/\)\(/g, ')*(').replace(/(x)\(/g, '$1*(').replace(/\)(x)/g, ')*$1').replace(/(\d)\(/g, '$1*(').replace(/\)(\d)/g, ')*$1');
 
-            let isCorrect = true;
+            let isEquivalent = true;
+            let ratio = null;
             let testVals = [0.123, 1.456, -2.789, 3.141, -0.555, 10.1];
+
             for(let x of testVals) {
                 let expected = evaluateProblem(currentProblem, x);
                 let actual = null;
-                try { actual = Function("x", `"use strict"; return (${s});`)(x); } catch(e) { isCorrect = false; break; }
-                if(actual === null || isNaN(actual) || Math.abs(expected - actual) > 0.001) { isCorrect = false; break; }
+                try { actual = Function("x", `"use strict"; return (${s});`)(x); } catch(e) { isEquivalent = false; break; }
+                
+                if(actual === null || isNaN(actual) || !isFinite(actual) || actual === 0) { isEquivalent = false; break; }
+                
+                let currentRatio = expected / actual;
+                if (ratio === null) {
+                    ratio = currentRatio;
+                } else {
+                    if (Math.abs((ratio - currentRatio)/ratio) > 0.05) {
+                        isEquivalent = false; break;
+                    }
+                }
             }
 
-            if(isCorrect) {
-                showSuccess("Отлично! Разлагането е вярно.");
-                document.getElementById('factored-input').disabled = true;
-                
-                let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
-                document.getElementById('current-expr').innerHTML = formatUserFraction(input, opStrHTML);
-                
-                setTimeout(() => { currentStage = 2; updateStageUI(); setupStage2(); }, 1200);
-            } else {
+            if(!isEquivalent || ratio === null) {
                 showError("Изразът не е еквивалентен. Опитайте пак.");
+                return;
             }
+
+            let requiredOp = opOriginal;
+            if (ratio < 0) {
+                if (opOriginal === '<') requiredOp = '>';
+                else if (opOriginal === '>') requiredOp = '<';
+                else if (opOriginal === '<=') requiredOp = '>=';
+                else if (opOriginal === '>=') requiredOp = '<=';
+                currentProblem.userFlipped = true;
+            } else {
+                currentProblem.userFlipped = false;
+            }
+
+            if (userOp !== requiredOp) {
+                showError("Обърнете внимание на знака на неравенството! (Ако сте умножили/разделили на отрицателно число, знакът се обръща)");
+                return;
+            }
+
+            if (currentProblem.userFlipped) {
+                if(userOp === '<') currentProblem.opIdx = 0;
+                if(userOp === '<=') currentProblem.opIdx = 1;
+                if(userOp === '>') currentProblem.opIdx = 2;
+                if(userOp === '>=') currentProblem.opIdx = 3;
+                let mapping = {'<': '<', '<=': '\\le', '>': '>', '>=': '\\ge'};
+                currentProblem.opStr = mapping[userOp];
+            }
+
+            showSuccess("Отлично! Разлагането е вярно.");
+            document.getElementById('factored-input').disabled = true;
+            
+            let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
+            document.getElementById('current-expr').innerHTML = formatUserFraction(input, opStrHTML);
+            
+            setTimeout(() => { currentStage = 2; updateStageUI(); setupStage2(); }, 1200);
         }
 
-        // --- Helper for positions on number line ---
         function getLeftPercent(val, minRoot, maxRoot) {
             let span = Math.max(maxRoot - minRoot, 4);
             let pMin = minRoot - span * 0.2;
@@ -1140,7 +1271,7 @@
         function setupStage2() {
             document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 2:</strong> Кликнете върху корените. Плътно = включен, Празно = изключен (напр. знаменател).";
             let nlContainer = document.getElementById('nl-container');
-            nlContainer.querySelectorAll('.root-marker, .root-label, .parity-badge, .sign-btn-large').forEach(el => el.remove());
+            nlContainer.querySelectorAll('.root-marker, .root-label, .parity-badge, .sign-btn-large, .interval-arc').forEach(el => el.remove());
 
             userRootsState = {};
             let minR = Math.min(...currentProblem.roots, -2);
@@ -1151,6 +1282,7 @@
                 let pos = getLeftPercent(r, minR, maxR);
                 let marker = document.createElement('div');
                 marker.className = 'root-marker unknown';
+                marker.dataset.root = r; // запазваме корена
                 marker.style.left = pos + '%';
                 marker.onclick = () => {
                     if(userRootsState[r] === 'unknown') { userRootsState[r] = 'strict'; marker.className = 'root-marker strict'; }
@@ -1253,24 +1385,61 @@
             let correct = true;
             testPoints.forEach((x, idx) => {
                 let val = evaluateProblem(currentProblem, x);
+                if (currentProblem.userFlipped) val = -val;
                 let expSign = val > 0 ? 1 : -1;
                 if(userSignsState[idx] !== expSign) correct = false;
             });
 
             if(correct) {
                 document.querySelectorAll('.sign-btn-large').forEach(b => b.style.pointerEvents = 'none');
+                
+                // Скриване на четността
+                document.querySelectorAll('.parity-badge').forEach(b => {
+                    b.style.opacity = '0';
+                    b.style.pointerEvents = 'none';
+                });
+
+                // Изчертаване на дъгички (Всички отгоре)
+                let minR = Math.min(...roots, -2); 
+                let maxR = Math.max(...roots, 2);
+                let nlContainer = document.getElementById('nl-container');
+                
+                for(let i=0; i<=roots.length; i++) {
+                    let leftPerc = i === 0 ? -10 : getLeftPercent(roots[i-1], minR, maxR);
+                    let rightPerc = i === roots.length ? 110 : getLeftPercent(roots[i], minR, maxR);
+                    
+                    let width = rightPerc - leftPerc;
+                    
+                    let arc = document.createElement('div');
+                    arc.className = 'interval-arc';
+                    arc.style.left = leftPerc + '%';
+                    arc.style.width = width + '%';
+                    
+                    nlContainer.appendChild(arc);
+                    setTimeout(() => arc.classList.add('show'), i * 100);
+                }
+
                 showSuccess("Чудесно! Знаците са верни.");
-                setTimeout(() => { currentStage = 5; updateStageUI(); setupStage5(); }, 1000);
+                setTimeout(() => { currentStage = 5; updateStageUI(); setupStage5(); }, 1500);
             } else { showError("Грешка в знаците. Започнете от най-дясната част и редувайте спрямо кратността."); }
         }
 
         // --- Stage 5: Visual Intervals ---
         function setupStage5() {
-            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 5:</strong> Визуално маркирай интервалите, които са решение, и избери правилните скоби.";
+            document.getElementById('instruction-text').innerHTML = "<strong>Стъпка 5:</strong> Визуално маркирай интервалите, които са решение, и избери правилните скоби.<br><span style='color: var(--danger); font-size: 0.9em;'>Ако има самостоятелно число (изолиран корен), кликни върху самото кръгче, за да го добавиш!</span>";
             let cont = document.getElementById('interval-container'); cont.innerHTML = '';
             intervalData = [];
             let roots = currentProblem.roots;
             
+            // Активиране на точките за изрично избиране
+            document.querySelectorAll('.root-marker').forEach(marker => {
+                marker.style.pointerEvents = 'auto';
+                marker.style.cursor = 'pointer';
+                marker.onclick = () => {
+                    marker.classList.toggle('explicit-selected');
+                };
+            });
+
             for(let i=0; i<=roots.length; i++) {
                 let leftVal = i === 0 ? '-∞' : roots[i-1];
                 let rightVal = i === roots.length ? '+∞' : roots[i];
@@ -1298,55 +1467,91 @@
         }
 
         function checkStage5() {
-            let correct = true; let anySel = false;
-            intervalData.forEach(d => {
-                if(d.selected !== d.exp) correct = false;
+            let missingInt = [];
+            let extraInt = [];
+            let wrongBr = [];
+
+            intervalData.forEach((d, i) => {
+                if(d.exp && !d.selected) missingInt.push(i);
+                if(!d.exp && d.selected) extraInt.push(i);
                 if(d.selected) {
-                    anySel = true;
-                    if(d.needsCloseL && d.lBr !== '[') correct = false;
-                    if(!d.needsCloseL && d.lBr !== '(') correct = false;
-                    if(d.needsCloseR && d.rBr !== ']') correct = false;
-                    if(!d.needsCloseR && d.rBr !== ')') correct = false;
+                    if(d.needsCloseL && d.lBr !== '[') wrongBr.push(i);
+                    if(!d.needsCloseL && d.lBr !== '(') wrongBr.push(i);
+                    if(d.needsCloseR && d.rBr !== ']') wrongBr.push(i);
+                    if(!d.needsCloseR && d.rBr !== ')') wrongBr.push(i);
                 }
             });
 
-            if(!anySel && intervalData.some(d=>d.exp)) { showError("Изберете поне един интервал."); return; }
+            if (extraInt.length > 0) { showError("Маркирали сте грешен интервал! Проверете отново кои знаци търсим (положителни или отрицателни)."); return; }
+            if (missingInt.length > 0) { showError("Пропуснали сте интервал! (Ако има два съседни с еднакъв знак, трябва да маркирате и двата)"); return; }
+            if (wrongBr.length > 0) { showError("Грешка в скобите! Помнете: плътно кръгче = [ ], празно = ( )"); return; }
 
-            if(correct) {
-                showSuccess("Напълно вярно!");
-                document.getElementById('interval-container').style.pointerEvents = 'none';
-                document.getElementById('btn-check').style.display = 'none';
+            // Проверка за изолирани корени
+            let missingRoot = [];
+            let extraRoot = [];
+
+            currentProblem.roots.forEach(r => {
+                let isSolid = userRootsState[r] === 'non-strict';
+                let isCovered = intervalData.some((d, i) => d.selected && ((i>0 && currentProblem.roots[i-1]===r && d.lBr==='[') || (i<currentProblem.roots.length && currentProblem.roots[i]===r && d.rBr===']')));
                 
-                setTimeout(() => {
-                    problemsSolved++;
-                    document.getElementById('solved-display').innerText = problemsSolved;
-                    triggerConfetti();
-                    
-                    let expectedParts = [];
-                    intervalData.forEach((d, i) => {
-                        if(d.selected) {
-                            let l = i===0 ? '-∞' : currentProblem.roots[i-1];
-                            let r = i===currentProblem.roots.length ? '+∞' : currentProblem.roots[i];
-                            expectedParts.push(`${d.lBr}${l}; ${r}${d.rBr}`);
-                        }
-                    });
-                    
-                    currentProblem.roots.forEach(r => {
-                        let isSolid = userRootsState[r] === 'non-strict';
-                        let isCovered = intervalData.some((d, i) => d.selected && ((i>0 && currentProblem.roots[i-1]===r && d.lBr==='[') || (i<currentProblem.roots.length && currentProblem.roots[i]===r && d.rBr===']')));
-                        if(isSolid && !isCovered) expectedParts.push(`{${r}}`);
-                    });
-                    
-                    document.getElementById('final-answer-string').innerText = expectedParts.length > 0 ? "x ∈ " + expectedParts.join(" ∪ ") : "Няма решение (∅)";
-                    
-                    let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
-                    let factoredInput = document.getElementById('factored-input').value;
-                    document.getElementById('final-expr-disp').innerHTML = formatUserFraction(factoredInput, opStrHTML);
-                    
-                    document.getElementById('app-container').classList.add('hidden');
-                    document.getElementById('final-screen').classList.remove('hidden');
-                }, 1000);
-            } else { showError("Грешка в избраните интервали или скобите."); }
+                let marker = document.querySelector(`.root-marker[data-root='${r}']`);
+                let isExplicitlySelected = marker && marker.classList.contains('explicit-selected');
+
+                if (isSolid && !isCovered) {
+                    if (!isExplicitlySelected) missingRoot.push(r);
+                } else if (!isSolid && isExplicitlySelected) {
+                    extraRoot.push(r);
+                }
+            });
+
+            if (extraRoot.length > 0) { showError(`Избрали сте самостоятелен корен (${extraRoot.join(', ')}), който е празно кръгче (не е решение)! Щракнете го пак, за да го премахнете.`); return; }
+            if (missingRoot.length > 0) { showError(`Пропуснали сте да добавите изолиран корен, който също е решение! Кликнете върху плътното кръгче на числото ${missingRoot.join(', ')}, за да го добавите към отговора.`); return; }
+
+            document.getElementById('interval-container').style.pointerEvents = 'none';
+            document.getElementById('btn-check').style.display = 'none';
+            document.querySelectorAll('.root-marker').forEach(marker => marker.style.pointerEvents = 'none');
+            
+            // Бутонът става лилав след успешен край
+            document.getElementById('btn-next-inline').className = 'btn btn-purple';
+            
+            problemsSolved++;
+            document.getElementById('solved-display').innerText = problemsSolved;
+            triggerConfetti();
+            
+            let expectedParts = [];
+            intervalData.forEach((d, i) => {
+                if(d.selected) {
+                    let l = i===0 ? '-∞' : currentProblem.roots[i-1];
+                    let r = i===currentProblem.roots.length ? '+∞' : currentProblem.roots[i];
+                    expectedParts.push(`${d.lBr}${l}; ${r}${d.rBr}`);
+                }
+            });
+            
+            currentProblem.roots.forEach(r => {
+                let isSolid = userRootsState[r] === 'non-strict';
+                let isCovered = intervalData.some((d, i) => d.selected && ((i>0 && currentProblem.roots[i-1]===r && d.lBr==='[') || (i<currentProblem.roots.length && currentProblem.roots[i]===r && d.rBr===']')));
+                
+                let marker = document.querySelector(`.root-marker[data-root='${r}']`);
+                let isExplicitlySelected = marker && marker.classList.contains('explicit-selected');
+
+                if (isSolid && !isCovered && isExplicitlySelected) {
+                    expectedParts.push(`{${r}}`);
+                }
+            });
+            
+            document.getElementById('inline-final-answer-string').innerText = expectedParts.length > 0 ? "x ∈ " + expectedParts.join(" ∪ ") : "Няма решение (∅)";
+            document.getElementById('inline-final-answer').classList.remove('hidden');
+            
+            let factoredInput = document.getElementById('factored-input').value;
+            if (factoredInput) {
+                let opStrHTML = ['&lt;', '&le;', '&gt;', '&ge;'][currentProblem.opIdx];
+                document.getElementById('final-expr-disp').innerHTML = formatUserFraction(factoredInput, opStrHTML);
+            } else {
+                document.getElementById('final-expr-disp').innerHTML = getPerfectFactoredHtml(currentProblem);
+            }
+            
+            showSuccess("🏆 Поздравления! Ти реши неравенството напълно вярно.");
+            document.getElementById('instruction-text').innerHTML = "<strong>Задачата е решена!</strong> Можете да прегледате решението си.";
         }
     </script>
 </body>
